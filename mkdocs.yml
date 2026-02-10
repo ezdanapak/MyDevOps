@@ -1,6 +1,8 @@
 site_name: MyDevOps Docs
 site_description: DevOps Learning Project
 repo_url: https://github.com/ezdanapak/MyDevOps
+docs_dir: docs
+site_dir: site
 
 theme:
   name: material
