@@ -26,18 +26,18 @@
 | 1 | **Virtual Machine** — Ubuntu Server VirtualBox-ში | ✅ | |
 | 2 | **Network Setup** — NAT + Host-Only adapters | ✅ | |
 | 3 | **Static IP Configuration** — Host-Only static IP | ✅ | |
-| 4 | **SSH Configuration** — SSH key authentication | ⏳ | |
-| 5 | **System Update** — git, curl, vim, htop, net-tools | ⏳ | |
-| 6 | **User & Permission Management** — developer + deploy users | ⏳ | |
-| 7 | **Firewall Setup** — ufw: SSH, HTTP, HTTPS | ⏳ | |
-| 8 | **Web Server Installation** — Nginx | ⏳ | |
-| 9 | **Custom Website Deploy** — HTML site on Nginx | ⏳ | |
+| 4 | **SSH Configuration** — SSH key authentication | ✅ | |
+| 5 | **System Update** — git, curl, vim, htop, net-tools | ✅ | |
+| 6 | **User & Permission Management** — developer + deploy users | ✅ | |
+| 7 | **Firewall Setup** — ufw: SSH, HTTP, HTTPS | ✅ | |
+| 8 | **Web Server Installation** — Nginx | ✅ | |
+| 9 | **Custom Website Deploy** — HTML site on Nginx | ✅ | |
 
 ### ბლოკი 2 — Database & Automation (Tasks 10–13)
 
 | # | ამოცანა | სტატუსი | შენიშვნა |
 |---|---------|---------|----------|
-| 10 | **Database Installation** — MySQL/PostgreSQL + user | ⏳ | |
+| 10 | **Database Installation** — MySQL/PostgreSQL + user | ✅ | |
 | 11 | **Automated Backup Script** — bash script, tar.gz | ⏳ | |
 | 12 | **Cron Automation** — daily backup 3:00 AM | ⏳ | |
 | 13 | **Log Monitoring** — failed logins + sudo commands | ⏳ | |
