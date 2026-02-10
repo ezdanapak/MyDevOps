@@ -24,8 +24,8 @@
 | # | ამოცანა | სტატუსი | შენიშვნა |
 |---|---------|---------|----------|
 | 1 | **Virtual Machine** — Ubuntu Server VirtualBox-ში | ✅ | |
-| 2 | **Network Setup** — NAT + Host-Only adapters | ⏳ | |
-| 3 | **Static IP Configuration** — Host-Only static IP | ⏳ | |
+| 2 | **Network Setup** — NAT + Host-Only adapters | ✅ | |
+| 3 | **Static IP Configuration** — Host-Only static IP | ✅ | |
 | 4 | **SSH Configuration** — SSH key authentication | ⏳ | |
 | 5 | **System Update** — git, curl, vim, htop, net-tools | ⏳ | |
 | 6 | **User & Permission Management** — developer + deploy users | ⏳ | |
