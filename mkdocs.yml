@@ -11,6 +11,8 @@ nav:
   - Home: index.md
   - Setup:
       - Ubuntu Setup: setup/setup-ubuntu.md
+      - Virtualbox Setup: setup/setup-virtualbox.md
   - Tasks:
+      - Task board: tasks/task.md
       - Task 1 VM: tasks/task1-vm.md
       - Task 2 Network: tasks/task2-network.md

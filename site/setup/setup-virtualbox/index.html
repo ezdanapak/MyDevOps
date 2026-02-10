@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../setup-ubuntu/">
       
       
-        <link rel="next" href="../setup-virtualbox/">
+        <link rel="next" href="../../tasks/task/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Ubuntu Setup - MyDevOps Docs</title>
+        <title>Virtualbox Setup - MyDevOps Docs</title>
       
     
     
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ubuntu-server-installation-guide" class="md-skip">
+        <a href="#virtual-machine-setup-ubuntu-server" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Ubuntu Setup
+              Virtualbox Setup
             
           </span>
         </div>
@@ -271,6 +271,27 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup-ubuntu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ubuntu Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -287,7 +308,7 @@
           
   
   <span class="md-ellipsis">
-    Ubuntu Setup
+    Virtualbox Setup
   </span>
   
 
@@ -298,7 +319,7 @@
         
   
   <span class="md-ellipsis">
-    Ubuntu Setup
+    Virtualbox Setup
   </span>
   
 
@@ -320,18 +341,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#virtual-machine" class="md-nav__link">
+  <a href="#network-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 Virtual Machine რესურსების კონფიგურაცია
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ram-allocation-table" class="md-nav__link">
-    <span class="md-ellipsis">
-      📊 RAM Allocation Table
+      🌐 Network Configuration
     </span>
   </a>
   
@@ -340,7 +352,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      📌 შენიშვნა
+      🔧 დამატებითი შენიშვნები
     </span>
   </a>
   
@@ -350,27 +362,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../setup-virtualbox/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Virtualbox Setup
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -515,18 +506,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#virtual-machine" class="md-nav__link">
+  <a href="#network-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 Virtual Machine რესურსების კონფიგურაცია
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ram-allocation-table" class="md-nav__link">
-    <span class="md-ellipsis">
-      📊 RAM Allocation Table
+      🌐 Network Configuration
     </span>
   </a>
   
@@ -535,7 +517,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      📌 შენიშვნა
+      🔧 დამატებითი შენიშვნები
     </span>
   </a>
   
@@ -559,125 +541,59 @@
   
 
 
-<h1 id="ubuntu-server-installation-guide">Ubuntu Server Installation Guide</h1>
-<p>ეს დოკუმენტი აღწერს Ubuntu Server-ის ინსტალაციისას გამოყენებულ რესურსებს
-და ვირტუალური მანქანის კონფიგურაციას.</p>
-<hr />
-<h2 id="virtual-machine">💻 Virtual Machine რესურსების კონფიგურაცია</h2>
-<p>Ubuntu Server-ის ინსტალაციისას ვირტუალურ მანქანას მიენიჭა შემდეგი რესურსები:</p>
+<h1 id="virtual-machine-setup-ubuntu-server">🖥️ Virtual Machine Setup – Ubuntu Server</h1>
+<p>Ubuntu Server-ის ინსტალაციისთვის გამოვიყენე <strong>VirtualBox</strong> Windows გარემოში.<br />
+დადგა უახლესი ვერსია და დავაინსტალირე VM-სთვის შემდეგი პარამეტრები:</p>
 <ul>
-<li>💾 RAM: <strong>8 GB</strong></li>
-<li>⚙️ CPU: <strong>4 Core</strong></li>
-<li>💽 Disk: <strong>50 GB</strong></li>
+<li><strong>RAM:</strong> 8 GB  </li>
+<li><strong>CPU:</strong> 4 Cores  </li>
+<li><strong>Disk:</strong> 50 GB</li>
 </ul>
-<p>ეს კონფიგურაცია უზრუნველყოფს სტაბილურ მუშაობას DevOps პრაქტიკისთვის.</p>
 <hr />
-<h2 id="ram-allocation-table">📊 RAM Allocation Table</h2>
-<p>RAM-ის მინიჭებისას VirtualBox-ში მნიშვნელობები შეყვანილია <strong>MB-ებში</strong>.</p>
-<p>ქვემოთ მოცემულია გადაყვანის ცხრილი:</p>
+<h2 id="network-configuration">🌐 Network Configuration</h2>
+<p>VM-ზე შესრულებული ქსელის კონფიგურაცია:</p>
 <table>
 <thead>
 <tr>
-<th>გიგაბაიტი (GB)</th>
-<th>მეგაბაიტი (MB)</th>
+<th>Adapter</th>
+<th>ტიპი</th>
+<th>გამოყენება</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>4 GB</td>
-<td>4096 MB</td>
+<td>Adapter 1</td>
+<td>NAT</td>
+<td>ინტერნეტ წვდომა VM-ში</td>
 </tr>
 <tr>
-<td>6 GB</td>
-<td>6144 MB</td>
+<td>Adapter 2</td>
+<td>Host-Only</td>
+<td>SSH კავშირი Host Machine-დან</td>
 </tr>
 <tr>
-<td>8 GB</td>
-<td>8192 MB</td>
-</tr>
-<tr>
-<td>10 GB</td>
-<td>10240 MB</td>
-</tr>
-<tr>
-<td>12 GB</td>
-<td>12288 MB</td>
-</tr>
-<tr>
-<td>16 GB</td>
-<td>16384 MB</td>
+<td>Adapter 3</td>
+<td>Bridged</td>
+<td>ქსელის სხვა მოწყობილობებთან კომუნიკაცია (ფაკულტატური)</td>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>✅ შედეგი: VM-ს აქვს ინტერნეტი, შესაძლებელია SSH-ის გამოყენება host-მეთოდიდან, ხოლო საჭიროების შემთხვევაში VM კომუნიკაციას ახდენს ქსელზე.</p>
+</blockquote>
 <hr />
-<h2 id="_1">📌 შენიშვნა</h2>
-<hr />
-<h1 id="ubuntu-server-">Ubuntu Server-ის სტანდარტული კონფიგურაცია</h1>
-<p>ქვემოთ მოცემულია Ubuntu Server-ის ინსტალაციისა და საწყისი კონფიგურაციისას გამოყენებული ძირითადი პარამეტრები.</p>
-<hr />
-<h2 id="_2">🔧 ძირითადი პარამეტრები</h2>
-<table>
-<thead>
-<tr>
-<th>პარამეტრი</th>
-<th>მნიშვნელობა (Default)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ენა (Language)</td>
-<td>English (US)</td>
-</tr>
-<tr>
-<td>კლავიატურა (Keyboard)</td>
-<td>English (US)</td>
-</tr>
-<tr>
-<td>ქსელი (Network)</td>
-<td>DHCP (ავტომატური IP მისამართი)</td>
-</tr>
-<tr>
-<td>Mirror მისამართი</td>
-<td>http://ge.archive.ubuntu.com/ubuntu/</td>
-</tr>
-<tr>
-<td>Disk Setup</td>
-<td>LVM – მთლიანი დისკის გამოყენება</td>
-</tr>
-<tr>
-<td>Disk Encryption</td>
-<td>LUKS + Recovery Key (პაროლით)</td>
-</tr>
-<tr>
-<td>SSH</td>
-<td>მონიშნულია გასააქტიურებლად</td>
-</tr>
-<tr>
-<td>OpenSSH Server</td>
-<td>დაინსტალირებულია</td>
-</tr>
-<tr>
-<td>მომხმარებელი</td>
-<td>შექმნილია მომხმარებელი პაროლით</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_3">🔐 უსაფრთხოება</h2>
+<h2 id="_1">🔧 დამატებითი შენიშვნები</h2>
 <ul>
-<li>დისკი დაცულია <strong>LUKS encryption</strong>-ით  </li>
-<li>გამოყენებულია <strong>Recovery Key</strong> აღდგენისთვის  </li>
-<li>დაინსტალირებულია <strong>OpenSSH Server</strong> დისტანციური წვდომისთვის  </li>
-<li>SSH გააქტიურებულია ინსტალაციის დროს  </li>
+<li>Host-Only ქსელი აუცილებელია <strong>დისტანციური ადმინისტრაციისთვის</strong>.  </li>
+<li>Bridged ქსელი გამოყენებულია მხოლოდ როდესაც VM უნდა იყოს LAN-ზე გამოჩენილი.  </li>
+<li>NAT უზრუნველყოფს სწრაფ და მარტივ ინტერნეტ წვდომას VM-ში.  </li>
 </ul>
 <hr />
-<h2 id="openssh-server-">📦 OpenSSH Server-ის ინსტალაცია</h2>
-<p>ხელით დაყენების ბრძანება გასახსენებლად:</p>
-<pre><code class="language-bash">sudo apt update
-sudo apt install openssh-server -y
-sudo systemctl enable ssh
-sudo systemctl start ssh
-</code></pre>
+<p>💡 <em>შემდგომი ნაბიჯები</em>:<br />
+1. Static IP-ის მინიჭება Host-Only adapter-ზე<br />
+2. SSH Key Authentication<br />
+3. Firewall კონფიგურაცია<br />
+4. Web server და Docker-ის განთავსება</p>
 
 
 
