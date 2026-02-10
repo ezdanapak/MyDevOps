@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ubuntu-setup" class="md-skip">
+        <a href="#ubuntu-server-installation-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -283,6 +283,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Ubuntu Setup
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -292,6 +303,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      💻 Virtual Machine რესურსების კონფიგურაცია
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ram-allocation-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 RAM Allocation Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      📌 შენიშვნა
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -409,6 +466,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      💻 Virtual Machine რესურსების კონფიგურაცია
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ram-allocation-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 RAM Allocation Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      📌 შენიშვნა
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -425,8 +517,125 @@
   
 
 
-<h1 id="ubuntu-setup">Ubuntu Setup</h1>
-<p>Ubuntu Server installation guide.</p>
+<h1 id="ubuntu-server-installation-guide">Ubuntu Server Installation Guide</h1>
+<p>ეს დოკუმენტი აღწერს Ubuntu Server-ის ინსტალაციისას გამოყენებულ რესურსებს
+და ვირტუალური მანქანის კონფიგურაციას.</p>
+<hr />
+<h2 id="virtual-machine">💻 Virtual Machine რესურსების კონფიგურაცია</h2>
+<p>Ubuntu Server-ის ინსტალაციისას ვირტუალურ მანქანას მიენიჭა შემდეგი რესურსები:</p>
+<ul>
+<li>💾 RAM: <strong>8 GB</strong></li>
+<li>⚙️ CPU: <strong>4 Core</strong></li>
+<li>💽 Disk: <strong>50 GB</strong></li>
+</ul>
+<p>ეს კონფიგურაცია უზრუნველყოფს სტაბილურ მუშაობას DevOps პრაქტიკისთვის.</p>
+<hr />
+<h2 id="ram-allocation-table">📊 RAM Allocation Table</h2>
+<p>RAM-ის მინიჭებისას VirtualBox-ში მნიშვნელობები შეყვანილია <strong>MB-ებში</strong>.</p>
+<p>ქვემოთ მოცემულია გადაყვანის ცხრილი:</p>
+<table>
+<thead>
+<tr>
+<th>გიგაბაიტი (GB)</th>
+<th>მეგაბაიტი (MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 GB</td>
+<td>4096 MB</td>
+</tr>
+<tr>
+<td>6 GB</td>
+<td>6144 MB</td>
+</tr>
+<tr>
+<td>8 GB</td>
+<td>8192 MB</td>
+</tr>
+<tr>
+<td>10 GB</td>
+<td>10240 MB</td>
+</tr>
+<tr>
+<td>12 GB</td>
+<td>12288 MB</td>
+</tr>
+<tr>
+<td>16 GB</td>
+<td>16384 MB</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_1">📌 შენიშვნა</h2>
+<hr />
+<h1 id="ubuntu-server-">Ubuntu Server-ის სტანდარტული კონფიგურაცია</h1>
+<p>ქვემოთ მოცემულია Ubuntu Server-ის ინსტალაციისა და საწყისი კონფიგურაციისას გამოყენებული ძირითადი პარამეტრები.</p>
+<hr />
+<h2 id="_2">🔧 ძირითადი პარამეტრები</h2>
+<table>
+<thead>
+<tr>
+<th>პარამეტრი</th>
+<th>მნიშვნელობა (Default)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ენა (Language)</td>
+<td>English (US)</td>
+</tr>
+<tr>
+<td>კლავიატურა (Keyboard)</td>
+<td>English (US)</td>
+</tr>
+<tr>
+<td>ქსელი (Network)</td>
+<td>DHCP (ავტომატური IP მისამართი)</td>
+</tr>
+<tr>
+<td>Mirror მისამართი</td>
+<td>http://ge.archive.ubuntu.com/ubuntu/</td>
+</tr>
+<tr>
+<td>Disk Setup</td>
+<td>LVM – მთლიანი დისკის გამოყენება</td>
+</tr>
+<tr>
+<td>Disk Encryption</td>
+<td>LUKS + Recovery Key (პაროლით)</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>მონიშნულია გასააქტიურებლად</td>
+</tr>
+<tr>
+<td>OpenSSH Server</td>
+<td>დაინსტალირებულია</td>
+</tr>
+<tr>
+<td>მომხმარებელი</td>
+<td>შექმნილია მომხმარებელი პაროლით</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">🔐 უსაფრთხოება</h2>
+<ul>
+<li>დისკი დაცულია <strong>LUKS encryption</strong>-ით  </li>
+<li>გამოყენებულია <strong>Recovery Key</strong> აღდგენისთვის  </li>
+<li>დაინსტალირებულია <strong>OpenSSH Server</strong> დისტანციური წვდომისთვის  </li>
+<li>SSH გააქტიურებულია ინსტალაციის დროს  </li>
+</ul>
+<hr />
+<h2 id="openssh-server-">📦 OpenSSH Server-ის ინსტალაცია</h2>
+<p>ხელით დაყენების ბრძანება გასახსენებლად:</p>
+<pre><code class="language-bash">sudo apt update
+sudo apt install openssh-server -y
+sudo systemctl enable ssh
+sudo systemctl start ssh
+</code></pre>
 
 
 
