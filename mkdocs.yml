@@ -1,0 +1,14 @@
+site_name: MyDevOps Docs
+site_description: DevOps Learning Project
+repo_url: https://github.com/ezdanapak/MyDevOps
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Setup:
+      - Ubuntu Setup: setup/setup-ubuntu.md
+  - Tasks:
+      - Task 1 VM: tasks/task1-vm.md
+      - Task 2 Network: tasks/task2-network.md
