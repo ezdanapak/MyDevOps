@@ -38,20 +38,20 @@
 | # | ამოცანა | სტატუსი | შენიშვნა |
 |---|---------|---------|----------|
 | 10 | **Database Installation** — MySQL/PostgreSQL + user | ✅ | |
-| 11 | **Automated Backup Script** — bash script, tar.gz | ⏳ | |
-| 12 | **Cron Automation** — daily backup 3:00 AM | ⏳ | |
-| 13 | **Log Monitoring** — failed logins + sudo commands | ⏳ | |
+| 11 | **Automated Backup Script** — bash script, tar.gz | ✅ | |
+| 12 | **Cron Automation** — daily backup 3:00 AM | ✅ | |
+| 13 | **Log Monitoring** — failed logins + sudo commands | ✅ | |
 
 ### ბლოკი 3 — Docker & Deployment (Tasks 14–19)
 
 | # | ამოცანა | სტატუსი | შენიშვნა |
 |---|---------|---------|----------|
-| 14 | **Docker Installation** — Docker + Docker Compose | ⏳ | |
-| 15 | **Containerized Application** — nginx + db compose | ⏳ | |
-| 16 | **Reverse Proxy Configuration** — Nginx → Docker | ⏳ | |
-| 17 | **SSL Certificate** — self-signed, HTTPS | ⏳ | |
-| 18 | **Git Repository Setup** — initial commit | ⏳ | |
-| 19 | **Deployment Script** — git pull → rebuild → restart | ⏳ | |
+| 14 | **Docker Installation** — Docker + Docker Compose | ✅ | |
+| 15 | **Containerized Application** — nginx + db compose | ✅ | |
+| 16 | **Reverse Proxy Configuration** — Nginx → Docker | ✅ | |
+| 17 | **SSL Certificate** — self-signed, HTTPS | ✅ | |
+| 18 | **Git Repository Setup** — initial commit | ✅ | |
+| 19 | **Deployment Script** — git pull → rebuild → restart | ✅ | |
 
 ### ბლოკი 4 — Monitoring & Optimization (Tasks 20–25)
 
