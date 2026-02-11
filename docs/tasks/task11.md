@@ -1,12 +1,15 @@
 
-Automated Backup Script
+Task 11 — Automated Backup Script
 
-სკრიპტის შექმნა პირდაპირ სერვერზე:
+## სკრიპტი
+
+სკრიპტის შექმნა პირდაპირ სერვერზე.
+შექმნი ფაილს სახელწოდებით db_backup და .sh გაფართოებით home დირექტორიაში
 ```bash
 nano ~/db_backup.sh
 ```
 
-
+```bash
 #!/bin/bash
 # ============================================
 # PostgreSQL Automated Backup Script
@@ -32,7 +35,9 @@ log() {
     echo -e "$1"
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $2" >> "$LOG_FILE"
 }
+```
 
+```bash
 # --- Create backup directory ---
 mkdir -p "$BACKUP_DIR"
 
@@ -85,10 +90,14 @@ echo " ზომა:  ${FILESIZE}"
 echo "=========================================="
 
 log "" "DONE: Backup completed successfully"
+```
 
 გაშვებადი რომ იყოს სკრიპტი:
+```bash
 bashchmod +x ~/db_backup.sh
+```
 
+## უსაფრთხოება
 
 pgpass ფაილი:
 
@@ -100,25 +109,32 @@ nano ~/.pgpass
 
 localhost:5432:kutaisi_db:kapo:your_secure_password
 
+ეს ფაილის უფლებებს (permissions) აყენებს — მხოლოდ შენ (owner) შეგიძლია წაკითხვა და ჩაწერა, სხვა არავის.
+```bash
 chmod 600 ~/.pgpass
+```
+!!! info 
+    600 ნიშნავს:
+    6 (owner) → წაკითხვა + ჩაწერა <br>
+    0 (group) → არაფერი <br>
+    0 (others) → არაფერი <br>
 
-    ეს ფაილის უფლებებს (permissions) აყენებს — მხოლოდ შენ (owner) შეგიძლია წაკითხვა და ჩაწერა, სხვა არავის.
-600 ნიშნავს:
-
-6 (owner) → წაკითხვა + ჩაწერა
-0 (group) → არაფერი
-0 (others) → არაფერი
 
 PostgreSQL ამას მოითხოვს — თუ .pgpass ფაილს სხვებიც კითხულობენ, pg_dump უარს იტყვის მის გამოყენებაზე უსაფრთხოების მიზეზით. შემოწმება შეგიძლია:
-bashls -la ~/.pgpass
+
+```bash
+ls -la ~/.pgpass
+```
+
 დაინახავ: -rw------- — ეს ნიშნავს რომ მხოლოდ owner-ს აქვს rw (read/write) უფლება.
 
-სკრიპტის გაშვება
 
+## სკრიპტის გაშვება
+```bash
 ~/db_backup.sh
+```
 
-k@devserver:~$ bashnano ~/db_backup.sh
-bashnano: command not found
+```console
 k@devserver:~$ nano ~/db_backup.sh
 k@devserver:~$
 k@devserver:~$ nano ~/db_backup.sh
@@ -142,3 +158,4 @@ k@devserver:~$ ~/db_backup.sh
  ფაილი: /home/k/backups/kutaisi_db_2026-02-10_17-57-56.tar.gz
  ზომა:  4.0K
 ==========================================
+```

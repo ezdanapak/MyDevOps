@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#postgresql" class="md-skip">
+          კონტენტზე გადასვლა
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -710,6 +715,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Database Installation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -719,6 +735,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      სერვისის შემოწმება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-_user-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database-ისა და User-ის შექმნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ბაზის და მომხმარებლის შექმნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      კონფიგურაცია
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      შედეგის გადამოწმება:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1107,6 +1194,68 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      სერვისის შემოწმება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-_user-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database-ისა და User-ის შექმნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ბაზის და მომხმარებლის შექმნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      კონფიგურაცია
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      შედეგის გადამოწმება:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1125,186 +1274,230 @@
 
   <h1>Database Installation</h1>
 
-<p>PostgreSQL Installation &amp; Setup</p>
-<p>sudo apt update
-sudo apt install postgresql postgresql-contrib -y</p>
-<p>k@devserver:~$ sudo apt install postgresql postgresql-contrib -y
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-The following additional packages will be installed:
-  libcommon-sense-perl libjson-perl libjson-xs-perl libllvm17t64 libpq5 libtypes-serialiser-perl postgresql-16 postgresql-client-16 postgresql-client-common postgresql-common ssl-cert
-Suggested packages:
-  postgresql-doc postgresql-doc-16
-The following NEW packages will be installed:
-  libcommon-sense-perl libjson-perl libjson-xs-perl libllvm17t64 libpq5 libtypes-serialiser-perl postgresql postgresql-16 postgresql-client-16 postgresql-client-common postgresql-common
-  postgresql-contrib ssl-cert
-0 upgraded, 13 newly installed, 0 to remove and 2 not upgraded.
-Need to get 43.6 MB of archives.
-After this operation, 175 MB of additional disk space will be used.
-Get:1 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libjson-perl all 4.10000-1 [81.9 kB]
-Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-client-common all 257build1.1 [36.4 kB]
-Get:3 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 ssl-cert all 1.1.2ubuntu1 [17.8 kB]
-Get:4 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-common all 257build1.1 [161 kB]
-Get:5 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libcommon-sense-perl amd64 3.75-3build3 [20.4 kB]
-Get:6 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libtypes-serialiser-perl all 1.01-1 [11.6 kB]
-Get:7 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 libjson-xs-perl amd64 4.040-0ubuntu0.24.04.1 [83.7 kB]
-Get:8 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libllvm17t64 amd64 1:17.0.6-9ubuntu1 [26.2 MB]
-Get:9 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpq5 amd64 16.11-0ubuntu0.24.04.1 [145 kB]
-Get:10 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-client-16 amd64 16.11-0ubuntu0.24.04.1 [1,297 kB]
-Get:11 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-16 amd64 16.11-0ubuntu0.24.04.1 [15.6 MB]
-Get:12 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql all 16+257build1.1 [11.6 kB]
-Get:13 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-contrib all 16+257build1.1 [11.6 kB]
-Fetched 43.6 MB in 7s (6,701 kB/s)
-Preconfiguring packages ...
-Selecting previously unselected package libjson-perl.
-(Reading database ... 87605 files and directories currently installed.)
-Preparing to unpack .../00-libjson-perl_4.10000-1_all.deb ...
-Unpacking libjson-perl (4.10000-1) ...
-Selecting previously unselected package postgresql-client-common.
-Preparing to unpack .../01-postgresql-client-common_257build1.1_all.deb ...
-Unpacking postgresql-client-common (257build1.1) ...
-Selecting previously unselected package ssl-cert.
-Preparing to unpack .../02-ssl-cert_1.1.2ubuntu1_all.deb ...
-Unpacking ssl-cert (1.1.2ubuntu1) ...
-Selecting previously unselected package postgresql-common.
-Preparing to unpack .../03-postgresql-common_257build1.1_all.deb ...
-Adding 'diversion of /usr/bin/pg_config to /usr/bin/pg_config.libpq-dev by postgresql-common'
-Unpacking postgresql-common (257build1.1) ...
-Selecting previously unselected package libcommon-sense-perl:amd64.
-Preparing to unpack .../04-libcommon-sense-perl_3.75-3build3_amd64.deb ...
-Unpacking libcommon-sense-perl:amd64 (3.75-3build3) ...
-Selecting previously unselected package libtypes-serialiser-perl.
-Preparing to unpack .../05-libtypes-serialiser-perl_1.01-1_all.deb ...
-Unpacking libtypes-serialiser-perl (1.01-1) ...
-Selecting previously unselected package libjson-xs-perl.
-Preparing to unpack .../06-libjson-xs-perl_4.040-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking libjson-xs-perl (4.040-0ubuntu0.24.04.1) ...
-Selecting previously unselected package libllvm17t64:amd64.
-Preparing to unpack .../07-libllvm17t64_1%3a17.0.6-9ubuntu1_amd64.deb ...
-Unpacking libllvm17t64:amd64 (1:17.0.6-9ubuntu1) ...
-Selecting previously unselected package libpq5:amd64.
-Preparing to unpack .../08-libpq5_16.11-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking libpq5:amd64 (16.11-0ubuntu0.24.04.1) ...
-Selecting previously unselected package postgresql-client-16.
-Preparing to unpack .../09-postgresql-client-16_16.11-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking postgresql-client-16 (16.11-0ubuntu0.24.04.1) ...
-Selecting previously unselected package postgresql-16.
-Preparing to unpack .../10-postgresql-16_16.11-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking postgresql-16 (16.11-0ubuntu0.24.04.1) ...
-Selecting previously unselected package postgresql.
-Preparing to unpack .../11-postgresql_16+257build1.1_all.deb ...
-Unpacking postgresql (16+257build1.1) ...
-Selecting previously unselected package postgresql-contrib.
-Preparing to unpack .../12-postgresql-contrib_16+257build1.1_all.deb ...
-Unpacking postgresql-contrib (16+257build1.1) ...
-Setting up postgresql-client-common (257build1.1) ...
-Setting up libpq5:amd64 (16.11-0ubuntu0.24.04.1) ...
-Setting up libcommon-sense-perl:amd64 (3.75-3build3) ...
-Setting up libllvm17t64:amd64 (1:17.0.6-9ubuntu1) ...
-Setting up ssl-cert (1.1.2ubuntu1) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/ssl-cert.service → /usr/lib/systemd/system/ssl-cert.service.
-Setting up libtypes-serialiser-perl (1.01-1) ...
-Setting up libjson-perl (4.10000-1) ...
-Setting up libjson-xs-perl (4.040-0ubuntu0.24.04.1) ...
-Setting up postgresql-client-16 (16.11-0ubuntu0.24.04.1) ...
-update-alternatives: using /usr/share/postgresql/16/man/man1/psql.1.gz to provide /usr/share/man/man1/psql.1.gz (psql.1.gz) in auto mode
-Setting up postgresql-common (257build1.1) ...</p>
-<p>Creating config file /etc/postgresql-common/createcluster.conf with new version
-Building PostgreSQL dictionaries from installed myspell/hunspell packages...
-Removing obsolete dictionary files:
-Created symlink /etc/systemd/system/multi-user.target.wants/postgresql.service → /usr/lib/systemd/system/postgresql.service.
-Setting up postgresql-16 (16.11-0ubuntu0.24.04.1) ...
-Creating new PostgreSQL cluster 16/main ...
-/usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/16/main --auth-local peer --auth-host scram-sha-256 --no-instructions
-The files belonging to this database system will be owned by user "postgres".
-This user must also own the server process.</p>
-<p>The database cluster will be initialized with locale "en_US.UTF-8".
-The default database encoding has accordingly been set to "UTF8".
-The default text search configuration will be set to "english".</p>
-<p>Data page checksums are disabled.</p>
-<p>fixing permissions on existing directory /var/lib/postgresql/16/main ... ok
-creating subdirectories ... ok
-selecting dynamic shared memory implementation ... posix
-selecting default max_connections ... 100
-selecting default shared_buffers ... 128MB
-selecting default time zone ... Etc/UTC
-creating configuration files ... ok
-running bootstrap script ... ok
-performing post-bootstrap initialization ... ok
-syncing data to disk ... ok
-Setting up postgresql-contrib (16+257build1.1) ...
-Setting up postgresql (16+257build1.1) ...
-Processing triggers for man-db (2.12.0-4build2) ...
-Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
-Scanning processes...
-Scanning candidates...
-Scanning linux images...</p>
-<p>Running kernel seems to be up-to-date.</p>
-<p>Restarting services...</p>
-<p>Service restarts being deferred:
- /etc/needrestart/restart.d/dbus.service
- systemctl restart getty@tty1.service
- systemctl restart systemd-logind.service
- systemctl restart unattended-upgrades.service</p>
-<p>No containers need to be restarted.</p>
-<p>User sessions running outdated binaries:
- k @ session #4: sshd[1039]
- k @ user manager service: systemd[1006]</p>
-<p>No VM guests are running outdated hypervisor (qemu) binaries on this host.</p>
-<p>სერვისის შემოწმება:</p>
-<p>sudo systemctl status postgresql</p>
-<p>k@devserver:~$ sudo systemctl status postgresql
-● postgresql.service - PostgreSQL RDBMS
-     Loaded: loaded (/usr/lib/systemd/system/postgresql.service; enabled; preset: enabled)
-     Active: active (exited) since Tue 2026-02-10 17:32:12 UTC; 1min 38s ago
-   Main PID: 41008 (code=exited, status=0/SUCCESS)
-        CPU: 14ms</p>
-<p>Feb 10 17:32:12 devserver systemd[1]: Starting postgresql.service - PostgreSQL RDBMS...
-Feb 10 17:32:12 devserver systemd[1]: Finished postgresql.service - PostgreSQL RDBMS.</p>
-<p>Database-ისა და User-ის შექმნა:</p>
-<p>k@devserver:~$ sudo -u postgres psql
-psql (16.11 (Ubuntu 16.11-0ubuntu0.24.04.1))
-Type "help" for help.</p>
-<p>postgres=# CREATE USER kapo WITH PASSWORD '0000'; CREATE DATABASE kutaisi_db OWNER kapo; GRANT ALL PRIVILEGES ON DATABASE kutaisi_db TO kapo; \q
-CREATE ROLE
-CREATE DATABASE
-GRANT</p>
-<p>k@devserver:~$ psql -U kapo -d kutaisi_db -h localhost
-Password for user kapo:
-psql (16.11 (Ubuntu 16.11-0ubuntu0.24.04.1))
-SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)
-Type "help" for help.</p>
-<p>kutaisi_db=&gt;</p>
-<p>არ დაგვჭირდა კონფიგურაციის შეცვლა</p>
-<p>sudo nano /etc/postgresql/$(ls /etc/postgresql/)/main/pg_hba.conf</p>
-<p>\dt — ცხრილების სიის ნახვა, \q — გასასვლელად.</p>
-<p>sudo systemctl restart postgresql
-თავიდან დაკავშირება ბაზაზე:
-bashpsql -U kapo -d kutaisi_db -h localhost</p>
-<p>CREATE TABLE students (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150),
-    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);</p>
-<p>INSERT INTO students (name, email) VALUES 
-('ნიკა გელაშვილი', 'nika@example.com'),
-('მარიამ ჩხეიძე', 'mariam@example.com');</p>
-<p>SELECT * FROM students;
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>**6. შედეგის დადასტურება:**
+<p>Task 10 — Database Installation</p>
+<h2 id="postgresql">PostgreSQL<a class="headerlink" href="#postgresql" title="Permanent link">&para;</a></h2>
+<p>მე არჩევანი გავაკეთე PostgreSQL - ზე</p>
+<p>ინსტალაციამდე რეპოზიტორების განახლება სასურველია
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
 </span></code></pre></div>
- id |       name        |       email        |      enrolled_at
-----+-------------------+--------------------+------------------------
-  1 | ნიკა გელაშვილი     | nika@example.com   | 2026-02-10 ...
-  2 | მარიამ ჩხეიძე      | mariam@example.com | 2026-02-10 ...</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>postgresql<span class="w"> </span>postgresql-contrib<span class="w"> </span>-y
+</span></code></pre></div></p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>postgresql<span class="w"> </span>postgresql-contrib<span class="w"> </span>-y
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">Reading package lists... Done</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="go">Building dependency tree... Done</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="go">Reading state information... Done</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="go">The following additional packages will be installed:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="go">  libcommon-sense-perl libjson-perl libjson-xs-perl libllvm17t64 libpq5 libtypes-serialiser-perl postgresql-16 postgresql-client-16 postgresql-client-common postgresql-common ssl-cert</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="go">Suggested packages:</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="go">  postgresql-doc postgresql-doc-16</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="go">The following NEW packages will be installed:</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="go">  libcommon-sense-perl libjson-perl libjson-xs-perl libllvm17t64 libpq5 libtypes-serialiser-perl postgresql postgresql-16 postgresql-client-16 postgresql-client-common postgresql-common</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="go">  postgresql-contrib ssl-cert</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="go">0 upgraded, 13 newly installed, 0 to remove and 2 not upgraded.</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="go">Need to get 43.6 MB of archives.</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="go">After this operation, 175 MB of additional disk space will be used.</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="go">Get:1 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libjson-perl all 4.10000-1 [81.9 kB]</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="go">Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-client-common all 257build1.1 [36.4 kB]</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="go">Get:3 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 ssl-cert all 1.1.2ubuntu1 [17.8 kB]</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="go">Get:4 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-common all 257build1.1 [161 kB]</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="go">Get:5 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libcommon-sense-perl amd64 3.75-3build3 [20.4 kB]</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="go">Get:6 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libtypes-serialiser-perl all 1.01-1 [11.6 kB]</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="go">Get:7 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 libjson-xs-perl amd64 4.040-0ubuntu0.24.04.1 [83.7 kB]</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="go">Get:8 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libllvm17t64 amd64 1:17.0.6-9ubuntu1 [26.2 MB]</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="go">Get:9 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpq5 amd64 16.11-0ubuntu0.24.04.1 [145 kB]</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="go">Get:10 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-client-16 amd64 16.11-0ubuntu0.24.04.1 [1,297 kB]</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="go">Get:11 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-16 amd64 16.11-0ubuntu0.24.04.1 [15.6 MB]</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="go">Get:12 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql all 16+257build1.1 [11.6 kB]</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="go">Get:13 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 postgresql-contrib all 16+257build1.1 [11.6 kB]</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="go">Fetched 43.6 MB in 7s (6,701 kB/s)</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="go">Preconfiguring packages ...</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="go">Selecting previously unselected package libjson-perl.</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="gp gp-VirtualEnv">(Reading database ... 87605 files and directories currently installed.)</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="go">Preparing to unpack .../00-libjson-perl_4.10000-1_all.deb ...</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="go">Unpacking libjson-perl (4.10000-1) ...</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="go">Selecting previously unselected package postgresql-client-common.</span>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="go">Preparing to unpack .../01-postgresql-client-common_257build1.1_all.deb ...</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="go">Unpacking postgresql-client-common (257build1.1) ...</span>
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="go">Selecting previously unselected package ssl-cert.</span>
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="go">Preparing to unpack .../02-ssl-cert_1.1.2ubuntu1_all.deb ...</span>
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="go">Unpacking ssl-cert (1.1.2ubuntu1) ...</span>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="go">Selecting previously unselected package postgresql-common.</span>
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="go">Preparing to unpack .../03-postgresql-common_257build1.1_all.deb ...</span>
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="go">Adding &#39;diversion of /usr/bin/pg_config to /usr/bin/pg_config.libpq-dev by postgresql-common&#39;</span>
+</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="go">Unpacking postgresql-common (257build1.1) ...</span>
+</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="go">Selecting previously unselected package libcommon-sense-perl:amd64.</span>
+</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="go">Preparing to unpack .../04-libcommon-sense-perl_3.75-3build3_amd64.deb ...</span>
+</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="go">Unpacking libcommon-sense-perl:amd64 (3.75-3build3) ...</span>
+</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a><span class="go">Selecting previously unselected package libtypes-serialiser-perl.</span>
+</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a><span class="go">Preparing to unpack .../05-libtypes-serialiser-perl_1.01-1_all.deb ...</span>
+</span><span id="__span-2-49"><a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a><span class="go">Unpacking libtypes-serialiser-perl (1.01-1) ...</span>
+</span><span id="__span-2-50"><a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a><span class="go">Selecting previously unselected package libjson-xs-perl.</span>
+</span><span id="__span-2-51"><a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a><span class="go">Preparing to unpack .../06-libjson-xs-perl_4.040-0ubuntu0.24.04.1_amd64.deb ...</span>
+</span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="go">Unpacking libjson-xs-perl (4.040-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-53"><a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a><span class="go">Selecting previously unselected package libllvm17t64:amd64.</span>
+</span><span id="__span-2-54"><a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="go">Preparing to unpack .../07-libllvm17t64_1%3a17.0.6-9ubuntu1_amd64.deb ...</span>
+</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="go">Unpacking libllvm17t64:amd64 (1:17.0.6-9ubuntu1) ...</span>
+</span><span id="__span-2-56"><a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="go">Selecting previously unselected package libpq5:amd64.</span>
+</span><span id="__span-2-57"><a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="go">Preparing to unpack .../08-libpq5_16.11-0ubuntu0.24.04.1_amd64.deb ...</span>
+</span><span id="__span-2-58"><a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="go">Unpacking libpq5:amd64 (16.11-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-59"><a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a><span class="go">Selecting previously unselected package postgresql-client-16.</span>
+</span><span id="__span-2-60"><a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="go">Preparing to unpack .../09-postgresql-client-16_16.11-0ubuntu0.24.04.1_amd64.deb ...</span>
+</span><span id="__span-2-61"><a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="go">Unpacking postgresql-client-16 (16.11-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-62"><a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="go">Selecting previously unselected package postgresql-16.</span>
+</span><span id="__span-2-63"><a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a><span class="go">Preparing to unpack .../10-postgresql-16_16.11-0ubuntu0.24.04.1_amd64.deb ...</span>
+</span><span id="__span-2-64"><a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a><span class="go">Unpacking postgresql-16 (16.11-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-65"><a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a><span class="go">Selecting previously unselected package postgresql.</span>
+</span><span id="__span-2-66"><a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a><span class="go">Preparing to unpack .../11-postgresql_16+257build1.1_all.deb ...</span>
+</span><span id="__span-2-67"><a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a><span class="go">Unpacking postgresql (16+257build1.1) ...</span>
+</span><span id="__span-2-68"><a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a><span class="go">Selecting previously unselected package postgresql-contrib.</span>
+</span><span id="__span-2-69"><a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a><span class="go">Preparing to unpack .../12-postgresql-contrib_16+257build1.1_all.deb ...</span>
+</span><span id="__span-2-70"><a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a><span class="go">Unpacking postgresql-contrib (16+257build1.1) ...</span>
+</span><span id="__span-2-71"><a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a><span class="go">Setting up postgresql-client-common (257build1.1) ...</span>
+</span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a><span class="go">Setting up libpq5:amd64 (16.11-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-73"><a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a><span class="go">Setting up libcommon-sense-perl:amd64 (3.75-3build3) ...</span>
+</span><span id="__span-2-74"><a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a><span class="go">Setting up libllvm17t64:amd64 (1:17.0.6-9ubuntu1) ...</span>
+</span><span id="__span-2-75"><a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a><span class="go">Setting up ssl-cert (1.1.2ubuntu1) ...</span>
+</span><span id="__span-2-76"><a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a><span class="go">Created symlink /etc/systemd/system/multi-user.target.wants/ssl-cert.service → /usr/lib/systemd/system/ssl-cert.service.</span>
+</span><span id="__span-2-77"><a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a><span class="go">Setting up libtypes-serialiser-perl (1.01-1) ...</span>
+</span><span id="__span-2-78"><a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a><span class="go">Setting up libjson-perl (4.10000-1) ...</span>
+</span><span id="__span-2-79"><a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a><span class="go">Setting up libjson-xs-perl (4.040-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-80"><a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a><span class="go">Setting up postgresql-client-16 (16.11-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-81"><a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a><span class="go">update-alternatives: using /usr/share/postgresql/16/man/man1/psql.1.gz to provide /usr/share/man/man1/psql.1.gz (psql.1.gz) in auto mode</span>
+</span><span id="__span-2-82"><a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a><span class="go">Setting up postgresql-common (257build1.1) ...</span>
+</span><span id="__span-2-83"><a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a>
+</span><span id="__span-2-84"><a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a><span class="go">Creating config file /etc/postgresql-common/createcluster.conf with new version</span>
+</span><span id="__span-2-85"><a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a><span class="go">Building PostgreSQL dictionaries from installed myspell/hunspell packages...</span>
+</span><span id="__span-2-86"><a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a><span class="go">Removing obsolete dictionary files:</span>
+</span><span id="__span-2-87"><a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a><span class="go">Created symlink /etc/systemd/system/multi-user.target.wants/postgresql.service → /usr/lib/systemd/system/postgresql.service.</span>
+</span><span id="__span-2-88"><a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a><span class="go">Setting up postgresql-16 (16.11-0ubuntu0.24.04.1) ...</span>
+</span><span id="__span-2-89"><a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a><span class="go">Creating new PostgreSQL cluster 16/main ...</span>
+</span><span id="__span-2-90"><a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a><span class="go">/usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/16/main --auth-local peer --auth-host scram-sha-256 --no-instructions</span>
+</span><span id="__span-2-91"><a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a><span class="go">The files belonging to this database system will be owned by user &quot;postgres&quot;.</span>
+</span><span id="__span-2-92"><a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a><span class="go">This user must also own the server process.</span>
+</span><span id="__span-2-93"><a id="__codelineno-2-93" name="__codelineno-2-93" href="#__codelineno-2-93"></a>
+</span><span id="__span-2-94"><a id="__codelineno-2-94" name="__codelineno-2-94" href="#__codelineno-2-94"></a><span class="go">The database cluster will be initialized with locale &quot;en_US.UTF-8&quot;.</span>
+</span><span id="__span-2-95"><a id="__codelineno-2-95" name="__codelineno-2-95" href="#__codelineno-2-95"></a><span class="go">The default database encoding has accordingly been set to &quot;UTF8&quot;.</span>
+</span><span id="__span-2-96"><a id="__codelineno-2-96" name="__codelineno-2-96" href="#__codelineno-2-96"></a><span class="go">The default text search configuration will be set to &quot;english&quot;.</span>
+</span><span id="__span-2-97"><a id="__codelineno-2-97" name="__codelineno-2-97" href="#__codelineno-2-97"></a>
+</span><span id="__span-2-98"><a id="__codelineno-2-98" name="__codelineno-2-98" href="#__codelineno-2-98"></a><span class="go">Data page checksums are disabled.</span>
+</span><span id="__span-2-99"><a id="__codelineno-2-99" name="__codelineno-2-99" href="#__codelineno-2-99"></a>
+</span><span id="__span-2-100"><a id="__codelineno-2-100" name="__codelineno-2-100" href="#__codelineno-2-100"></a><span class="go">fixing permissions on existing directory /var/lib/postgresql/16/main ... ok</span>
+</span><span id="__span-2-101"><a id="__codelineno-2-101" name="__codelineno-2-101" href="#__codelineno-2-101"></a><span class="go">creating subdirectories ... ok</span>
+</span><span id="__span-2-102"><a id="__codelineno-2-102" name="__codelineno-2-102" href="#__codelineno-2-102"></a><span class="go">selecting dynamic shared memory implementation ... posix</span>
+</span><span id="__span-2-103"><a id="__codelineno-2-103" name="__codelineno-2-103" href="#__codelineno-2-103"></a><span class="go">selecting default max_connections ... 100</span>
+</span><span id="__span-2-104"><a id="__codelineno-2-104" name="__codelineno-2-104" href="#__codelineno-2-104"></a><span class="go">selecting default shared_buffers ... 128MB</span>
+</span><span id="__span-2-105"><a id="__codelineno-2-105" name="__codelineno-2-105" href="#__codelineno-2-105"></a><span class="go">selecting default time zone ... Etc/UTC</span>
+</span><span id="__span-2-106"><a id="__codelineno-2-106" name="__codelineno-2-106" href="#__codelineno-2-106"></a><span class="go">creating configuration files ... ok</span>
+</span><span id="__span-2-107"><a id="__codelineno-2-107" name="__codelineno-2-107" href="#__codelineno-2-107"></a><span class="go">running bootstrap script ... ok</span>
+</span><span id="__span-2-108"><a id="__codelineno-2-108" name="__codelineno-2-108" href="#__codelineno-2-108"></a><span class="go">performing post-bootstrap initialization ... ok</span>
+</span><span id="__span-2-109"><a id="__codelineno-2-109" name="__codelineno-2-109" href="#__codelineno-2-109"></a><span class="go">syncing data to disk ... ok</span>
+</span><span id="__span-2-110"><a id="__codelineno-2-110" name="__codelineno-2-110" href="#__codelineno-2-110"></a><span class="go">Setting up postgresql-contrib (16+257build1.1) ...</span>
+</span><span id="__span-2-111"><a id="__codelineno-2-111" name="__codelineno-2-111" href="#__codelineno-2-111"></a><span class="go">Setting up postgresql (16+257build1.1) ...</span>
+</span><span id="__span-2-112"><a id="__codelineno-2-112" name="__codelineno-2-112" href="#__codelineno-2-112"></a><span class="go">Processing triggers for man-db (2.12.0-4build2) ...</span>
+</span><span id="__span-2-113"><a id="__codelineno-2-113" name="__codelineno-2-113" href="#__codelineno-2-113"></a><span class="go">Processing triggers for libc-bin (2.39-0ubuntu8.7) ...</span>
+</span><span id="__span-2-114"><a id="__codelineno-2-114" name="__codelineno-2-114" href="#__codelineno-2-114"></a><span class="go">Scanning processes...</span>
+</span><span id="__span-2-115"><a id="__codelineno-2-115" name="__codelineno-2-115" href="#__codelineno-2-115"></a><span class="go">Scanning candidates...</span>
+</span><span id="__span-2-116"><a id="__codelineno-2-116" name="__codelineno-2-116" href="#__codelineno-2-116"></a><span class="go">Scanning linux images...</span>
+</span><span id="__span-2-117"><a id="__codelineno-2-117" name="__codelineno-2-117" href="#__codelineno-2-117"></a>
+</span><span id="__span-2-118"><a id="__codelineno-2-118" name="__codelineno-2-118" href="#__codelineno-2-118"></a><span class="go">Running kernel seems to be up-to-date.</span>
+</span><span id="__span-2-119"><a id="__codelineno-2-119" name="__codelineno-2-119" href="#__codelineno-2-119"></a>
+</span><span id="__span-2-120"><a id="__codelineno-2-120" name="__codelineno-2-120" href="#__codelineno-2-120"></a><span class="go">Restarting services...</span>
+</span><span id="__span-2-121"><a id="__codelineno-2-121" name="__codelineno-2-121" href="#__codelineno-2-121"></a>
+</span><span id="__span-2-122"><a id="__codelineno-2-122" name="__codelineno-2-122" href="#__codelineno-2-122"></a><span class="go">Service restarts being deferred:</span>
+</span><span id="__span-2-123"><a id="__codelineno-2-123" name="__codelineno-2-123" href="#__codelineno-2-123"></a><span class="go"> /etc/needrestart/restart.d/dbus.service</span>
+</span><span id="__span-2-124"><a id="__codelineno-2-124" name="__codelineno-2-124" href="#__codelineno-2-124"></a><span class="go"> systemctl restart getty@tty1.service</span>
+</span><span id="__span-2-125"><a id="__codelineno-2-125" name="__codelineno-2-125" href="#__codelineno-2-125"></a><span class="go"> systemctl restart systemd-logind.service</span>
+</span><span id="__span-2-126"><a id="__codelineno-2-126" name="__codelineno-2-126" href="#__codelineno-2-126"></a><span class="go"> systemctl restart unattended-upgrades.service</span>
+</span><span id="__span-2-127"><a id="__codelineno-2-127" name="__codelineno-2-127" href="#__codelineno-2-127"></a>
+</span><span id="__span-2-128"><a id="__codelineno-2-128" name="__codelineno-2-128" href="#__codelineno-2-128"></a><span class="go">No containers need to be restarted.</span>
+</span><span id="__span-2-129"><a id="__codelineno-2-129" name="__codelineno-2-129" href="#__codelineno-2-129"></a>
+</span><span id="__span-2-130"><a id="__codelineno-2-130" name="__codelineno-2-130" href="#__codelineno-2-130"></a><span class="go">User sessions running outdated binaries:</span>
+</span><span id="__span-2-131"><a id="__codelineno-2-131" name="__codelineno-2-131" href="#__codelineno-2-131"></a><span class="go"> k @ session #4: sshd[1039]</span>
+</span><span id="__span-2-132"><a id="__codelineno-2-132" name="__codelineno-2-132" href="#__codelineno-2-132"></a><span class="go"> k @ user manager service: systemd[1006]</span>
+</span><span id="__span-2-133"><a id="__codelineno-2-133" name="__codelineno-2-133" href="#__codelineno-2-133"></a>
+</span><span id="__span-2-134"><a id="__codelineno-2-134" name="__codelineno-2-134" href="#__codelineno-2-134"></a><span class="go">No VM guests are running outdated hypervisor (qemu) binaries on this host.</span>
+</span></code></pre></div>
+<h2 id="_1">სერვისის შემოწმება<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>postgresql
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>postgresql
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">● postgresql.service - PostgreSQL RDBMS</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">     Loaded: loaded (/usr/lib/systemd/system/postgresql.service; enabled; preset: enabled)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">     Active: active (exited) since Tue 2026-02-10 17:32:12 UTC; 1min 38s ago</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">   Main PID: 41008 (code=exited, status=0/SUCCESS)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">        CPU: 14ms</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">Feb 10 17:32:12 devserver systemd[1]: Starting postgresql.service - PostgreSQL RDBMS...</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="go">Feb 10 17:32:12 devserver systemd[1]: Finished postgresql.service - PostgreSQL RDBMS.</span>
+</span></code></pre></div></p>
+<h2 id="database-_user-">Database-ისა და User-ის შექმნა<a class="headerlink" href="#database-_user-" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">psql (16.11 (Ubuntu 16.11-0ubuntu0.24.04.1))</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">Type &quot;help&quot; for help.</span>
+</span></code></pre></div>
+<h2 id="_2">ბაზის და მომხმარებლის შექმნა<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>ბაზის სახელი, მომხმარებელი და პაროლი არის შაბლონური, 
+შეცვლა შესაძლებელია.
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">postgres</span><span class="o">=#</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">kapo</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;0000&#39;</span><span class="p">;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">kutaisi_db</span><span class="w"> </span><span class="k">OWNER</span><span class="w"> </span><span class="n">kapo</span><span class="p">;</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">kutaisi_db</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">kapo</span><span class="p">;</span><span class="w"> </span><span class="err">\</span><span class="n">q</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">GRANT</span>
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>psql<span class="w"> </span>-U<span class="w"> </span>kapo<span class="w"> </span>-d<span class="w"> </span>kutaisi_db<span class="w"> </span>-h<span class="w"> </span>localhost
+</span></code></pre></div>
+<p><div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="go">Password for user kapo:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">psql (16.11 (Ubuntu 16.11-0ubuntu0.24.04.1))</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">Type &quot;help&quot; for help.</span>
+</span></code></pre></div>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">kutaisi_db</span><span class="o">=&gt;</span>
+</span></code></pre></div></p>
+<h2 id="_3">კონფიგურაცია<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>კონფიგურაციის შეცვლის სურვილი თუ გექნება, წვდომის და უსაფრთხოების გამო
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/postgresql/<span class="k">$(</span>ls<span class="w"> </span>/etc/postgresql/<span class="k">)</span>/main/pg_hba.conf
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-x">X</kbd></span> დაგეხმარება გახსნილი ფაილის დახურვაში <br>
+<span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-y">Y</kbd></span> დაგეხმარება დასტურში ფაილის სახელზე <br>
+<span class="keys"><kbd class="key-enter">Enter</kbd></span> უბრალოდ თანხმობა და ფაილი დაიხურება <br></p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">შეიძლება გამოგადგეს</p>
 <p>\dt — ცხრილების სიის ნახვა, \q — გასასვლელად.</p>
-<p>kutaisi_db-&gt; \dt
-         List of relations
- Schema |   Name   | Type  | Owner
---------+----------+-------+-------
- public | students | table | kapo
-(1 row)</p>
+</div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>postgresql
+</span></code></pre></div>
+<p>თავიდან დაკავშირება ბაზაზე:
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">bashpsql</span><span class="w"> </span><span class="o">-</span><span class="n">U</span><span class="w"> </span><span class="n">kapo</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">kutaisi_db</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">localhost</span>
+</span></code></pre></div>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">students</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">150</span><span class="p">),</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="n">enrolled_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p">);</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">students</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">(</span><span class="s1">&#39;ნიკა გელაშვილი&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;nika@example.com&#39;</span><span class="p">),</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">(</span><span class="s1">&#39;მარიამ ჩხეიძე&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;mariam@example.com&#39;</span><span class="p">);</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">students</span><span class="p">;</span>
+</span></code></pre></div></p>
+<h2 id="_4"><strong>შედეგის გადამოწმება:</strong><a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="n">name</span><span class="w">        </span><span class="o">|</span><span class="w">       </span><span class="n">email</span><span class="w">        </span><span class="o">|</span><span class="w">      </span><span class="n">enrolled_at</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1">----+-------------------+--------------------+------------------------</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">ნიკა</span><span class="w"> </span><span class="err">გელაშვილი</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">nika</span><span class="o">@</span><span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="mi">2026</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span><span class="w"> </span><span class="p">...</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">მარიამ</span><span class="w"> </span><span class="err">ჩხეიძე</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">mariam</span><span class="o">@</span><span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2026</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span><span class="w"> </span><span class="p">...</span>
+</span></code></pre></div>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">kutaisi_db</span><span class="o">-&gt;</span><span class="w"> </span><span class="err">\</span><span class="n">dt</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">         </span><span class="n">List</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">relations</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w"> </span><span class="k">Schema</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="n">Name</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="k">Owner</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1">--------+----------+-------+-------</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">students</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">kapo</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="p">)</span>
+</span></code></pre></div>
 
 
 

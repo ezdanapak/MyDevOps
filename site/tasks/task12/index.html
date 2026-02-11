@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#crontab" class="md-skip">
+          კონტენტზე გადასვლა
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -752,6 +757,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Cron Automation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -761,6 +777,68 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#crontab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crontab
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      განმარტება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      შემოწმება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      სტატუსის შემოწმება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ტესტირება
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1107,6 +1185,59 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#crontab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crontab
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      განმარტება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      შემოწმება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      სტატუსის შემოწმება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ტესტირება
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1125,101 +1256,100 @@
 
   <h1>Cron Automation</h1>
 
-<p>Cron Automation</p>
-<p>Crontab-ის გახსნა:
-bashcrontab -e</p>
-<p>ბოლოში დასამატებელია:**
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>0 3 * * * /home/$USER/db_backup.sh &gt;&gt; /home/$USER/backups/cron.log 2&gt;&amp;1
+<p>Task 12 — Cron Automation</p>
+<h2 id="crontab">Crontab<a class="headerlink" href="#crontab" title="Permanent link">&para;</a></h2>
+<p>გავხსნათ
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>crontab<span class="w"> </span>-e
 </span></code></pre></div></p>
+<p>და ფაილის ბოლოში დასამატებელია ეს ხაზი:**
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>0 3 * * * /home/$USER/db_backup.sh &gt;&gt; /home/$USER/backups/cron.log 2&gt;&amp;1
+</span></code></pre></div></p>
+<h2 id="_1">განმარტება<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><strong>3 ნიშნავს <code>0 3 * * *</code>:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>0 3 * * *
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│ │ │ │ │
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│ │ │ │ └── კვირის დღე (ნებისმიერი)
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│ │ │ └──── თვე (ნებისმიერი)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│ │ └────── დღე (ნებისმიერი)
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│ └──────── საათი → 3:00 AM
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>└────────── წუთი → 00
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>k@devserver:~$ crontab -e
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>no crontab for k - using an empty one
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Select an editor.  To change later, run &#39;select-editor&#39;.
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  1. /bin/nano        &lt;---- easiest
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  2. /usr/bin/vim.basic
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  3. /usr/bin/vim.tiny
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  4. /bin/ed
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>Choose 1-4 [1]: 1
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>crontab: installing new crontab
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>შემოწმება
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>k@devserver:~$ crontab -l
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a># Edit this file to introduce tasks to be run by cron.
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>#
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a># Each task to run has to be defined through a single line
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a># indicating with different fields when the task will be run
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a># and what command to run for the task
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>#
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a># To define the time you can provide concrete values for
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a># minute (m), hour (h), day of month (dom), month (mon),
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a># and day of week (dow) or use &#39;*&#39; in these fields (for &#39;any&#39;).
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>#
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a># Notice that tasks will be started based on the cron&#39;s system
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a># daemon&#39;s notion of time and timezones.
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>#
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a># Output of the crontab jobs (including errors) is sent through
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a># email to the user the crontab file belongs to (unless redirected).
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>#
-</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a># For example, you can run a backup of all your user accounts
-</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a># at 5 a.m every week with:
-</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a># 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
-</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>#
-</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a># For more information see the manual pages of crontab(5) and cron(8)
-</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>#
-</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a># m h  dom mon dow   command
-</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
-</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>0 3 * * * /home/$USER/db_backup.sh &gt;&gt; /home/$USER/backups/cron.log 2&gt;&amp;1
-</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>
-</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>
-</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>სტატუსის შემოწმება
-</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>k@devserver:~$ cat ~/backups/cron.log
-</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>cat: /home/k/backups/cron.log: No such file or directory
-</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>k@devserver:~$ ^C
-</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>k@devserver:~$ sudo systemctl status cron
-</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>[sudo] password for k:
-</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>● cron.service - Regular background program processing daemon
-</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>     Loaded: loaded (/usr/lib/systemd/system/cron.service; enabled; preset: enabled)
-</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>     Active: active (running) since Tue 2026-02-10 15:21:14 UTC; 2h 53min ago
-</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>       Docs: man:cron(8)
-</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>   Main PID: 965 (cron)
-</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>      Tasks: 1 (limit: 9436)
-</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>     Memory: 456.0K (peak: 2.2M)
-</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>        CPU: 712ms
-</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>     CGroup: /system.slice/cron.service
-</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>             └─965 /usr/sbin/cron -f -P
-</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>
-</span><span id="__span-1-69"><a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a>Feb 10 17:35:01 devserver CRON[42903]: pam_unix(cron:session): session closed for user root
-</span><span id="__span-1-70"><a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a>Feb 10 17:45:01 devserver CRON[46291]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
-</span><span id="__span-1-71"><a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a>Feb 10 17:45:01 devserver CRON[46292]: (root) CMD (command -v debian-sa1 &gt; /dev/null &amp;&amp; debian-sa1 1 1)
-</span><span id="__span-1-72"><a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>Feb 10 17:45:01 devserver CRON[46291]: pam_unix(cron:session): session closed for user root
-</span><span id="__span-1-73"><a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>Feb 10 17:55:01 devserver CRON[49630]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
-</span><span id="__span-1-74"><a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a>Feb 10 17:55:01 devserver CRON[49631]: (root) CMD (command -v debian-sa1 &gt; /dev/null &amp;&amp; debian-sa1 1 1)
-</span><span id="__span-1-75"><a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>Feb 10 17:55:01 devserver CRON[49630]: pam_unix(cron:session): session closed for user root
-</span><span id="__span-1-76"><a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
-</span><span id="__span-1-77"><a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>Feb 10 18:05:01 devserver CRON[52979]: (root) CMD (command -v debian-sa1 &gt; /dev/null &amp;&amp; debian-sa1 1 1)
-</span><span id="__span-1-78"><a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session closed for user root
-</span><span id="__span-1-79"><a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a>
-</span><span id="__span-1-80"><a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a>
-</span><span id="__span-1-81"><a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>
-</span><span id="__span-1-82"><a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a>ტესტირება მაშინვე
-</span><span id="__span-1-83"><a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a>
-</span><span id="__span-1-84"><a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a>```Bash
-</span><span id="__span-1-85"><a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a>~/db_backup.sh
-</span><span id="__span-1-86"><a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a>cat ~/backups/cron.log
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>0 3 * * *
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│ │ │ │ │
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│ │ │ │ └── კვირის დღე (ნებისმიერი)
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│ │ │ └──── თვე (ნებისმიერი)
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│ │ └────── დღე (ნებისმიერი)
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│ └──────── საათი → 3:00 AM
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>└────────── წუთი → 00
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>გაშვებისას რომელიმე ტექსტურ რედაქტორზე შეაჩერებ არჩევანს
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>k@devserver:~$ crontab -e
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>no crontab for k - using an empty one
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Select an editor.  To change later, run &#39;select-editor&#39;.
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  1. /bin/nano        &lt;---- easiest
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  2. /usr/bin/vim.basic
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  3. /usr/bin/vim.tiny
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  4. /bin/ed
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>Choose 1-4 [1]: 1
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>crontab: installing new crontab
 </span></code></pre></div></p>
+<h2 id="_2">შემოწმება<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>crontab<span class="w"> </span>-l
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp"># </span>Edit<span class="w"> </span>this<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>introduce<span class="w"> </span>tasks<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>run<span class="w"> </span>by<span class="w"> </span>cron.
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="gp">#</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="gp"># </span>Each<span class="w"> </span>task<span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span>has<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>defined<span class="w"> </span>through<span class="w"> </span>a<span class="w"> </span>single<span class="w"> </span>line
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="gp"># </span>indicating<span class="w"> </span>with<span class="w"> </span>different<span class="w"> </span>fields<span class="w"> </span>when<span class="w"> </span>the<span class="w"> </span>task<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>run
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="gp"># </span>and<span class="w"> </span>what<span class="w"> </span><span class="nb">command</span><span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>task
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="gp">#</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="gp"># </span>To<span class="w"> </span>define<span class="w"> </span>the<span class="w"> </span><span class="nb">time</span><span class="w"> </span>you<span class="w"> </span>can<span class="w"> </span>provide<span class="w"> </span>concrete<span class="w"> </span>values<span class="w"> </span><span class="k">for</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="gp"># </span>minute<span class="w"> </span><span class="o">(</span>m<span class="o">)</span>,<span class="w"> </span>hour<span class="w"> </span><span class="o">(</span>h<span class="o">)</span>,<span class="w"> </span>day<span class="w"> </span>of<span class="w"> </span>month<span class="w"> </span><span class="o">(</span>dom<span class="o">)</span>,<span class="w"> </span>month<span class="w"> </span><span class="o">(</span>mon<span class="o">)</span>,
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="gp"># </span>and<span class="w"> </span>day<span class="w"> </span>of<span class="w"> </span>week<span class="w"> </span><span class="o">(</span>dow<span class="o">)</span><span class="w"> </span>or<span class="w"> </span>use<span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>these<span class="w"> </span>fields<span class="w"> </span><span class="o">(</span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;any&#39;</span><span class="o">)</span>.
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="gp">#</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="gp"># </span>Notice<span class="w"> </span>that<span class="w"> </span>tasks<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>started<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>cron<span class="s1">&#39;s system</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="gp"># </span><span class="s1">daemon&#39;</span>s<span class="w"> </span>notion<span class="w"> </span>of<span class="w"> </span><span class="nb">time</span><span class="w"> </span>and<span class="w"> </span>timezones.
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="gp">#</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="gp"># </span>Output<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>crontab<span class="w"> </span><span class="nb">jobs</span><span class="w"> </span><span class="o">(</span>including<span class="w"> </span>errors<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>sent<span class="w"> </span>through
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="gp"># </span>email<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>user<span class="w"> </span>the<span class="w"> </span>crontab<span class="w"> </span>file<span class="w"> </span>belongs<span class="w"> </span>to<span class="w"> </span><span class="o">(</span>unless<span class="w"> </span>redirected<span class="o">)</span>.
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="gp">#</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="gp"># </span>For<span class="w"> </span>example,<span class="w"> </span>you<span class="w"> </span>can<span class="w"> </span>run<span class="w"> </span>a<span class="w"> </span>backup<span class="w"> </span>of<span class="w"> </span>all<span class="w"> </span>your<span class="w"> </span>user<span class="w"> </span>accounts
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="gp"># </span>at<span class="w"> </span><span class="m">5</span><span class="w"> </span>a.m<span class="w"> </span>every<span class="w"> </span>week<span class="w"> </span>with:
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="gp"># </span><span class="m">0</span><span class="w"> </span><span class="m">5</span><span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span><span class="m">1</span><span class="w"> </span>tar<span class="w"> </span>-zcf<span class="w"> </span>/var/backups/home.tgz<span class="w"> </span>/home/
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="gp">#</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="gp"># </span>For<span class="w"> </span>more<span class="w"> </span>information<span class="w"> </span>see<span class="w"> </span>the<span class="w"> </span>manual<span class="w"> </span>pages<span class="w"> </span>of<span class="w"> </span>crontab<span class="o">(</span><span class="m">5</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>cron<span class="o">(</span><span class="m">8</span><span class="o">)</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="gp">#</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="gp"># </span>m<span class="w"> </span>h<span class="w">  </span>dom<span class="w"> </span>mon<span class="w"> </span>dow<span class="w">   </span><span class="nb">command</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="go">0 3 * * * /home/$USER/db_backup.sh &gt;&gt; /home/$USER/backups/cron.log 2&gt;&amp;1</span>
+</span></code></pre></div></p>
+<h2 id="_3">სტატუსის შემოწმება<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>cron
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">[sudo] password for k:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">● cron.service - Regular background program processing daemon</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">     Loaded: loaded (/usr/lib/systemd/system/cron.service; enabled; preset: enabled)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">     Active: active (running) since Tue 2026-02-10 15:21:14 UTC; 2h 53min ago</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">       Docs: man:cron(8)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="go">   Main PID: 965 (cron)</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">      Tasks: 1 (limit: 9436)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="go">     Memory: 456.0K (peak: 2.2M)</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="go">        CPU: 712ms</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="go">     CGroup: /system.slice/cron.service</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="go">             └─965 /usr/sbin/cron -f -P</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="go">Feb 10 17:35:01 devserver CRON[42903]: pam_unix(cron:session): session closed for user root</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="go">Feb 10 17:45:01 devserver CRON[46291]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="go">Feb 10 17:45:01 devserver CRON[46292]: (root) CMD (command -v debian-sa1 &gt; /dev/null &amp;&amp; debian-sa1 1 1)</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="go">Feb 10 17:45:01 devserver CRON[46291]: pam_unix(cron:session): session closed for user root</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="go">Feb 10 17:55:01 devserver CRON[49630]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="go">Feb 10 17:55:01 devserver CRON[49631]: (root) CMD (command -v debian-sa1 &gt; /dev/null &amp;&amp; debian-sa1 1 1)</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="go">Feb 10 17:55:01 devserver CRON[49630]: pam_unix(cron:session): session closed for user root</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="go">Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="go">Feb 10 18:05:01 devserver CRON[52979]: (root) CMD (command -v debian-sa1 &gt; /dev/null &amp;&amp; debian-sa1 1 1)</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="go">Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session closed for user root</span>
+</span></code></pre></div>
+<h2 id="_4">ტესტირება<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<div class="language-Bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>~/db_backup.sh
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cat<span class="w"> </span>~/backups/cron.log
+</span></code></pre></div>
+<div class="admonition quote">
+<p class="admonition-title">"log ფაილი</p>
 <p>cron.log მხოლოდ მაშინ შეიქმნება, როცა cron გაუშვებს სკრიპტს (3:00 AM-ზე). ხელით გაშვებისას ლოგი ტერმინალში გამოჩნდა პირდაპირ</p>
+</div>
 
 
 

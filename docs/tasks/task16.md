@@ -1,4 +1,4 @@
-Reverse Proxy Configuration
+Task 16 — Reverse Proxy Configuration
 
 
 Nginx reverse proxy კონფიგურაცია:

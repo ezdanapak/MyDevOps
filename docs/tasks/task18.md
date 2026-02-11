@@ -1,4 +1,4 @@
-Git Repository Setup
+Task 18 — Git Repository Setup
 
 Git-ის კონფიგურაცია (თუ პირველად იყენებ):
 bashgit config --global user.name "kapanadze"

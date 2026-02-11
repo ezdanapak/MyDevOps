@@ -1,4 +1,4 @@
-Containerized Application
+Task 15 — Containerized Application
 
 პროექტის ფოლდერის შექმნა:
 bashmkdir -p ~/docker-app/nginx

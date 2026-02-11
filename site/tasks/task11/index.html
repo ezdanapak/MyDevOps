@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#binbash" class="md-skip">
+        <a href="#_1" class="md-skip">
           კონტენტზე გადასვლა
         </a>
       
@@ -735,8 +735,17 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Automated Backup Script
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -747,6 +756,50 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      სკრიპტი
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      უსაფრთხოება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      სკრიპტის გაშვება
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1113,8 +1166,41 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      სკრიპტი
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      უსაფრთხოება
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      სკრიპტის გაშვება
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1132,112 +1218,143 @@
   
 
 
-<p>Automated Backup Script</p>
-<p>სკრიპტის შექმნა პირდაპირ სერვერზე:
+  <h1>Automated Backup Script</h1>
+
+<p>Task 11 — Automated Backup Script</p>
+<h2 id="_1">სკრიპტი<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>სკრიპტის შექმნა პირდაპირ სერვერზე.
+შექმნი ფაილს სახელწოდებით db_backup და .sh გაფართოებით home დირექტორიაში
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nano<span class="w"> </span>~/db_backup.sh
 </span></code></pre></div></p>
-<h1 id="binbash">!/bin/bash<a class="headerlink" href="#binbash" title="Permanent link">&para;</a></h1>
-<h1 id="_1">============================================<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h1 id="postgresql_automated_backup_script">PostgreSQL Automated Backup Script<a class="headerlink" href="#postgresql_automated_backup_script" title="Permanent link">&para;</a></h1>
-<h1 id="database_kutaisi_db">Database: kutaisi_db<a class="headerlink" href="#database_kutaisi_db" title="Permanent link">&para;</a></h1>
-<h1 id="_2">============================================<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h1>
-<h1 id="---_configuration_---">--- Configuration ---<a class="headerlink" href="#---_configuration_---" title="Permanent link">&para;</a></h1>
-<p>DB_NAME="kutaisi_db"
-DB_USER="kapo"
-BACKUP_DIR="/home/$USER/backups"
-RETENTION_DAYS=7
-DATE=$(date +%Y-%m-%d_%H-%M-%S)
-BACKUP_FILE="${DB_NAME}_${DATE}"
-LOG_FILE="${BACKUP_DIR}/backup.log"</p>
-<h1 id="---_colors_---">--- Colors ---<a class="headerlink" href="#---_colors_---" title="Permanent link">&para;</a></h1>
-<p>GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m'</p>
-<p>log() {
-    echo -e "$1"
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $2" &gt;&gt; "$LOG_FILE"
-}</p>
-<h1 id="---_create_backup_directory_---">--- Create backup directory ---<a class="headerlink" href="#---_create_backup_directory_---" title="Permanent link">&para;</a></h1>
-<p>mkdir -p "$BACKUP_DIR"</p>
-<p>echo "=========================================="
-echo " PostgreSQL Backup - ${DB_NAME}"
-echo " $(date '+%Y-%m-%d %H:%M:%S')"
-echo "=========================================="</p>
-<h1 id="---_step_1_dump_database_---">--- Step 1: Dump database ---<a class="headerlink" href="#---_step_1_dump_database_---" title="Permanent link">&para;</a></h1>
-<p>log "${YELLOW}[1/3]${NC} Database dump იქმნება..." "START: Dumping ${DB_NAME}"</p>
-<p>pg_dump -U "$DB_USER" -h localhost "$DB_NAME" &gt; "${BACKUP_DIR}/${BACKUP_FILE}.sql" 2&gt;&gt; "$LOG_FILE"</p>
-<p>if [ $? -ne 0 ]; then
-    log "${RED}[ERROR]${NC} Database dump ვერ შეიქმნა!" "FAILED: pg_dump error"
-    exit 1
-fi</p>
-<p>log "${GREEN}[OK]${NC}    SQL dump მზადაა" "SUCCESS: SQL dump created"</p>
-<h1 id="---_step_2_compress_to_targz_---">--- Step 2: Compress to tar.gz ---<a class="headerlink" href="#---_step_2_compress_to_targz_---" title="Permanent link">&para;</a></h1>
-<p>log "${YELLOW}[2/3]${NC} tar.gz არქივი იქმნება..." "START: Compressing"</p>
-<p>tar -czf "${BACKUP_DIR}/${BACKUP_FILE}.tar.gz" -C "$BACKUP_DIR" "${BACKUP_FILE}.sql" 2&gt;&gt; "$LOG_FILE"</p>
-<p>if [ $? -ne 0 ]; then
-    log "${RED}[ERROR]${NC} არქივის შექმნა ვერ მოხერხდა!" "FAILED: tar compression error"
-    exit 1
-fi</p>
-<h1 id="remove_raw_sql_file_keep_only_targz">Remove raw .sql file, keep only tar.gz<a class="headerlink" href="#remove_raw_sql_file_keep_only_targz" title="Permanent link">&para;</a></h1>
-<p>rm -f "${BACKUP_DIR}/${BACKUP_FILE}.sql"</p>
-<p>FILESIZE=$(du -h "${BACKUP_DIR}/${BACKUP_FILE}.tar.gz" | cut -f1)
-log "${GREEN}[OK]${NC}    არქივი მზადაა (${FILESIZE})" "SUCCESS: ${BACKUP_FILE}.tar.gz (${FILESIZE})"</p>
-<h1 id="---_step_3_delete_old_backups_---">--- Step 3: Delete old backups ---<a class="headerlink" href="#---_step_3_delete_old_backups_---" title="Permanent link">&para;</a></h1>
-<p>log "${YELLOW}[3/3]${NC} ძველი backup-ების წაშლა (${RETENTION_DAYS}+ დღე)..." "START: Cleanup"</p>
-<p>DELETED=$(find "$BACKUP_DIR" -name "${DB_NAME}_*.tar.gz" -mtime +${RETENTION_DAYS} -print -delete | wc -l)</p>
-<p>log "${GREEN}[OK]${NC}    ${DELETED} ძველი ფაილი წაიშალა" "SUCCESS: Deleted ${DELETED} old backups"</p>
-<h1 id="---_summary_---">--- Summary ---<a class="headerlink" href="#---_summary_---" title="Permanent link">&para;</a></h1>
-<p>echo ""
-echo "=========================================="
-echo -e " ${GREEN}BACKUP COMPLETE${NC}"
-echo " ფაილი: ${BACKUP_DIR}/${BACKUP_FILE}.tar.gz"
-echo " ზომა:  ${FILESIZE}"
-echo "=========================================="</p>
-<p>log "" "DONE: Backup completed successfully"</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># ============================================</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># PostgreSQL Automated Backup Script</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Database: kutaisi_db</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># ============================================</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># --- Configuration ---</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nv">DB_NAME</span><span class="o">=</span><span class="s2">&quot;kutaisi_db&quot;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nv">DB_USER</span><span class="o">=</span><span class="s2">&quot;kapo&quot;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nv">BACKUP_DIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$USER</span><span class="s2">/backups&quot;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nv">RETENTION_DAYS</span><span class="o">=</span><span class="m">7</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nv">DATE</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d_%H-%M-%S<span class="k">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nv">BACKUP_FILE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DB_NAME</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">DATE</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span><span class="s2">/backup.log&quot;</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="c1"># --- Colors ---</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="nv">GREEN</span><span class="o">=</span><span class="s1">&#39;\033[0;32m&#39;</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="nv">RED</span><span class="o">=</span><span class="s1">&#39;\033[0;31m&#39;</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="nv">YELLOW</span><span class="o">=</span><span class="s1">&#39;\033[1;33m&#39;</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="nv">NC</span><span class="o">=</span><span class="s1">&#39;\033[0m&#39;</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>log<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] </span><span class="nv">$2</span><span class="s2">&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="o">}</span>
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># --- Create backup directory ---</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BACKUP_DIR</span><span class="s2">&quot;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;==========================================&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; PostgreSQL Backup - </span><span class="si">${</span><span class="nv">DB_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; </span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;==========================================&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># --- Step 1: Dump database ---</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">YELLOW</span><span class="si">}</span><span class="s2">[1/3]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2"> Database dump იქმნება...&quot;</span><span class="w"> </span><span class="s2">&quot;START: Dumping </span><span class="si">${</span><span class="nv">DB_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>pg_dump<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$DB_USER</span><span class="s2">&quot;</span><span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$DB_NAME</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.sql&quot;</span><span class="w"> </span><span class="m">2</span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">RED</span><span class="si">}</span><span class="s2">[ERROR]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2"> Database dump ვერ შეიქმნა!&quot;</span><span class="w"> </span><span class="s2">&quot;FAILED: pg_dump error&quot;</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="k">fi</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">GREEN</span><span class="si">}</span><span class="s2">[OK]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2">    SQL dump მზადაა&quot;</span><span class="w"> </span><span class="s2">&quot;SUCCESS: SQL dump created&quot;</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="c1"># --- Step 2: Compress to tar.gz ---</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">YELLOW</span><span class="si">}</span><span class="s2">[2/3]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2"> tar.gz არქივი იქმნება...&quot;</span><span class="w"> </span><span class="s2">&quot;START: Compressing&quot;</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>tar<span class="w"> </span>-czf<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span><span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BACKUP_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.sql&quot;</span><span class="w"> </span><span class="m">2</span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">RED</span><span class="si">}</span><span class="s2">[ERROR]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2"> არქივის შექმნა ვერ მოხერხდა!&quot;</span><span class="w"> </span><span class="s2">&quot;FAILED: tar compression error&quot;</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="k">fi</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="c1"># Remove raw .sql file, keep only tar.gz</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>rm<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.sql&quot;</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="nv">FILESIZE</span><span class="o">=</span><span class="k">$(</span>du<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f1<span class="k">)</span>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">GREEN</span><span class="si">}</span><span class="s2">[OK]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2">    არქივი მზადაა (</span><span class="si">${</span><span class="nv">FILESIZE</span><span class="si">}</span><span class="s2">)&quot;</span><span class="w"> </span><span class="s2">&quot;SUCCESS: </span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.tar.gz (</span><span class="si">${</span><span class="nv">FILESIZE</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="c1"># --- Step 3: Delete old backups ---</span>
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">YELLOW</span><span class="si">}</span><span class="s2">[3/3]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2"> ძველი backup-ების წაშლა (</span><span class="si">${</span><span class="nv">RETENTION_DAYS</span><span class="si">}</span><span class="s2">+ დღე)...&quot;</span><span class="w"> </span><span class="s2">&quot;START: Cleanup&quot;</span>
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="nv">DELETED</span><span class="o">=</span><span class="k">$(</span>find<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BACKUP_DIR</span><span class="s2">&quot;</span><span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DB_NAME</span><span class="si">}</span><span class="s2">_*.tar.gz&quot;</span><span class="w"> </span>-mtime<span class="w"> </span>+<span class="si">${</span><span class="nv">RETENTION_DAYS</span><span class="si">}</span><span class="w"> </span>-print<span class="w"> </span>-delete<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span>
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>log<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">GREEN</span><span class="si">}</span><span class="s2">[OK]</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2">    </span><span class="si">${</span><span class="nv">DELETED</span><span class="si">}</span><span class="s2"> ძველი ფაილი წაიშალა&quot;</span><span class="w"> </span><span class="s2">&quot;SUCCESS: Deleted </span><span class="si">${</span><span class="nv">DELETED</span><span class="si">}</span><span class="s2"> old backups&quot;</span>
+</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>
+</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="c1"># --- Summary ---</span>
+</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;==========================================&quot;</span>
+</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot; </span><span class="si">${</span><span class="nv">GREEN</span><span class="si">}</span><span class="s2">BACKUP COMPLETE</span><span class="si">${</span><span class="nv">NC</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; ფაილი: </span><span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">BACKUP_FILE</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+</span><span id="__span-2-49"><a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; ზომა:  </span><span class="si">${</span><span class="nv">FILESIZE</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-2-50"><a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;==========================================&quot;</span>
+</span><span id="__span-2-51"><a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>
+</span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>log<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s2">&quot;DONE: Backup completed successfully&quot;</span>
+</span></code></pre></div>
 <p>გაშვებადი რომ იყოს სკრიპტი:
-bashchmod +x ~/db_backup.sh</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>bashchmod<span class="w"> </span>+x<span class="w"> </span>~/db_backup.sh
+</span></code></pre></div></p>
+<h2 id="_2">უსაფრთხოება<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>pgpass ფაილი:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>nano<span class="w"> </span>~/.pgpass
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>nano<span class="w"> </span>~/.pgpass
 </span></code></pre></div>
 <p>იწერება ბაზის მომხმარებლის პაროლით ამ ფაილში:</p>
 <p>localhost:5432:kutaisi_db:kapo:your_secure_password</p>
-<p>chmod 600 ~/.pgpass</p>
-<div class="language-text highlight"><pre><span></span><code>ეს ფაილის უფლებებს (permissions) აყენებს — მხოლოდ შენ (owner) შეგიძლია წაკითხვა და ჩაწერა, სხვა არავის.
-</code></pre></div>
-<p>600 ნიშნავს:</p>
-<p>6 (owner) → წაკითხვა + ჩაწერა
-0 (group) → არაფერი
-0 (others) → არაფერი</p>
-<p>PostgreSQL ამას მოითხოვს — თუ .pgpass ფაილს სხვებიც კითხულობენ, pg_dump უარს იტყვის მის გამოყენებაზე უსაფრთხოების მიზეზით. შემოწმება შეგიძლია:
-bashls -la ~/.pgpass
-დაინახავ: -rw------- — ეს ნიშნავს რომ მხოლოდ owner-ს აქვს rw (read/write) უფლება.</p>
-<p>სკრიპტის გაშვება</p>
-<p>~/db_backup.sh</p>
-<p>k@devserver:~$ bashnano ~/db_backup.sh
-bashnano: command not found
-k@devserver:~$ nano ~/db_backup.sh
-k@devserver:~$
-k@devserver:~$ nano ~/db_backup.sh
-k@devserver:~$ chmod +x ~/db_backup.sh
-k@devserver:~$ nano ~/.pgpass
-k@devserver:~$ chmod 600 ~/.pgpass
-k@devserver:~$ ~/db_backup.sh
-==========================================
- PostgreSQL Backup - kutaisi_db
- 2026-02-10 17:57:56
-==========================================
-[1/3] Database dump იქმნება...
-[OK]    SQL dump მზადაა
-[2/3] tar.gz არქივი იქმნება...
-[OK]    არქივი მზადაა (4.0K)
-[3/3] ძველი backup-ების წაშლა (7+ დღე)...
-[OK]    0 ძველი ფაილი წაიშალა</p>
-<p>==========================================
- BACKUP COMPLETE
- ფაილი: /home/k/backups/kutaisi_db_2026-02-10_17-57-56.tar.gz
- ზომა:  4.0K
-==========================================</p>
+<p>ეს ფაილის უფლებებს (permissions) აყენებს — მხოლოდ შენ (owner) შეგიძლია წაკითხვა და ჩაწერა, სხვა არავის.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.pgpass
+</span></code></pre></div></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>600 ნიშნავს:
+6 (owner) → წაკითხვა + ჩაწერა <br>
+0 (group) → არაფერი <br>
+0 (others) → არაფერი <br></p>
+</div>
+<p>PostgreSQL ამას მოითხოვს — თუ .pgpass ფაილს სხვებიც კითხულობენ, pg_dump უარს იტყვის მის გამოყენებაზე უსაფრთხოების მიზეზით. შემოწმება შეგიძლია:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ls<span class="w"> </span>-la<span class="w"> </span>~/.pgpass
+</span></code></pre></div>
+<p>დაინახავ: -rw------- — ეს ნიშნავს რომ მხოლოდ owner-ს აქვს rw (read/write) უფლება.</p>
+<h2 id="_3">სკრიპტის გაშვება<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>~/db_backup.sh
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">k@devserver:~$ </span>nano<span class="w"> </span>~/db_backup.sh
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="gp">k@devserver:~$</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gp">k@devserver:~$ </span>nano<span class="w"> </span>~/db_backup.sh
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="gp">k@devserver:~$ </span>chmod<span class="w"> </span>+x<span class="w"> </span>~/db_backup.sh
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="gp">k@devserver:~$ </span>nano<span class="w"> </span>~/.pgpass
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="gp">k@devserver:~$ </span>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.pgpass
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="gp">k@devserver:~$ </span>~/db_backup.sh
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="go">==========================================</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="go"> PostgreSQL Backup - kutaisi_db</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="go"> 2026-02-10 17:57:56</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="go">==========================================</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="go">[1/3] Database dump იქმნება...</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="go">[OK]    SQL dump მზადაა</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="go">[2/3] tar.gz არქივი იქმნება...</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="go">[OK]    არქივი მზადაა (4.0K)</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="go">[3/3] ძველი backup-ების წაშლა (7+ დღე)...</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="go">[OK]    0 ძველი ფაილი წაიშალა</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="go">==========================================</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="go"> BACKUP COMPLETE</span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="go"> ფაილი: /home/k/backups/kutaisi_db_2026-02-10_17-57-56.tar.gz</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="go"> ზომა:  4.0K</span>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="go">==========================================</span>
+</span></code></pre></div>
 
 
 

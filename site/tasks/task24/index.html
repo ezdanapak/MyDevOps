@@ -1132,7 +1132,7 @@
   
 
 
-<p>Disaster Recovery Test</p>
+<p>Task 24 — Disaster Recovery Test</p>
 <p>Backup: მონაცემების დაარქივება (ძველ სერვერზე)ჩავთვალოთ, რომ გვაქვს სტანდარტული აპლიკაცია (მაგ. ვებ-საიტი), სადაც გვჭირდება ფაილები, კონფიგურაცია და მონაცემთა ბაზა.ა) კონფიგურაციების და ფაილების დაარქივებაგამოვიყენოთ tar ბრძანება, რომელიც შეკრავს /var/www/html (ფაილები) და /etc/nginx (კონფიგურაცია) ერთ არქივში:Bashsudo tar -cvzf full_backup.tar.gz /var/www/html /etc/nginx /etc/systemd/system/myapp.service
 ბ) მონაცემთა ბაზის ექსპორტი (MySQL/MariaDB)გამოვიყენოთ mysqldump, რათა ბაზა ერთ .sql ფაილში გადავიტანოთ:Bashsudo mysqldump -u root -p my_database_name &gt; db_backup.sql
 2. Transfer: მონაცემების გადატანა ახალ VM-ზეგამოვიყენოთ scp (Secure Copy), რათა ფაილები ძველი სერვერიდან ახალზე გადავგზავნოთ:Bashscp full_backup.tar.gz db_backup.sql username@NEW_SERVER_IP:/home/username/

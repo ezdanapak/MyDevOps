@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#_1" class="md-skip">
+          კონტენტზე გადასვლა
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -626,6 +631,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    User and Permission Management
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -635,6 +651,50 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      მომხმარებლების შექმნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      უფლებების განსაზღვრა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      გატესტვა
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1107,6 +1167,41 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      მომხმარებლების შექმნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      უფლებების განსაზღვრა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      გატესტვა
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1126,76 +1221,123 @@
   <h1>User and Permission Management</h1>
 
 <p>Task 6 — User and Permission Management</p>
-<p>Developer-ის შექმნა: sudo adduser developer</p>
-<p>Deploy-ის შექმნა: sudo adduser deploy</p>
-<p>k@devserver:~$ sudo adduser developer
-info: Adding user <code>developer' ...
-info: Selecting UID/GID from range 1000 to 59999 ...
-info: Adding new group</code>developer' (1001) ...
-info: Adding new user <code>developer' (1001) with group</code>developer (1001)' ...
-info: Creating home directory <code>/home/developer' ...
-info: Copying files from</code>/etc/skel' ...
-New password:
-Retype new password:
-passwd: password updated successfully
-Changing the user information for developer
-Enter the new value, or press ENTER for the default
-        Full Name []:
-        Room Number []:
-        Work Phone []:
-        Home Phone []:
-        Other []:
-Is the information correct? [Y/n] Y
-info: Adding new user <code>developer' to supplemental / extra groups</code>users' ...
-info: Adding user <code>developer' to group</code>users' ...
-k@devserver:~$ sudo adduser deploy
-info: Adding user <code>deploy' ...
-info: Selecting UID/GID from range 1000 to 59999 ...
-info: Adding new group</code>deploy' (1002) ...
-info: Adding new user <code>deploy' (1002) with group</code>deploy (1002)' ...
-info: Creating home directory <code>/home/deploy' ...
-info: Copying files from</code>/etc/skel' ...
-New password:
-Retype new password:
-passwd: password updated successfully
-Changing the user information for deploy
-Enter the new value, or press ENTER for the default
-        Full Name []:
-        Room Number []:
-        Work Phone []:
-        Home Phone []:
-        Other []:
-Is the information correct? [Y/n]
-info: Adding new user <code>deploy' to supplemental / extra groups</code>users' ...
-info: Adding user <code>deploy' to group</code>users' ...</p>
-<p>Ubuntu-ში მომხმარებელს sudo უფლება ეძლევა მისი დამატებით sudo ჯგუფში.</p>
-<p>მიეცი უფლება developer-ს: sudo usermod -aG sudo developer (აქ -aG ნიშნავს "Add to Group").</p>
-<p>sudo usermod -aG sudo developer</p>
-<p>deploy მომხმარებელს არაფერს ვუშვებით, ის ავტომატურად დარჩება ჩვეულებრივ მომხმარებლად sudo-ს გარეშე.</p>
-<p>დეველოპერის გატესტვა SUDO</p>
-<p>k@devserver:~$ su - developer
-Password:
-To run a command as administrator (user "root"), use "sudo <command>".
-See "man sudo_root" for details.</p>
-<p>developer@devserver:~$ sudo apt update
-[sudo] password for developer:
-Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
-Hit:2 http://ge.archive.ubuntu.com/ubuntu noble InRelease
-Hit:3 http://ge.archive.ubuntu.com/ubuntu noble-updates InRelease
-Hit:4 http://ge.archive.ubuntu.com/ubuntu noble-backports InRelease
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-2 packages can be upgraded. Run 'apt list --upgradable' to see them.
-developer@devserver:~$</p>
-<p>deploy  - ს არ აქვს უფლება</p>
-<p>k@devserver:~$ su - deploy
-Password:
-deploy@devserver:~$ sudo apt update
-[sudo] password for deploy:
-deploy is not in the sudoers file.</p>
-<p>მაგიური სიტყვა სტანდარტულ მომხმარებელზე დასაბრუნებლად</p>
-<p>exit</p>
+<h2 id="_1">მომხმარებლების შექმნა<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Developer-ის შექმნა: 
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>adduser<span class="w"> </span>developer
+</span></code></pre></div></p>
+<p>Deploy-ის შექმნა: 
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>adduser<span class="w"> </span>deploy
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">მომხმარებლის პარამეტრები</p>
+<div class="language-text highlight"><pre><span></span><code>დამატების დროს კონსოლშივე გაძლევს ახალ დეტალებს შესავსებად
+შეგიძლია გამოტოვო თამამად
+</code></pre></div>
+</div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>adduser<span class="w"> </span>developer
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">info: Adding user `developer&#39; ...</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="go">info: Selecting UID/GID from range 1000 to 59999 ...</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="go">info: Adding new group `developer&#39; (1001) ...</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="go">info: Adding new user `developer&#39; (1001) with group `developer (1001)&#39; ...</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="go">info: Creating home directory `/home/developer&#39; ...</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="go">info: Copying files from `/etc/skel&#39; ...</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="go">New password:</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="go">Retype new password:</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="go">passwd: password updated successfully</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="go">Changing the user information for developer</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="go">Enter the new value, or press ENTER for the default</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="go">        Full Name []:</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="go">        Room Number []:</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="go">        Work Phone []:</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="go">        Home Phone []:</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="go">        Other []:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="go">Is the information correct? [Y/n] Y</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="go">info: Adding new user `developer&#39; to supplemental / extra groups `users&#39; ...</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="go">info: Adding user `developer&#39; to group `users&#39; ...</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>adduser<span class="w"> </span>deploy
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="go">info: Adding user `deploy&#39; ...</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="go">info: Selecting UID/GID from range 1000 to 59999 ...</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="go">info: Adding new group `deploy&#39; (1002) ...</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="go">info: Adding new user `deploy&#39; (1002) with group `deploy (1002)&#39; ...</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="go">info: Creating home directory `/home/deploy&#39; ...</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="go">info: Copying files from `/etc/skel&#39; ...</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="go">New password:</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="go">Retype new password:</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="go">passwd: password updated successfully</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="go">Changing the user information for deploy</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="go">Enter the new value, or press ENTER for the default</span>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="go">        Full Name []:</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="go">        Room Number []:</span>
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="go">        Work Phone []:</span>
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="go">        Home Phone []:</span>
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="go">        Other []:</span>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="go">Is the information correct? [Y/n]</span>
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="go">info: Adding new user `deploy&#39; to supplemental / extra groups `users&#39; ...</span>
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="go">info: Adding user `deploy&#39; to group `users&#39; ...</span>
+</span></code></pre></div>
+<h2 id="_2">უფლებების განსაზღვრა<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Sudo ჯგუფი</p>
+<div class="language-text highlight"><pre><span></span><code>Ubuntu-ში მომხმარებელს sudo უფლება ეძლევა მისი დამატებით sudo ჯგუფში.
+</code></pre></div>
+</div>
+<p>მიეცი უფლება developer-ს (აქ -aG ნიშნავს "Add to Group").
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>sudo<span class="w"> </span>developer
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Sudo - ს გარეშე</p>
+<div class="language-text highlight"><pre><span></span><code>deploy მომხმარებელს არაფერს ვუშვებით, ის ავტომატურად დარჩება ჩვეულებრივ მომხმარებლად sudo-ს გარეშე.
+</code></pre></div>
+</div>
+<h2 id="_3">გატესტვა<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>დეველოპერის გატესტვა SUDO - ზე <br></p>
+<p>შეცვალე მომხმარებელი ბაშში
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>su<span class="w"> </span>-<span class="w"> </span>developer
+</span></code></pre></div>
+კონსოლში ასე უნდა გამოიყურებოდეს დეველოპერის მომხმარებელი <br>
+რომელიც @ განთავსებულია devserver - ზე <br>
+developer@devserver:~$ 
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">Password:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">To run a command as administrator (user &quot;root&quot;), use &quot;sudo &lt;command&gt;&quot;.</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">See &quot;man sudo_root&quot; for details.</span>
+</span></code></pre></div></p>
+<p>ბრძანება გაუშვი ისეთი რომელიც root უფლებებს მოითხოვს
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">[sudo] password for developer:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">Hit:2 http://ge.archive.ubuntu.com/ubuntu noble InRelease</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="go">Hit:3 http://ge.archive.ubuntu.com/ubuntu noble-updates InRelease</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="go">Hit:4 http://ge.archive.ubuntu.com/ubuntu noble-backports InRelease</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="go">Reading package lists... Done</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="go">Building dependency tree... Done</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="go">Reading state information... Done</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="go">2 packages can be upgraded. Run &#39;apt list --upgradable&#39; to see them.</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="gp">developer@devserver:~$</span>
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">deploy მომხმარებელი</p>
+<div class="language-text highlight"><pre><span></span><code>deploy  - ს არ აქვს უფლება
+</code></pre></div>
+</div>
+<p>გადაანაცვლე მომხმარებელი
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>k@devserver:~$<span class="w"> </span>su<span class="w"> </span>-<span class="w"> </span>deploy
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="go">Password:</span>
+</span></code></pre></div></p>
+<p>გატესტე 
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">[</span>sudo<span class="o">]</span><span class="w"> </span>password<span class="w"> </span><span class="k">for</span><span class="w"> </span>deploy:
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>deploy<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>sudoers<span class="w"> </span>file.
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">მაგიური სიტყვა</p>
+<div class="language-text highlight"><pre><span></span><code>სტანდარტულ მომხმარებელზე დასაბრუნებლად გამოიყენე exit
+</code></pre></div>
+</div>
 
 
 

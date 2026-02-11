@@ -1,12 +1,18 @@
-Cron Automation
+Task 12 — Cron Automation
 
-Crontab-ის გახსნა:
-bashcrontab -e
 
-ბოლოში დასამატებელია:**
+## Crontab
+
+გავხსნათ
+```bash
+crontab -e
+```
+
+და ფაილის ბოლოში დასამატებელია ეს ხაზი:**
 ```
 0 3 * * * /home/$USER/db_backup.sh >> /home/$USER/backups/cron.log 2>&1
 ```
+## განმარტება
 
 **3 ნიშნავს `0 3 * * *`:**
 ```
@@ -18,7 +24,7 @@ bashcrontab -e
 │ └──────── საათი → 3:00 AM
 └────────── წუთი → 00
 
-
+გაშვებისას რომელიმე ტექსტურ რედაქტორზე შეაჩერებ არჩევანს
 k@devserver:~$ crontab -e
 no crontab for k - using an empty one
 
@@ -30,10 +36,13 @@ Select an editor.  To change later, run 'select-editor'.
 
 Choose 1-4 [1]: 1
 crontab: installing new crontab
+```
+## შემოწმება
 
-შემოწმება
-
-k@devserver:~$ crontab -l
+```bash
+crontab -l
+```
+```console
 # Edit this file to introduce tasks to be run by cron.
 #
 # Each task to run has to be defined through a single line
@@ -59,13 +68,14 @@ k@devserver:~$ crontab -l
 # m h  dom mon dow   command
 
 0 3 * * * /home/$USER/db_backup.sh >> /home/$USER/backups/cron.log 2>&1
+```
 
+## სტატუსის შემოწმება
+```bash
+sudo systemctl status cron
+```
 
-სტატუსის შემოწმება
-k@devserver:~$ cat ~/backups/cron.log
-cat: /home/k/backups/cron.log: No such file or directory
-k@devserver:~$ ^C
-k@devserver:~$ sudo systemctl status cron
+```console
 [sudo] password for k:
 ● cron.service - Regular background program processing daemon
      Loaded: loaded (/usr/lib/systemd/system/cron.service; enabled; preset: enabled)
@@ -88,14 +98,15 @@ Feb 10 17:55:01 devserver CRON[49630]: pam_unix(cron:session): session closed fo
 Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
 Feb 10 18:05:01 devserver CRON[52979]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
 Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session closed for user root
+```
 
 
-
-ტესტირება მაშინვე
+## ტესტირება
 
 ```Bash
 ~/db_backup.sh
 cat ~/backups/cron.log
 ```
 
-cron.log მხოლოდ მაშინ შეიქმნება, როცა cron გაუშვებს სკრიპტს (3:00 AM-ზე). ხელით გაშვებისას ლოგი ტერმინალში გამოჩნდა პირდაპირ
+!!! quote ""log ფაილი"
+    cron.log მხოლოდ მაშინ შეიქმნება, როცა cron გაუშვებს სკრიპტს (3:00 AM-ზე). ხელით გაშვებისას ლოგი ტერმინალში გამოჩნდა პირდაპირ

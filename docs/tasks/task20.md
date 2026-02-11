@@ -1,4 +1,5 @@
-System Resource Monitoring
+Task 20 — System Resource Monitoring
+
 
 
 htop-ის ინსტალაცია (რეკომენდებულია დამწყებთათვის):

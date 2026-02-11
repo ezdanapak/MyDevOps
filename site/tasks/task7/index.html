@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#_1" class="md-skip">
+          კონტენტზე გადასვლა
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -647,6 +652,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Firewall Setup
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -656,6 +672,41 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      პორტების გახსნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      დამცავი კედელი
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1107,6 +1158,32 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      პორტების გახსნა
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      დამცავი კედელი
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1125,39 +1202,73 @@
 
   <h1>Firewall Setup</h1>
 
-<p>პორტების გახსნა</p>
-<p>SSH (პორტი 22): sudo ufw allow ssh (ან sudo ufw allow 22/tcp)</p>
-<p>HTTP (პორტი 80): sudo ufw allow http (ან sudo ufw allow 80/tcp)</p>
-<p>HTTPS (პორტი 443): sudo ufw allow https (ან sudo ufw allow 443/tcp)</p>
-<p>k@devserver:~$ sudo ufw allow ssh
-Rules updated
-Rules updated (v6)
-k@devserver:~$ sudo ufw allow http
-Rules updated
-Rules updated (v6)
-k@devserver:~$ sudo ufw allow https
-Rules updated
-Rules updated (v6)</p>
-<p>k@devserver:~$ sudo ufw enable
-Command may disrupt existing ssh connections. Proceed with operation (y|n)? Y
-Firewall is active and enabled on system startup</p>
-<p>k@devserver:~$ sudo ufw status verbose
-Status: active
-Logging: on (low)
-Default: deny (incoming), allow (outgoing), disabled (routed)
-New profiles: skip</p>
-<p>To                         Action      From
---                         ------      ----
-22/tcp                     ALLOW IN    Anywhere
-80/tcp                     ALLOW IN    Anywhere
-443                        ALLOW IN    Anywhere
-22/tcp (v6)                ALLOW IN    Anywhere (v6)
-80/tcp (v6)                ALLOW IN    Anywhere (v6)
-443 (v6)                   ALLOW IN    Anywhere (v6)</p>
-<p>k@devserver:~$</p>
-<p>რას ნიშნავს
-Deny incoming: ყველაფერი, რაც შენს სერვერზე შემოდის და არ არის პორტი 22, 80 ან 443, ავტომატურად დაიბლოკება.</p>
+<p>Task 7 — Firewall Setup</p>
+<h2 id="_1">პორტების გახსნა<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>სტანდარტულად ასე გამოიყურება პორტები და მათი ტიპები. <br>
+სანამ Firewall-ს გაააქტიურებ, სათითაოდ გახსენი ის "კარები", რომლებიც გჭირდება: <br></p>
+<ul>
+<li>
+<p>SSH (პორტი 22): 
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>ssh<span class="w"> </span><span class="o">(</span>ან<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">22</span>/tcp<span class="o">)</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p>HTTP (პორტი 80): 
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>http<span class="w"> </span><span class="o">(</span>ან<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">80</span>/tcp<span class="o">)</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p>HTTPS (პორტი 443): 
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>https<span class="w"> </span><span class="o">(</span>ან<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">443</span>/tcp<span class="o">)</span>
+</span></code></pre></div></p>
+</li>
+</ul>
+<p>გაუშვი კონსოლში ბრძანება
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>ssh
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>http
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>https
+</span></code></pre></div></p>
+<p>კონსოლი ყველა ჯერზე უნდა გიბრუნებდეს პასუხს
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">Rules updated</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">Rules updated (v6)</span>
+</span></code></pre></div>
+ჩართე Firewall
+ახლა, როცა SSH დაშვებულია, შეგიძლია უსაფრთხოდ ჩართო სისტემა:</p>
+<h2 id="_2">დამცავი კედელი<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span><span class="nb">enable</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">ბრძანების შესრულებისას</p>
+<p>კონსოლი აუცილებლად გაგაფრთხილებთ არსებული კავშირების გაწყვეტაზე და 
+უნდა დაეთანხმო <span class="keys"><kbd class="key-y">Y</kbd></span> და <span class="keys"><kbd class="key-enter">Enter</kbd></span> დაწკაპებით</p>
+</div>
+<p><div class="language-console highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="go">Command may disrupt existing ssh connections. Proceed with operation (y|n)? Y</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="go">Firewall is active and enabled on system startup</span>
+</span></code></pre></div>
+გადაამოწმე სტატუსი
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="go">sudo ufw status verbose</span>
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="go">Status: active</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="go">Logging: on (low)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="go">Default: deny (incoming), allow (outgoing), disabled (routed)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="go">New profiles: skip</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="go">To                         Action      From</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="go">--                         ------      ----</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="go">22/tcp                     ALLOW IN    Anywhere</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="go">80/tcp                     ALLOW IN    Anywhere</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="go">443                        ALLOW IN    Anywhere</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="go">22/tcp (v6)                ALLOW IN    Anywhere (v6)</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="go">80/tcp (v6)                ALLOW IN    Anywhere (v6)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="go">443 (v6)                   ALLOW IN    Anywhere (v6)</span>
+</span></code></pre></div></p>
+<div class="admonition info">
+<p class="admonition-title">რას ნიშნავს</p>
+<p>Deny incoming: ყველაფერი, რაც შენს სერვერზე შემოდის და არ არის პორტი 22, 80 ან 443, ავტომატურად დაიბლოკება.</p>
 <p>Allow outgoing: შენს სერვერს შეუძლია ნებისმიერ პორტზე გავიდეს გარეთ (მაგალითად, განახლებების გადმოსაწერად).</p>
+</div>
 
 
 

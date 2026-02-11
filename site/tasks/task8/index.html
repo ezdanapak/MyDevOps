@@ -65,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#nginx" class="md-skip">
+          კონტენტზე გადასვლა
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -668,6 +673,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Web Server Installation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -677,6 +693,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      nginx ინსტალაცია
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewall
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ლოკალური ტესტი სერვერზე:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP მისამართზე ვებ სერვერი
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1107,6 +1176,50 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      nginx ინსტალაცია
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewall
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ლოკალური ტესტი სერვერზე:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP მისამართზე ვებ სერვერი
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1123,113 +1236,142 @@
   
 
 
-<p>ვებ სერვერის ინსტალაცია</p>
-<p>k@devserver:~$ sudo apt install nginx -y
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-The following additional packages will be installed:
-  nginx-common
-Suggested packages:
-  fcgiwrap nginx-doc ssl-cert
-The following NEW packages will be installed:
-  nginx nginx-common
-0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.
-Need to get 564 kB of archives.
-After this operation, 1,596 kB of additional disk space will be used.
-Get:1 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 nginx-common all 1.24.0-2ubuntu7.5 [43.4 kB]
-Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 nginx amd64 1.24.0-2ubuntu7.5 [520 kB]
-Fetched 564 kB in 1s (626 kB/s)
-Preconfiguring packages ...
-Selecting previously unselected package nginx-common.
-(Reading database ... 87557 files and directories currently installed.)
-Preparing to unpack .../nginx-common_1.24.0-2ubuntu7.5_all.deb ...
-Unpacking nginx-common (1.24.0-2ubuntu7.5) ...
-Selecting previously unselected package nginx.
-Preparing to unpack .../nginx_1.24.0-2ubuntu7.5_amd64.deb ...
-Unpacking nginx (1.24.0-2ubuntu7.5) ...
-Setting up nginx-common (1.24.0-2ubuntu7.5) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /usr/lib/systemd/system/nginx.service.
-Setting up nginx (1.24.0-2ubuntu7.5) ...
- * Upgrading binary nginx                                                                                                                                                                              [ OK ]
-Processing triggers for man-db (2.12.0-4build2) ...
-Processing triggers for ufw (0.36.2-6) ...
-Scanning processes...
-Scanning candidates...
-Scanning linux images...</p>
-<p>Running kernel seems to be up-to-date.</p>
-<p>Restarting services...</p>
-<p>Service restarts being deferred:
- /etc/needrestart/restart.d/dbus.service
- systemctl restart getty@tty1.service
- systemctl restart systemd-logind.service
- systemctl restart unattended-upgrades.service</p>
-<p>No containers need to be restarted.</p>
-<p>User sessions running outdated binaries:
- k @ session #10: sshd[6338]
- k @ session #11: sshd[6340]
- k @ session #4: sshd[1039]
- k @ user manager service: systemd[1006]</p>
-<p>No VM guests are running outdated hypervisor (qemu) binaries on this host.</p>
-<p>სერვისის გაშვება ჩართვა და გადამოწმება</p>
-<p>k@devserver:~$ sudo systemctl start nginx
-k@devserver:~$ sudo systemctl enable nginx
-Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
-Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
-k@devserver:~$ sudo systemctl status nginx
-● nginx.service - A high performance web server and a reverse proxy server
-     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
-     Active: active (running) since Tue 2026-02-10 17:12:39 UTC; 1min 19s ago
-       Docs: man:nginx(8)
-   Main PID: 32513 (nginx)
-      Tasks: 5 (limit: 9436)
-     Memory: 3.7M (peak: 8.1M)
-        CPU: 156ms
-     CGroup: /system.slice/nginx.service
-             ├─32513 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
-             ├─32516 "nginx: worker process"
-             ├─32517 "nginx: worker process"
-             ├─32518 "nginx: worker process"
-             └─32519 "nginx: worker process"</p>
-<p>Feb 10 17:12:39 devserver systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
-Feb 10 17:12:39 devserver systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.</p>
-<p>Firewall-ში HTTP-ის დაშვება UFW ჩართულია:
-bashsudo ufw allow 'Nginx HTTP'
-sudo ufw status</p>
-<p>ლოკალური ტესტი სერვერზევე:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>http://localhost
+  <h1>Web Server Installation</h1>
+
+<p>Task 8 — Web Server Installation</p>
+<h2 id="nginx">nginx ინსტალაცია<a class="headerlink" href="#nginx" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nginx<span class="w"> </span>-y
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">Reading package lists... Done</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">Building dependency tree... Done</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">Reading state information... Done</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">The following additional packages will be installed:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">  nginx-common</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">Suggested packages:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">  fcgiwrap nginx-doc ssl-cert</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="go">The following NEW packages will be installed:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="go">  nginx nginx-common</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="go">0 upgraded, 2 newly installed, 0 to remove and 2 not upgraded.</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="go">Need to get 564 kB of archives.</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="go">After this operation, 1,596 kB of additional disk space will be used.</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="go">Get:1 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 nginx-common all 1.24.0-2ubuntu7.5 [43.4 kB]</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="go">Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates/main amd64 nginx amd64 1.24.0-2ubuntu7.5 [520 kB]</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="go">Fetched 564 kB in 1s (626 kB/s)</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="go">Preconfiguring packages ...</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="go">Selecting previously unselected package nginx-common.</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="gp gp-VirtualEnv">(Reading database ... 87557 files and directories currently installed.)</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="go">Preparing to unpack .../nginx-common_1.24.0-2ubuntu7.5_all.deb ...</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="go">Unpacking nginx-common (1.24.0-2ubuntu7.5) ...</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="go">Selecting previously unselected package nginx.</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="go">Preparing to unpack .../nginx_1.24.0-2ubuntu7.5_amd64.deb ...</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="go">Unpacking nginx (1.24.0-2ubuntu7.5) ...</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="go">Setting up nginx-common (1.24.0-2ubuntu7.5) ...</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="go">Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /usr/lib/systemd/system/nginx.service.</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="go">Setting up nginx (1.24.0-2ubuntu7.5) ...</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="go"> * Upgrading binary nginx                                                                                                                                                                              [ OK ]</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="go">Processing triggers for man-db (2.12.0-4build2) ...</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="go">Processing triggers for ufw (0.36.2-6) ...</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="go">Scanning processes...</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="go">Scanning candidates...</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="go">Scanning linux images...</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="go">Running kernel seems to be up-to-date.</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="go">Restarting services...</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="go">Service restarts being deferred:</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="go"> /etc/needrestart/restart.d/dbus.service</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="go"> systemctl restart getty@tty1.service</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="go"> systemctl restart systemd-logind.service</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="go"> systemctl restart unattended-upgrades.service</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="go">No containers need to be restarted.</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="go">User sessions running outdated binaries:</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="go"> k @ session #10: sshd[6338]</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="go"> k @ session #11: sshd[6340]</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="go"> k @ session #4: sshd[1039]</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="go"> k @ user manager service: systemd[1006]</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="go">No VM guests are running outdated hypervisor (qemu) binaries on this host.</span>
+</span></code></pre></div>
+<p>სერვისის გაშვება ჩართვა და გადამოწმება
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>nginx
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>nginx
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">Executing: /usr/lib/systemd/systemd-sysv-install enable nginx</span>
 </span></code></pre></div></p>
-<p>k@devserver:~$ curl http://localhost</p>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Welcome to nginx!</title>
-<style>
-html { color-scheme: light dark; }
-body { width: 35em; margin: 0 auto;
-font-family: Tahoma, Verdana, Arial, sans-serif; }
-</style>
-</head>
-<body>
-<h1>Welcome to nginx!</h1>
-<p>If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.</p>
-
-<p>For online documentation and support please refer to
-<a href="http://nginx.org/">nginx.org</a>.<br/>
-Commercial support is available at
-<a href="http://nginx.com/">nginx.com</a>.</p>
-
-<p><em>Thank you for using nginx.</em></p>
-</body>
-</html>
-
-<p>http://192.168.56.101/</p>
-<p>Welcome to nginx!
-If you see this page, the nginx web server is successfully installed and working. Further configuration is required.</p>
-<p>For online documentation and support please refer to nginx.org.
-Commercial support is available at nginx.com.</p>
-<p>Thank you for using nginx.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>k@devserver:~$<span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>nginx
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">● nginx.service - A high performance web server and a reverse proxy server</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">     Active: active (running) since Tue 2026-02-10 17:12:39 UTC; 1min 19s ago</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">       Docs: man:nginx(8)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">   Main PID: 32513 (nginx)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="go">      Tasks: 5 (limit: 9436)</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">     Memory: 3.7M (peak: 8.1M)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="go">        CPU: 156ms</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="go">     CGroup: /system.slice/nginx.service</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="go">             ├─32513 &quot;nginx: master process /usr/sbin/nginx -g daemon on; master_process on;&quot;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="go">             ├─32516 &quot;nginx: worker process&quot;</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="go">             ├─32517 &quot;nginx: worker process&quot;</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="go">             ├─32518 &quot;nginx: worker process&quot;</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="go">             └─32519 &quot;nginx: worker process&quot;</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="go">Feb 10 17:12:39 devserver systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="go">Feb 10 17:12:39 devserver systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.</span>
+</span></code></pre></div>
+<h2 id="firewall">Firewall<a class="headerlink" href="#firewall" title="Permanent link">&para;</a></h2>
+<p>Firewall-ში HTTP-ის დაშვება UFW ჩართულია:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="s1">&#39;Nginx HTTP&#39;</span>
+</span></code></pre></div>
+სტატუსის შემოწმება
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>status
+</span></code></pre></div></p>
+<h2 id="_1">ლოკალური ტესტი სერვერზე:<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>http://localhost
+</span></code></pre></div>
+თუ ამ html ფაილს დაინახავ ესეიგი ყველაფერი კარგად არის და სერვერი მუშაობს!
+<div class="language-html highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to nginx!<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nt">html</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color-scheme</span><span class="p">:</span><span class="w"> </span><span class="n">light</span><span class="w"> </span><span class="n">dark</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="kt">em</span><span class="p">;</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="n">Tahoma</span><span class="p">,</span><span class="w"> </span><span class="n">Verdana</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Welcome to nginx!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>If you see this page, the nginx web server is successfully installed and
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>working. Further configuration is required.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>For online documentation and support please refer to
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://nginx.org/&quot;</span><span class="p">&gt;</span>nginx.org<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.<span class="p">&lt;</span><span class="nt">br</span><span class="p">/&gt;</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>Commercial support is available at
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://nginx.com/&quot;</span><span class="p">&gt;</span>nginx.com<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">em</span><span class="p">&gt;</span>Thank you for using nginx.<span class="p">&lt;/</span><span class="nt">em</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></code></pre></div></p>
+<h2 id="ip">IP მისამართზე ვებ სერვერი<a class="headerlink" href="#ip" title="Permanent link">&para;</a></h2>
+<p>მისამართი Ubuntu server მა რაც აიღო სტანდარტულად 80 პორტზე მუშაობს ვებ სერვერი <br>
+თუ გვინდა რომ სხვა კომპიუტერიდან(იმავე ქსელის შიდა როუტერით) მივწვდეთ სერვერს უნდა <br> გამოვიყენოთ ნებისმიერ ინტერნეტ ბრაუზერში მისი IP.</p>
+<p><div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="go">http://192.168.56.101/ </span>
+</span></code></pre></div>
+უნდა ხედავდე ამ შეტყობინებას იგივენაირად
+<div class="language-html highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Welcome to nginx!
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>If you see this page, the nginx web server is successfully installed and working. Further configuration is required.
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>For online documentation and support please refer to nginx.org.
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Commercial support is available at nginx.com.
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>Thank you for using nginx.
+</span></code></pre></div></p>
 
 
 

@@ -1,4 +1,4 @@
-Network Diagnostics
+Task 22 — Network Diagnostics
 
 
 რომელი პორტებია "ღია" (Listening Ports)იმისთვის, რომ ნახო, რომელი სერვისი ელოდება კავშირს (მაგალითად, SSH პორტზე 22 ან Netdata პორტზე 19999), გამოიყენე ss ბრძანება (ეს netstat-ს თანამედროვე და უფრო სწრაფი ალტერნატივაა):Bashsudo ss -tunlp
