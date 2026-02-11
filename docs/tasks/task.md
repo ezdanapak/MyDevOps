@@ -16,6 +16,174 @@
 | ⚠️ | პრობლემაა |
 
 ---
+## დიაგრამა
+
+flowchart TD
+
+T1["Task 1<br/>Virtual Machine Setup"]
+T2["Task 2<br/>Network Setup"]
+T3["Task 3<br/>Static IP Configuration"]
+T4["Task 4<br/>SSH Configuration"]
+T5["Task 5<br/>System Update"]
+T6["Task 6<br/>User & Permission Management"]
+T7["Task 7<br/>Firewall Setup"]
+T8["Task 8<br/>Web Server Installation"]
+T9["Task 9<br/>Custom Website Deploy"]
+T10["Task 10<br/>Database Installation"]
+T11["Task 11<br/>Automated Backup Script"]
+T12["Task 12<br/>Cron Automation"]
+T13["Task 13<br/>Log Monitoring"]
+T14["Task 14<br/>Docker Installation"]
+T15["Task 15<br/>Containerized Application"]
+T16["Task 16<br/>Reverse Proxy Configuration"]
+T17["Task 17<br/>SSL Certificate"]
+T18["Task 18<br/>Git Repository Setup"]
+T19["Task 19<br/>Deployment Script"]
+T20["Task 20<br/>System Resource Monitoring"]
+T21["Task 21<br/>Disk Space Management"]
+T22["Task 22<br/>Network Diagnostics"]
+T23["Task 23<br/>Security Audit"]
+T24["Task 24<br/>Disaster Recovery Test"]
+T25["Task 25<br/>Performance Optimization"]
+T26["Task 26<br/>Documentation"]
+T27["Task 27<br/>Final Presentation"]
+
+T1 --> T2 --> T3 --> T4 --> T5 --> T6 --> T7 --> T8 --> T9 --> T10
+T10 --> T11 --> T12 --> T13 --> T14 --> T15 --> T16 --> T17 --> T18 --> T19
+T19 --> T20 --> T21 --> T22 --> T23 --> T24 --> T25 --> T26 --> T27
+
+
+
+მეორე
+
+flowchart TB
+
+subgraph SETUP["🛠 Setup & Basics"]
+  T1["Task 1<br/>Virtual Machine"]
+  T2["Task 2<br/>Network Setup"]
+  T3["Task 3<br/>Static IP"]
+  T4["Task 4<br/>SSH Config"]
+  T5["Task 5<br/>System Update"]
+end
+
+subgraph SECURITY["🔐 Security"]
+  T6["Task 6<br/>Users & Permissions"]
+  T7["Task 7<br/>Firewall"]
+  T13["Task 13<br/>Log Monitoring"]
+  T23["Task 23<br/>Security Audit"]
+end
+
+subgraph DEVOPS["⚙️ DevOps & Automation"]
+  T11["Task 11<br/>Backup Script"]
+  T12["Task 12<br/>Cron Jobs"]
+  T14["Task 14<br/>Docker"]
+  T15["Task 15<br/>Containers"]
+  T19["Task 19<br/>Deploy Script"]
+end
+
+subgraph PRODUCTION["🚀 Production & Services"]
+  T8["Task 8<br/>Nginx"]
+  T9["Task 9<br/>Website"]
+  T10["Task 10<br/>Database"]
+  T16["Task 16<br/>Reverse Proxy"]
+  T17["Task 17<br/>SSL"]
+end
+
+subgraph OPS["📊 Operations & Monitoring"]
+  T20["Task 20<br/>Monitoring"]
+  T21["Task 21<br/>Disk Cleanup"]
+  T22["Task 22<br/>Diagnostics"]
+  T24["Task 24<br/>Recovery"]
+  T25["Task 25<br/>Optimization"]
+end
+
+subgraph DOCS["📚 Documentation"]
+  T18["Task 18<br/>Git Repo"]
+  T26["Task 26<br/>Docs"]
+  T27["Task 27<br/>Presentation"]
+end
+
+
+T1 --> T2 --> T3 --> T4 --> T5
+
+T5 --> T6
+T6 --> T7
+T7 --> T13
+T13 --> T23
+
+T5 --> T8
+T8 --> T9
+T9 --> T10
+T10 --> T16
+T16 --> T17
+
+T17 --> T11
+T11 --> T12
+T12 --> T14
+T14 --> T15
+T15 --> T19
+
+T19 --> T20
+T20 --> T21
+T21 --> T22
+T22 --> T24
+T24 --> T25
+
+T25 --> T18
+T18 --> T26
+T26 --> T27
+
+
+მესამე 
+
+flowchart LR
+
+Start([Start])
+
+Start --> T1 --> T2 --> T3 --> T4 --> T5
+
+T5 --> T6 --> T7 --> T13 --> T23
+
+T5 --> T8 --> T9 --> T10 --> T16 --> T17
+
+T17 --> T11 --> T12 --> T14 --> T15 --> T19
+
+T19 --> T20 --> T21 --> T22 --> T24 --> T25
+
+T25 --> T18 --> T26 --> T27 --> End([Finish])
+
+T1["VM Setup"]
+T2["Network"]
+T3["Static IP"]
+T4["SSH"]
+T5["Update"]
+
+T6["Users"]
+T7["Firewall"]
+T8["Nginx"]
+T9["Website"]
+T10["Database"]
+
+T11["Backup"]
+T12["Cron"]
+T13["Logs"]
+T14["Docker"]
+T15["Containers"]
+
+T16["Proxy"]
+T17["SSL"]
+T18["Git"]
+T19["Deploy"]
+
+T20["Monitoring"]
+T21["Disk"]
+T22["Network Check"]
+T23["Security Audit"]
+T24["Recovery"]
+T25["Optimize"]
+
+T26["Docs"]
+T27["Presentation"]
 
 ## 📋 ამოცანები
 

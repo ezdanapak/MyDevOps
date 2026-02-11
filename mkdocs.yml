@@ -22,7 +22,7 @@ theme:
     - content.code.copy
     - content.code.annotate
     - content.tooltips
-    
+
   icon:
     icon:
       admonition:
@@ -39,10 +39,38 @@ theme:
         example: octicons/beaker-16
         quote: octicons/quote-16
 
+# Markdown Extensions (გაუციფრებული, დუბლების გარეშე)
 markdown_extensions:
   - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - pymdownx.keys:
+      separator: "+"
+  - toc:
+      permalink: true
+      separator: "_"
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 nav:
   - მთავარი: index.md
@@ -82,3 +110,5 @@ nav:
       - Performance Optimization: tasks/task25.md
       - Documentation: tasks/task26.md
       - Final Presentation: tasks/task27.md
+
+

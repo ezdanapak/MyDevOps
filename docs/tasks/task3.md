@@ -18,8 +18,6 @@ ip a
 ```bash
 sudo nano /etc/netplan/00-installer-config.yaml
 ```
-ctrl + x ctrl + y enter
-
 
 ## network Configuration
 - კონფიგურაციის ფაილი:
@@ -36,7 +34,11 @@ network:
       nameservers:
         addresses: [1.1.1.1, 8.8.8.8]
 ```
-
+!!! tip
+    ++ctrl+x++ დაგეხმარება გახსნილი ფაილის დახურვაში <br>
+    ++ctrl+y++ დაგეხმარება დასტურში ფაილის სახელზე <br>
+    ++enter++ უბრალოდ თანხმობა და ფაილი დაიხურება <br>
+    
 ## Secure File Permissions
 
 Netplan-ის ფაილს ვუწერთ უსაფრთხო უფლებებს:
@@ -50,3 +52,12 @@ sudo chmod 600 /etc/netplan/00-installer-config.yaml
 ```bash
 sudo netplan apply
 ```
+
+## Test
+
+მისამართების ნახვა: ip a (ნახე, გაუჩნდა თუ არა enp0s8-ს IP 
+მისამართი, მაგალითად 10.0.2.15). <br>
+
+გარე კავშირის შემოწმება (IP-ით): ping -c 4 8.8.8.8 (თუ პინგები გადის, ე.ი. ინტერნეტი არის, მაგრამ სახელს ვერ ხსნის). <br>
+
+DNS-ის შემოწმება (სახელით): ping -c 4 google.com <br>
