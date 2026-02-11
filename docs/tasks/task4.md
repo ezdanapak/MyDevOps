@@ -1,5 +1,18 @@
 
-
+```bash
+# SSH სერვერის ინსტალაცია და კონფიგურაცია
+systemctl status ssh
+sudo apt update
+sudo apt install openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+```bash
+# Firewall კონფიგურაცია
+sudo ufw status
+sudo ufw allow ssh
+sudo ufw allow 22
+```
 
 MobaXterm SSH Key Generator
 key passphrase: ----

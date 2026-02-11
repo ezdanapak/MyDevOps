@@ -177,26 +177,12 @@ MyDevOps/
 
 ### 🎯 როგორ გამოვიყენო ეს რეპოზიტორია?
 
-**1. დოკუმენტაციის დათვალიერება:**
+**1. დოკუმენტაცია:**
 
-```bash
-# რეპოზიტორიის კლონირება
-git clone https://github.com/yourusername/MyDevOps.git
-cd MyDevOps
-
-# Python virtual environment (რეკომენდებული)
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
-
-# MkDocs-ის ინსტალაცია
-pip install mkdocs mkdocs-material
-
-# დოკუმენტაციის ლოკალურად გაშვება
-mkdocs serve
-```
-
-🌐 დოკუმენტაცია ხელმისაწვდომი იქნება: **http://127.0.0.1:8000**
+🌐 ხელმისაწვდომია ვებზე: 
+**[github repo web MyDevOps](https://ezdanapak.github.io/MyDevOps/)**
+ან
+**[devops.kapanadze.dev](https://devops.kapanadze.dev/)**
 
 **2. თითოეული Task-ის დეტალები:**
 

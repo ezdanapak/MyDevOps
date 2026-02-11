@@ -1,81 +1,72 @@
     ┌──────────────────────────────────────────────────────────────────────┐
-    │                 • MobaXterm Personal Edition v26.0 •                 │
-    │               (SSH client, X server and network tools)               │
-    │                                                                      │
-    │ ⮞ SSH session to k@192.168.56.101                                    │
-    │   • Direct SSH      :  ✓                                             │
-    │   • SSH compression :  ✓                                             │
-    │   • SSH-browser     :  ✓                                             │
-    │   • X11-forwarding  :  ✓  (remote display is forwarded through SSH)  │
-    │                                                                      │
-    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    │                 • MobaXterm Personal Edition v26.0 •           │
+    │               (SSH client, X server and network tools)         │
+    │                                                                │
+    │ ⮞ SSH session to k@192.168.56.101                              │
+    │   • Direct SSH      :  ✓                                       │
+    │   • SSH compression :  ✓                                       │
+    │   • SSH-browser     :  ✓                                       │
+    │   • X11-forwarding  :  ✓                                       │
+    │                                                                │
+    │ ⮞ For more info, ctrl+click on help or visit our website.      │
     └──────────────────────────────────────────────────────────────────────┘
 
+
+# MobaXterm Initial Terminal Setup
+
+ეს არის MobaXterm Personal Edition v26.0-ის პირველი გახსნა და Ubuntu სერვერზე ლოგინი.
+
+---
+
+## Session to `k@192.168.56.101`
+
+- **Features enabled:**
+  - Direct SSH: ✓
+  - SSH compression: ✓
+  - SSH-browser: ✓
+  - X11-forwarding: ✓ (remote display forwarded through SSH)
+
+- **Ubuntu Login Message:**
 Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-100-generic x86_64)
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/pro
+[Documentation:](https://help.ubuntu.com)
 
- System information as of Tue Feb 10 03:01:46 PM UTC 2026
+[Management:](https://landscape.canonical.com)
 
-  System load: 0.37               Memory usage: 3%   Processes:       171
-  Usage of /:  27.9% of 23.44GB   Swap usage:   0%   Users logged in: 1
+[Support:](https://ubuntu.com/pro)
 
-
-Expanded Security Maintenance for Applications is not enabled.
-
-68 updates can be applied immediately.
-To see these additional updates run: apt list --upgradable
-
-Enable ESM Apps to receive additional future security updates.
-See https://ubuntu.com/esm or run: sudo pro status
+System information: <br>
+- System load: 0.37 <br>
+- Memory usage: 3% <br>
+- Processes: 171 <br>
+- Usage of /: 27.9% of 23.44GB <br>
+- Swap usage: 0% <br>
+- Users logged in: 1 <br>
 
 
-/usr/bin/xauth:  file /home/k/.Xauthority does not exist
-k@devserver:~$
+!!! note "**Notes:**"
+    Expanded Security Maintenance (ESM) is not enabled. <br>
+    68 updates available immediately. <br>
+    `/usr/bin/xauth: file /home/k/.Xauthority does not exist` <br>
 
+---
 
+## Recovery Session `k@192.168.56.102`
 
-Recovery Ubuntu
-
-k@192.168.56.102's password:
-    ┌──────────────────────────────────────────────────────────────────────┐
-    │                 • MobaXterm Personal Edition v26.0 •                 │
-    │               (SSH client, X server and network tools)               │
-    │                                                                      │
-    │ ⮞ SSH session to k@192.168.56.102                                    │
-    │   • Direct SSH      :  ✓                                             │
-    │   • SSH compression :  ✓                                             │
-    │   • SSH-browser     :  ✓                                             │
-    │   • X11-forwarding  :  ✓  (remote display is forwarded through SSH)  │
-    │                                                                      │
-    │ ⮞ For more info, ctrl+click on help or visit our website.            │
-    └──────────────────────────────────────────────────────────────────────┘
-
+- **Features enabled:** იგივე როგორც ზემოთ
+- **Ubuntu Login Message:**
 Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-100-generic x86_64)
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/pro
-
- System information as of Wed Feb 11 08:00:46 AM UTC 2026
-
-  System load: 0.22               Memory usage: 2%   Processes:       144
-  Usage of /:  13.5% of 48.91GB   Swap usage:   0%   Users logged in: 1
-
-
-Expanded Security Maintenance for Applications is not enabled.
-
-67 updates can be applied immediately.
-To see these additional updates run: apt list --upgradable
-
-Enable ESM Apps to receive additional future security updates.
-See https://ubuntu.com/esm or run: sudo pro status
+System information:
+- System load: 0.22
+- Memory usage: 2%
+- Processes: 144
+- Usage of /: 13.5% of 48.91GB
+- Swap usage: 0%
+- Users logged in: 1
 
 
-/usr/bin/xauth:  file /home/k/.Xauthority does not exist
-To run a command as administrator (user "root"), use "sudo <command>".
-See "man sudo_root" for details.
-
-k@devopsrecovery:~$
+!!! note "**Notes:**"
+    - 67 updates available immediately.
+    - `/usr/bin/xauth: file /home/k/.Xauthority does not exist`
+    - Root commands require `sudo`.
