@@ -14,6 +14,7 @@ nav:
       - Virtualbox Setup: setup/setup-virtualbox.md
       - Ubuntu Setup: setup/setup-ubuntu.md
       - MobaXterm Setup: setup/setup-mobaxterm.md
+      - Ubuntu Recovery Setup: setup/setup-ubuntu-recovery.md
       
   - Tasks:
       - Task board: tasks/task.md
