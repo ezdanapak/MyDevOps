@@ -1,11 +1,23 @@
 Task 6 — User and Permission Management
 
+## მომხმარებლების შექმნა
 
-Developer-ის შექმნა: sudo adduser developer
+Developer-ის შექმნა: 
+```bash
+sudo adduser developer
+```
 
-Deploy-ის შექმნა: sudo adduser deploy
+Deploy-ის შექმნა: 
+```bash
+sudo adduser deploy
+```
+
+!!! tip "მომხმარებლის პარამეტრები"
+        დამატების დროს კონსოლშივე გაძლევს ახალ დეტალებს შესავსებად
+        შეგიძლია გამოტოვო თამამად
 
 
+```console
 k@devserver:~$ sudo adduser developer
 info: Adding user `developer' ...
 info: Selecting UID/GID from range 1000 to 59999 ...
@@ -26,6 +38,8 @@ Enter the new value, or press ENTER for the default
 Is the information correct? [Y/n] Y
 info: Adding new user `developer' to supplemental / extra groups `users' ...
 info: Adding user `developer' to group `users' ...
+
+
 k@devserver:~$ sudo adduser deploy
 info: Adding user `deploy' ...
 info: Selecting UID/GID from range 1000 to 59999 ...
@@ -46,26 +60,42 @@ Enter the new value, or press ENTER for the default
 Is the information correct? [Y/n]
 info: Adding new user `deploy' to supplemental / extra groups `users' ...
 info: Adding user `deploy' to group `users' ...
+```
 
+## უფლებების განსაზღვრა
 
-Ubuntu-ში მომხმარებელს sudo უფლება ეძლევა მისი დამატებით sudo ჯგუფში.
+!!! info "Sudo ჯგუფი"
+        Ubuntu-ში მომხმარებელს sudo უფლება ეძლევა მისი დამატებით sudo ჯგუფში.
 
-მიეცი უფლება developer-ს: sudo usermod -aG sudo developer (აქ -aG ნიშნავს "Add to Group").
-
-
+მიეცი უფლება developer-ს (აქ -aG ნიშნავს "Add to Group").
+```bash
 sudo usermod -aG sudo developer
+``` 
+!!! warning "Sudo - ს გარეშე"
+        deploy მომხმარებელს არაფერს ვუშვებით, ის ავტომატურად დარჩება ჩვეულებრივ მომხმარებლად sudo-ს გარეშე.
 
-deploy მომხმარებელს არაფერს ვუშვებით, ის ავტომატურად დარჩება ჩვეულებრივ მომხმარებლად sudo-ს გარეშე.
+## გატესტვა
 
+დეველოპერის გატესტვა SUDO - ზე <br>
 
-დეველოპერის გატესტვა SUDO
-
-k@devserver:~$ su - developer
+შეცვალე მომხმარებელი ბაშში
+```bash
+su - developer
+```
+კონსოლში ასე უნდა გამოიყურებოდეს დეველოპერის მომხმარებელი <br>
+რომელიც @ განთავსებულია devserver - ზე <br>
+developer@devserver:~$ 
+```console
 Password:
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
+```
 
-developer@devserver:~$ sudo apt update
+ბრძანება გაუშვი ისეთი რომელიც root უფლებებს მოითხოვს
+```bash
+sudo apt update
+```
+```console
 [sudo] password for developer:
 Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
 Hit:2 http://ge.archive.ubuntu.com/ubuntu noble InRelease
@@ -77,18 +107,30 @@ Reading state information... Done
 2 packages can be upgraded. Run 'apt list --upgradable' to see them.
 developer@devserver:~$
 
+```
 
+!!! warning "deploy მომხმარებელი"
+        deploy  - ს არ აქვს უფლება
 
-deploy  - ს არ აქვს უფლება
-
+გადაანაცვლე მომხმარებელი
+```bash
 k@devserver:~$ su - deploy
+```
+```console
 Password:
-deploy@devserver:~$ sudo apt update
+```
+
+გატესტე 
+```bash
+sudo apt update
+```
+
+```bash
 [sudo] password for deploy:
 deploy is not in the sudoers file.
+```
+!!! tip "მაგიური სიტყვა"
+        სტანდარტულ მომხმარებელზე დასაბრუნებლად გამოიყენე exit
 
 
-მაგიური სიტყვა სტანდარტულ მომხმარებელზე დასაბრუნებლად
-
-exit
 
