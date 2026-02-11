@@ -66,3 +66,119 @@ sudo -u postgres pg_dumpall > full_postgres_backup.sql
 
 k@devserver:~$ sudo -u postgres pg_dump kutaisi_db > db_backup.sql
 sudo -u postgres pg_dumpall > full_postgres_backup.sql
+
+
+1 VM იდან მეორეში გადატანა ბაზის და აღდგენა
+
+
+scp ./db_backup.sql k@192.168.56.102:/home/k/
+
+
+
+k@devserver:~$ scp /home/ubuntu/db_backup.sql k@192.168.56.102:/home/k/
+scp: stat local "/home/ubuntu/db_backup.sql": No such file or directory
+k@devserver:~$ ^C
+k@devserver:~$ find ~ -name "db_backup.sql" 2>/dev/null
+/home/k/db_backup.sql
+k@devserver:~$ scp ./db_backup.sql k@192.168.56.102:/home/k/
+The authenticity of host '192.168.56.102 (192.168.56.102)' can't be established.
+ED25519 key fingerprint is SHA256:eBJS0fVtN6LSkHIAMom2t3hxQ+SNE7Jqp8s3mGr44ds.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? Y
+Please type 'yes', 'no' or the fingerprint: yes
+Warning: Permanently added '192.168.56.102' (ED25519) to the list of known hosts.
+k@192.168.56.102's password:
+db_backup.sql  
+
+ვნახოთ დირექტორია
+
+k@devopsrecovery:~$ ls
+db_backup.sql
+k@devopsrecovery:~$ ls -lh /home/k/db_backup.sql
+-rw-rw-r-- 1 k k 2.3K Feb 11 08:22 /home/k/db_backup.sql
+k@devopsrecovery:~$ sudo -u postgres psql database_name < /home/k/db_backup.sql
+SET
+SET
+SET
+SET
+SET
+ set_config
+------------
+
+(1 row)
+
+SET
+SET
+SET
+SET
+SET
+SET
+CREATE TABLE
+ERROR:  role "kapo" does not exist
+CREATE SEQUENCE
+ERROR:  role "kapo" does not exist
+ALTER SEQUENCE
+ALTER TABLE
+COPY 2
+ setval
+--------
+      2
+(1 row)
+
+ALTER TABLE
+
+
+შევქმნათ როლი
+
+sudo -u postgres psql -c "CREATE ROLE kapo WITH LOGIN SUPERUSER PASSWORD '0000';"
+
+შევამოწმოთ ცხრილები 
+sudo -u postgres psql -d database_name -c "SELECT * FROM students;"
+
+
+ახლა სერვერის
+
+sudo tar -cvzf ~/app_files.tar.gz /var/www/html /etc/nginx
+
+გადავუგზავნოთ 
+scp ~/app_files.tar.gz k@192.168.56.102:/home/k/
+
+k@devserver:~$ sudo tar -cvzf ~/app_files.tar.gz /var/www/html /etc/nginx
+[sudo] password for k:
+tar: Removing leading `/' from member names
+/var/www/html/
+/var/www/html/index.html
+tar: Removing leading `/' from hard link targets
+/var/www/html/index.nginx-debian.html
+/etc/nginx/
+/etc/nginx/modules-enabled/
+/etc/nginx/uwsgi_params
+/etc/nginx/mime.types
+/etc/nginx/sites-enabled/
+/etc/nginx/sites-enabled/docker-proxy
+/etc/nginx/sites-available/
+/etc/nginx/sites-available/default
+/etc/nginx/sites-available/docker-proxy
+/etc/nginx/snippets/
+/etc/nginx/snippets/snakeoil.conf
+/etc/nginx/snippets/fastcgi-php.conf
+/etc/nginx/scgi_params
+/etc/nginx/ssl/
+/etc/nginx/ssl/server.crt
+/etc/nginx/ssl/server.key
+/etc/nginx/modules-available/
+/etc/nginx/fastcgi_params
+/etc/nginx/koi-utf
+/etc/nginx/nginx.conf
+/etc/nginx/koi-win
+/etc/nginx/win-utf
+/etc/nginx/fastcgi.conf
+/etc/nginx/proxy_params
+/etc/nginx/conf.d/
+k@devserver:~$ scp ~/app_files.tar.gz k@192.168.56.102:/home/k/
+k@192.168.56.102's password:
+app_files.tar.gz 
+
+# nginx
+sudo apt install nginx
+sudo systemctl restart nginx

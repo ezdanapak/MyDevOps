@@ -61,7 +61,7 @@
 | 21 | **Disk Space Management** — cleanup 30+ day files | ✅ | |
 | 22 | **Network Diagnostics** — ports, connections | ✅ | |
 | 23 | **Security Audit** — users, sudo, fail2ban | ✅ | |
-| 24 | **Disaster Recovery Test** — full backup → restore | ⏳ | |
+| 24 | **Disaster Recovery Test** — full backup → restore | ✅ | |
 | 25 | **Performance Optimization** — disable services, tune configs | ⏳ | |
 
 ### ბლოკი 5 — Documentation (Task 26)
