@@ -1,11 +1,18 @@
-PostgreSQL Installation & Setup
+Task 10 — Database Installation
 
 
+## PostgreSQL
+მე არჩევანი გავაკეთე PostgreSQL - ზე
 
+ინსტალაციამდე რეპოზიტორების განახლება სასურველია
+```bash
 sudo apt update
+```
+```bash
 sudo apt install postgresql postgresql-contrib -y
+```
 
-
+```console
 k@devserver:~$ sudo apt install postgresql postgresql-contrib -y
 Reading package lists... Done
 Building dependency tree... Done
@@ -140,11 +147,14 @@ User sessions running outdated binaries:
  k @ user manager service: systemd[1006]
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
+```
 
-სერვისის შემოწმება:
+## სერვისის შემოწმება
 
+```bash
 sudo systemctl status postgresql
-
+```
+```console
 k@devserver:~$ sudo systemctl status postgresql
 ● postgresql.service - PostgreSQL RDBMS
      Loaded: loaded (/usr/lib/systemd/system/postgresql.service; enabled; preset: enabled)
@@ -154,39 +164,67 @@ k@devserver:~$ sudo systemctl status postgresql
 
 Feb 10 17:32:12 devserver systemd[1]: Starting postgresql.service - PostgreSQL RDBMS...
 Feb 10 17:32:12 devserver systemd[1]: Finished postgresql.service - PostgreSQL RDBMS.
+```
 
 
-Database-ისა და User-ის შექმნა:
+## Database-ისა და User-ის შექმნა
 
-k@devserver:~$ sudo -u postgres psql
+```bash
+sudo -u postgres psql
+```
+
+```console
 psql (16.11 (Ubuntu 16.11-0ubuntu0.24.04.1))
 Type "help" for help.
+```
 
+## ბაზის და მომხმარებლის შექმნა
+ბაზის სახელი, მომხმარებელი და პაროლი არის შაბლონური, 
+შეცვლა შესაძლებელია.
+```sql
 postgres=# CREATE USER kapo WITH PASSWORD '0000'; CREATE DATABASE kutaisi_db OWNER kapo; GRANT ALL PRIVILEGES ON DATABASE kutaisi_db TO kapo; \q
 CREATE ROLE
 CREATE DATABASE
 GRANT
+```
 
+```bash
+psql -U kapo -d kutaisi_db -h localhost
+```
 
-k@devserver:~$ psql -U kapo -d kutaisi_db -h localhost
+```console
 Password for user kapo:
 psql (16.11 (Ubuntu 16.11-0ubuntu0.24.04.1))
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)
 Type "help" for help.
-
+```
+```sql
 kutaisi_db=>
+```
 
-
-არ დაგვჭირდა კონფიგურაციის შეცვლა
-
+## კონფიგურაცია
+კონფიგურაციის შეცვლის სურვილი თუ გექნება, წვდომის და უსაფრთხოების გამო
+```bash
 sudo nano /etc/postgresql/$(ls /etc/postgresql/)/main/pg_hba.conf
+```
 
-\dt — ცხრილების სიის ნახვა, \q — გასასვლელად.
+!!! tip
+    ++ctrl+x++ დაგეხმარება გახსნილი ფაილის დახურვაში <br>
+    ++ctrl+y++ დაგეხმარება დასტურში ფაილის სახელზე <br>
+    ++enter++ უბრალოდ თანხმობა და ფაილი დაიხურება <br>
 
+!!! hint "შეიძლება გამოგადგეს"
+    \dt — ცხრილების სიის ნახვა, \q — გასასვლელად.
+
+```bash
 sudo systemctl restart postgresql
-თავიდან დაკავშირება ბაზაზე:
-bashpsql -U kapo -d kutaisi_db -h localhost
+```
 
+თავიდან დაკავშირება ბაზაზე:
+```sql
+bashpsql -U kapo -d kutaisi_db -h localhost
+```
+```sql
 CREATE TABLE students (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -201,19 +239,19 @@ INSERT INTO students (name, email) VALUES
 SELECT * FROM students;
 ```
 
-**6. შედეგის დადასტურება:**
-```
+## **შედეგის გადამოწმება:**
+```sql
  id |       name        |       email        |      enrolled_at
 ----+-------------------+--------------------+------------------------
   1 | ნიკა გელაშვილი     | nika@example.com   | 2026-02-10 ...
   2 | მარიამ ჩხეიძე      | mariam@example.com | 2026-02-10 ...
+```
 
-
-\dt — ცხრილების სიის ნახვა, \q — გასასვლელად.
-
+```sql
 kutaisi_db-> \dt
          List of relations
  Schema |   Name   | Type  | Owner
 --------+----------+-------+-------
  public | students | table | kapo
 (1 row)
+```

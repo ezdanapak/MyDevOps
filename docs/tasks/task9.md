@@ -1,10 +1,26 @@
+Task 9 — Custom Website Deploy
 
-Custom Website Deploy
+## საკუთარი ვებ გვერდი
+ვებ სერვერზე გასაშვებად დავაგენერირებინოთ AI - ს სასურველი შაბლონური გვერდი<br>
+გავხსნათ ფაილი 
 
-ვებ გვერდი 
 
+
+```bash
 sudo nano /var/www/html/index.html
+```
+დავაკოპიროთ ++ctrl+c++ და ++ctrl+v++ AI - ს შემოქმედება <br>
+და ჩავუშვათ index.html ფაილში <br>
 
+!!! tip
+    ++ctrl+x++ დაგეხმარება გახსნილი ფაილის დახურვაში <br>
+    ++ctrl+y++ დაგეხმარება დასტურში ფაილის სახელზე <br>
+    ++enter++ უბრალოდ თანხმობა და ფაილი დაიხურება <br>
+
+## შაბლონი ვებ გვერდი
+ეს ჩემი შემოქმედებაა და შაბლონად სრულებით საკმარისი, შეგიძლია ისარგებლო. 
+
+```html
 <!DOCTYPE html>
 <html lang="ka">
 <head>
@@ -425,16 +441,24 @@ sudo nano /var/www/html/index.html
 
 </body>
 </html>
+```
 
+## უფლებების დაყენება
 
-
-უფლებების დაყენება:
-bashsudo chown www-data:www-data /var/www/html/index.html
+```bash
+sudo chown www-data:www-data /var/www/html/index.html
+```
+```bash
 sudo chmod 644 /var/www/html/index.html
-4. Nginx-ის რესტარტი (არ არის სავალდებულო, მაგრამ უსაფრთხოდ):
-bashsudo systemctl restart nginx
 ```
 
-**5. Browser-ში შემოწმება:**
+## Nginx
+```bash
+sudo systemctl restart nginx
 ```
+
+## **Browser-ში შემოწმება:**
+
+```console
 http://192.168.56.101/
+```

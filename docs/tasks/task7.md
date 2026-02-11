@@ -1,28 +1,64 @@
+Task 7 — Firewall Setup
 
+## პორტების გახსნა
 
-პორტების გახსნა
+სტანდარტულად ასე გამოიყურება პორტები და მათი ტიპები. <br>
+სანამ Firewall-ს გაააქტიურებ, სათითაოდ გახსენი ის "კარები", რომლებიც გჭირდება: <br>
 
-SSH (პორტი 22): sudo ufw allow ssh (ან sudo ufw allow 22/tcp)
+- SSH (პორტი 22): 
+```bash
+sudo ufw allow ssh (ან sudo ufw allow 22/tcp)
+```
 
-HTTP (პორტი 80): sudo ufw allow http (ან sudo ufw allow 80/tcp)
+- HTTP (პორტი 80): 
+```bash
+sudo ufw allow http (ან sudo ufw allow 80/tcp)
+```
 
-HTTPS (პორტი 443): sudo ufw allow https (ან sudo ufw allow 443/tcp)
+- HTTPS (პორტი 443): 
+```bash
+sudo ufw allow https (ან sudo ufw allow 443/tcp)
+```
 
-k@devserver:~$ sudo ufw allow ssh
+გაუშვი კონსოლში ბრძანება
+```bash
+sudo ufw allow ssh
+```
+```bash
+sudo ufw allow http
+```
+```bash
+sudo ufw allow https
+```
+
+კონსოლი ყველა ჯერზე უნდა გიბრუნებდეს პასუხს
+```console
 Rules updated
 Rules updated (v6)
-k@devserver:~$ sudo ufw allow http
-Rules updated
-Rules updated (v6)
-k@devserver:~$ sudo ufw allow https
-Rules updated
-Rules updated (v6)
+```
+ჩართე Firewall
+ახლა, როცა SSH დაშვებულია, შეგიძლია უსაფრთხოდ ჩართო სისტემა:
 
-k@devserver:~$ sudo ufw enable
+## დამცავი კედელი
+
+```bash
+sudo ufw enable
+```
+
+!!! warning "ბრძანების შესრულებისას"
+    კონსოლი აუცილებლად გაგაფრთხილებთ არსებული კავშირების გაწყვეტაზე და 
+    უნდა დაეთანხმო ++y++ და ++enter++ დაწკაპებით
+
+
+```console
 Command may disrupt existing ssh connections. Proceed with operation (y|n)? Y
 Firewall is active and enabled on system startup
-
-k@devserver:~$ sudo ufw status verbose
+```
+გადაამოწმე სტატუსი
+```console
+sudo ufw status verbose
+```
+```console
 Status: active
 Logging: on (low)
 Default: deny (incoming), allow (outgoing), disabled (routed)
@@ -36,10 +72,10 @@ To                         Action      From
 22/tcp (v6)                ALLOW IN    Anywhere (v6)
 80/tcp (v6)                ALLOW IN    Anywhere (v6)
 443 (v6)                   ALLOW IN    Anywhere (v6)
+```
 
-k@devserver:~$
 
-რას ნიშნავს
-Deny incoming: ყველაფერი, რაც შენს სერვერზე შემოდის და არ არის პორტი 22, 80 ან 443, ავტომატურად დაიბლოკება.
+!!! info "რას ნიშნავს"
+    Deny incoming: ყველაფერი, რაც შენს სერვერზე შემოდის და არ არის პორტი 22, 80 ან 443, ავტომატურად დაიბლოკება.
 
-Allow outgoing: შენს სერვერს შეუძლია ნებისმიერ პორტზე გავიდეს გარეთ (მაგალითად, განახლებების გადმოსაწერად).
+    Allow outgoing: შენს სერვერს შეუძლია ნებისმიერ პორტზე გავიდეს გარეთ (მაგალითად, განახლებების გადმოსაწერად).

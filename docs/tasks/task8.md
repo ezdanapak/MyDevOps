@@ -1,8 +1,13 @@
-ვებ სერვერის ინსტალაცია
+Task 8 — Web Server Installation
 
 
+## nginx ინსტალაცია
 
-k@devserver:~$ sudo apt install nginx -y
+```bash
+sudo apt install nginx -y
+```
+
+```console
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
@@ -56,14 +61,26 @@ User sessions running outdated binaries:
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
 
+```
+
 
 სერვისის გაშვება ჩართვა და გადამოწმება
-
-k@devserver:~$ sudo systemctl start nginx
-k@devserver:~$ sudo systemctl enable nginx
+```bash
+sudo systemctl start nginx
+```
+```bash
+sudo systemctl enable nginx
+```
+```console
 Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
 Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+```
+
+```bash
 k@devserver:~$ sudo systemctl status nginx
+```
+
+```console
 ● nginx.service - A high performance web server and a reverse proxy server
      Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
      Active: active (running) since Tue 2026-02-10 17:12:39 UTC; 1min 19s ago
@@ -81,20 +98,26 @@ k@devserver:~$ sudo systemctl status nginx
 
 Feb 10 17:12:39 devserver systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
 Feb 10 17:12:39 devserver systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
+```
 
+## Firewall
 
 Firewall-ში HTTP-ის დაშვება UFW ჩართულია:
-bashsudo ufw allow 'Nginx HTTP'
+
+```bash
+sudo ufw allow 'Nginx HTTP'
+```
+სტატუსის შემოწმება
+```bash
 sudo ufw status
+```
 
-
-
-ლოკალური ტესტი სერვერზევე:
+## ლოკალური ტესტი სერვერზე:
 ```bash
 curl http://localhost
 ```
-
-k@devserver:~$ curl http://localhost
+თუ ამ html ფაილს დაინახავ ესეიგი ყველაფერი კარგად არის და სერვერი მუშაობს!
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -118,10 +141,18 @@ Commercial support is available at
 <p><em>Thank you for using nginx.</em></p>
 </body>
 </html>
+```
 
+## IP მისამართზე ვებ სერვერი
 
-http://192.168.56.101/
+მისამართი Ubuntu server მა რაც აიღო სტანდარტულად 80 პორტზე მუშაობს ვებ სერვერი <br>
+თუ გვინდა რომ სხვა კომპიუტერიდან(იმავე ქსელის შიდა როუტერით) მივწვდეთ სერვერს უნდა <br> გამოვიყენოთ ნებისმიერ ინტერნეტ ბრაუზერში მისი IP.
 
+```console
+http://192.168.56.101/ 
+```
+უნდა ხედავდე ამ შეტყობინებას იგივენაირად
+```html
 Welcome to nginx!
 If you see this page, the nginx web server is successfully installed and working. Further configuration is required.
 
@@ -129,3 +160,4 @@ For online documentation and support please refer to nginx.org.
 Commercial support is available at nginx.com.
 
 Thank you for using nginx.
+```
