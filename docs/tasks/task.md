@@ -18,44 +18,7 @@
 ---
 ## დიაგრამა
 
-flowchart TD
-
-T1["Task 1<br/>Virtual Machine Setup"]
-T2["Task 2<br/>Network Setup"]
-T3["Task 3<br/>Static IP Configuration"]
-T4["Task 4<br/>SSH Configuration"]
-T5["Task 5<br/>System Update"]
-T6["Task 6<br/>User & Permission Management"]
-T7["Task 7<br/>Firewall Setup"]
-T8["Task 8<br/>Web Server Installation"]
-T9["Task 9<br/>Custom Website Deploy"]
-T10["Task 10<br/>Database Installation"]
-T11["Task 11<br/>Automated Backup Script"]
-T12["Task 12<br/>Cron Automation"]
-T13["Task 13<br/>Log Monitoring"]
-T14["Task 14<br/>Docker Installation"]
-T15["Task 15<br/>Containerized Application"]
-T16["Task 16<br/>Reverse Proxy Configuration"]
-T17["Task 17<br/>SSL Certificate"]
-T18["Task 18<br/>Git Repository Setup"]
-T19["Task 19<br/>Deployment Script"]
-T20["Task 20<br/>System Resource Monitoring"]
-T21["Task 21<br/>Disk Space Management"]
-T22["Task 22<br/>Network Diagnostics"]
-T23["Task 23<br/>Security Audit"]
-T24["Task 24<br/>Disaster Recovery Test"]
-T25["Task 25<br/>Performance Optimization"]
-T26["Task 26<br/>Documentation"]
-T27["Task 27<br/>Final Presentation"]
-
-T1 --> T2 --> T3 --> T4 --> T5 --> T6 --> T7 --> T8 --> T9 --> T10
-T10 --> T11 --> T12 --> T13 --> T14 --> T15 --> T16 --> T17 --> T18 --> T19
-T19 --> T20 --> T21 --> T22 --> T23 --> T24 --> T25 --> T26 --> T27
-
-
-
-მეორე
-
+```mermaid
 flowchart TB
 
 subgraph SETUP["🛠 Setup & Basics"]
@@ -132,58 +95,8 @@ T24 --> T25
 T25 --> T18
 T18 --> T26
 T26 --> T27
+```
 
-
-მესამე 
-
-flowchart LR
-
-Start([Start])
-
-Start --> T1 --> T2 --> T3 --> T4 --> T5
-
-T5 --> T6 --> T7 --> T13 --> T23
-
-T5 --> T8 --> T9 --> T10 --> T16 --> T17
-
-T17 --> T11 --> T12 --> T14 --> T15 --> T19
-
-T19 --> T20 --> T21 --> T22 --> T24 --> T25
-
-T25 --> T18 --> T26 --> T27 --> End([Finish])
-
-T1["VM Setup"]
-T2["Network"]
-T3["Static IP"]
-T4["SSH"]
-T5["Update"]
-
-T6["Users"]
-T7["Firewall"]
-T8["Nginx"]
-T9["Website"]
-T10["Database"]
-
-T11["Backup"]
-T12["Cron"]
-T13["Logs"]
-T14["Docker"]
-T15["Containers"]
-
-T16["Proxy"]
-T17["SSL"]
-T18["Git"]
-T19["Deploy"]
-
-T20["Monitoring"]
-T21["Disk"]
-T22["Network Check"]
-T23["Security Audit"]
-T24["Recovery"]
-T25["Optimize"]
-
-T26["Docs"]
-T27["Presentation"]
 
 ## 📋 ამოცანები
 
@@ -230,7 +143,7 @@ T27["Presentation"]
 | 22 | **Network Diagnostics** — ports, connections | ✅ | |
 | 23 | **Security Audit** — users, sudo, fail2ban | ✅ | |
 | 24 | **Disaster Recovery Test** — full backup → restore | ✅ | |
-| 25 | **Performance Optimization** — disable services, tune configs | ⏳ | |
+| 25 | **Performance Optimization** — disable services, tune configs | ✅ | |
 
 ### ბლოკი 5 — Documentation (Task 26)
 
@@ -242,9 +155,9 @@ T27["Presentation"]
 
 ## 📊 პროგრესი
 
-- **შესრულებული:** 1 / 26
+- **შესრულებული:** 25 / 26
 - **მიმდინარე:** 1 / 26
-- **დარჩენილი:** 0 / 26
+- **დარჩენილი:** 1 / 26
 
 ---
 

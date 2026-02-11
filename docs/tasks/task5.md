@@ -1,8 +1,10 @@
+Task 5 — System Update
 
-
-რეპოების განახლება
-
+## რეპოების განახლება
+```bash
 k@devserver:~$ sudo apt update
+```
+```console
 [sudo] password for k:
 Hit:1 http://ge.archive.ubuntu.com/ubuntu noble InRelease
 Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
@@ -27,38 +29,59 @@ Building dependency tree... Done
 Reading state information... Done
 70 packages can be upgraded. Run 'apt list --upgradable' to see them.
 k@devserver:~$
+```
 
-
-სისტემის განახლება
+## სისტემის განახლება
+```bash
 apt upgrade -y
+```
 
+## რეპოზიტორების განახლება: 
 
-რეპოზიტორების განახლება: 
-
+```bash
 sudo apt update
+```
+## ინსტალაციები
 
+
+git: კოდის ვერსიების მართვისთვის. <br>
+curl: ფაილების გადმოსაწერად ან API-სთან დასაკავშირებლად ტერმინალიდან. <br>
+vim: ტექსტური რედაქტორი (როცა nano აღარ გყოფნის). <br>
+htop: რომ ნახო, რამდენ ოპერატიულ მეხსიერებას (RAM) და პროცესორს (CPU) იყენებს შენი VM. <br>
+net-tools: ქსელური დიაგნოსტიკისთვის. <br>
+
+```bash 
 Git: sudo apt install -y git
-
+```
+```bash
 Curl: sudo apt install -y curl
-
+```
+```bash
 Vim: sudo apt install -y vim
-
+```
+```bash
 Htop: sudo apt install -y htop
-
+```
+```bash
 Net-tools: sudo apt install -y net-tools
+```
 
 
-
-
+```bash
 k@devserver:~$ sudo apt install -y git
+```
+GIT უკვე დაყენებულია
+```console
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
 git is already the newest version (1:2.43.0-1ubuntu7.3).
 git set to manually installed.
 0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+```
 
-
+curl უკვე დაყენებულია
+```console
 k@devserver:~$ sudo apt install -y curl
 Reading package lists... Done
 Building dependency tree... Done
@@ -66,7 +89,10 @@ Reading state information... Done
 curl is already the newest version (8.5.0-2ubuntu10.6).
 curl set to manually installed.
 0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+```
 
+vim უკვე დაყენებულია
+```console
 k@devserver:~$ sudo apt install -y vim
 Reading package lists... Done
 Building dependency tree... Done
@@ -74,8 +100,10 @@ Reading state information... Done
 vim is already the newest version (2:9.1.0016-1ubuntu7.9).
 vim set to manually installed.
 0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+```
 
-
+htop უკვე დაყენებულია
+```console
 k@devserver:~$ sudo apt install -y htop
 Reading package lists... Done
 Building dependency tree... Done
@@ -83,8 +111,10 @@ Reading state information... Done
 htop is already the newest version (3.3.0-4build1).
 htop set to manually installed.
 0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+```
 
-
+net-tools - ის ინსტალაცია
+```console
 k@devserver:~$ sudo apt install -y net-tools
 Reading package lists... Done
 Building dependency tree... Done
@@ -125,10 +155,14 @@ User sessions running outdated binaries:
  k @ user manager service: systemd[1006]
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
+```
 
+ყველას გადამოწმება
+```bash
+git --version && curl --version && vim --version | head -n 1 && htop --version && ifconfig --version
+```
 
-
-k@devserver:~$ git --version && curl --version && vim --version | head -n 1 && htop --version && ifconfig --version
+```console
 git version 2.43.0
 curl 8.5.0 (x86_64-pc-linux-gnu) libcurl/8.5.0 OpenSSL/3.0.13 zlib/1.3 brotli/1.1.0 zstd/1.5.5 libidn2/2.3.7 libpsl/0.21.2 (+libidn2/2.3.7) libssh/0.10.6/openssl/zlib nghttp2/1.59.0 librtmp/2.3 OpenLDAP/2.6.10
 Release-Date: 2023-12-06, security patched: 8.5.0-2ubuntu10.6
@@ -137,3 +171,4 @@ Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerbe
 VIM - Vi IMproved 9.1 (2024 Jan 02, compiled Sep 05 2025 19:44:46)
 htop 3.3.0
 net-tools 2.10
+```

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://devops.kapanadze.dev/setup/setup-ubuntu/">
+        <link rel="canonical" href="https://devops.kapanadze.dev/tasks/task7/">
       
       
-        <link rel="prev" href="../setup-virtualbox/">
+        <link rel="prev" href="../task6/">
       
       
-        <link rel="next" href="../setup-mobaxterm/">
+        <link rel="next" href="../task8/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Ubuntu ინსტალაცია - MyDevOps Docs</title>
+        <title>Firewall Setup - MyDevOps Docs</title>
       
     
     
@@ -65,11 +65,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#ubuntu_server_installation_guide" class="md-skip">
-          კონტენტზე გადასვლა
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -102,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Ubuntu ინსტალაცია
+              Firewall Setup
             
           </span>
         </div>
@@ -241,10 +236,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -261,11 +254,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -279,7 +272,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             აწყობა
@@ -293,7 +286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../folder/" class="md-nav__link">
+      <a href="../../setup/folder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -314,7 +307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup-virtualbox/" class="md-nav__link">
+      <a href="../../setup/setup-virtualbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -332,30 +325,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Ubuntu ინსტალაცია
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../setup/setup-ubuntu/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -364,53 +337,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      სარჩევი
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#virtual_machine" class="md-nav__link">
-    <span class="md-ellipsis">
-      💻 Virtual Machine რესურსების კონფიგურაცია
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ram_allocation_table" class="md-nav__link">
-    <span class="md-ellipsis">
-      📊 RAM Allocation Table
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      📌 შენიშვნა
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -423,7 +349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup-mobaxterm/" class="md-nav__link">
+      <a href="../../setup/setup-mobaxterm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -444,7 +370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup-recovery-ubuntu/" class="md-nav__link">
+      <a href="../../setup/setup-recovery-ubuntu/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -469,8 +395,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -533,11 +461,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -551,7 +479,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             ამოცანები
@@ -565,7 +493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task/" class="md-nav__link">
+      <a href="../task/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -586,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task1/" class="md-nav__link">
+      <a href="../task1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -607,7 +535,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task2/" class="md-nav__link">
+      <a href="../task2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -628,7 +556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task3/" class="md-nav__link">
+      <a href="../task3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -649,7 +577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task4/" class="md-nav__link">
+      <a href="../task4/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -670,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task5/" class="md-nav__link">
+      <a href="../task5/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -691,7 +619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task6/" class="md-nav__link">
+      <a href="../task6/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -709,10 +637,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../tasks/task7/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -721,6 +656,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -733,7 +669,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task8/" class="md-nav__link">
+      <a href="../task8/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -754,7 +690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task9/" class="md-nav__link">
+      <a href="../task9/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -775,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task10/" class="md-nav__link">
+      <a href="../task10/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -796,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task11/" class="md-nav__link">
+      <a href="../task11/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -817,7 +753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task12/" class="md-nav__link">
+      <a href="../task12/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -838,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task13/" class="md-nav__link">
+      <a href="../task13/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +795,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task14/" class="md-nav__link">
+      <a href="../task14/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -880,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task15/" class="md-nav__link">
+      <a href="../task15/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -901,7 +837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task16/" class="md-nav__link">
+      <a href="../task16/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -922,7 +858,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task17/" class="md-nav__link">
+      <a href="../task17/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -943,7 +879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task18/" class="md-nav__link">
+      <a href="../task18/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -964,7 +900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task19/" class="md-nav__link">
+      <a href="../task19/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -985,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task20/" class="md-nav__link">
+      <a href="../task20/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1006,7 +942,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task21/" class="md-nav__link">
+      <a href="../task21/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1027,7 +963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task22/" class="md-nav__link">
+      <a href="../task22/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1048,7 +984,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task23/" class="md-nav__link">
+      <a href="../task23/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1069,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task24/" class="md-nav__link">
+      <a href="../task24/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1090,7 +1026,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task25/" class="md-nav__link">
+      <a href="../task25/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1111,7 +1047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task26/" class="md-nav__link">
+      <a href="../task26/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1132,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tasks/task27/" class="md-nav__link">
+      <a href="../task27/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1170,43 +1106,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      სარჩევი
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#virtual_machine" class="md-nav__link">
-    <span class="md-ellipsis">
-      💻 Virtual Machine რესურსების კონფიგურაცია
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ram_allocation_table" class="md-nav__link">
-    <span class="md-ellipsis">
-      📊 RAM Allocation Table
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      📌 შენიშვნა
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1224,125 +1123,41 @@
   
 
 
-<h1 id="ubuntu_server_installation_guide">Ubuntu Server Installation Guide<a class="headerlink" href="#ubuntu_server_installation_guide" title="Permanent link">&para;</a></h1>
-<p>ეს დოკუმენტი აღწერს Ubuntu Server-ის ინსტალაციისას გამოყენებულ რესურსებს
-და ვირტუალური მანქანის კონფიგურაციას.</p>
-<hr />
-<h2 id="virtual_machine">💻 Virtual Machine რესურსების კონფიგურაცია<a class="headerlink" href="#virtual_machine" title="Permanent link">&para;</a></h2>
-<p>Ubuntu Server-ის ინსტალაციისას ვირტუალურ მანქანას მიენიჭა შემდეგი რესურსები:</p>
-<ul>
-<li>💾 RAM: <strong>8 GB</strong></li>
-<li>⚙️ CPU: <strong>4 Core</strong></li>
-<li>💽 Disk: <strong>50 GB</strong></li>
-</ul>
-<p>ეს კონფიგურაცია უზრუნველყოფს სტაბილურ მუშაობას DevOps პრაქტიკისთვის.</p>
-<hr />
-<h2 id="ram_allocation_table">📊 RAM Allocation Table<a class="headerlink" href="#ram_allocation_table" title="Permanent link">&para;</a></h2>
-<p>RAM-ის მინიჭებისას VirtualBox-ში მნიშვნელობები შეყვანილია <strong>MB-ებში</strong>.</p>
-<p>ქვემოთ მოცემულია გადაყვანის ცხრილი:</p>
-<table>
-<thead>
-<tr>
-<th>გიგაბაიტი (GB)</th>
-<th>მეგაბაიტი (MB)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4 GB</td>
-<td>4096 MB</td>
-</tr>
-<tr>
-<td>6 GB</td>
-<td>6144 MB</td>
-</tr>
-<tr>
-<td>8 GB</td>
-<td>8192 MB</td>
-</tr>
-<tr>
-<td>10 GB</td>
-<td>10240 MB</td>
-</tr>
-<tr>
-<td>12 GB</td>
-<td>12288 MB</td>
-</tr>
-<tr>
-<td>16 GB</td>
-<td>16384 MB</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_1">📌 შენიშვნა<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<hr />
-<h1 id="ubuntu_server-">Ubuntu Server-ის სტანდარტული კონფიგურაცია<a class="headerlink" href="#ubuntu_server-" title="Permanent link">&para;</a></h1>
-<p>ქვემოთ მოცემულია Ubuntu Server-ის ინსტალაციისა და საწყისი კონფიგურაციისას გამოყენებული ძირითადი პარამეტრები.</p>
-<hr />
-<h2 id="_2">🔧 ძირითადი პარამეტრები<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>პარამეტრი</th>
-<th>მნიშვნელობა (Default)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ენა (Language)</td>
-<td>English (US)</td>
-</tr>
-<tr>
-<td>კლავიატურა (Keyboard)</td>
-<td>English (US)</td>
-</tr>
-<tr>
-<td>ქსელი (Network)</td>
-<td>DHCP (ავტომატური IP მისამართი)</td>
-</tr>
-<tr>
-<td>Mirror მისამართი</td>
-<td>http://ge.archive.ubuntu.com/ubuntu/</td>
-</tr>
-<tr>
-<td>Disk Setup</td>
-<td>LVM – მთლიანი დისკის გამოყენება</td>
-</tr>
-<tr>
-<td>Disk Encryption</td>
-<td>LUKS + Recovery Key (პაროლით)</td>
-</tr>
-<tr>
-<td>SSH</td>
-<td>მონიშნულია გასააქტიურებლად</td>
-</tr>
-<tr>
-<td>OpenSSH Server</td>
-<td>დაინსტალირებულია</td>
-</tr>
-<tr>
-<td>მომხმარებელი</td>
-<td>შექმნილია მომხმარებელი პაროლით</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_3">🔐 უსაფრთხოება<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<ul>
-<li>დისკი დაცულია <strong>LUKS encryption</strong>-ით  </li>
-<li>გამოყენებულია <strong>Recovery Key</strong> აღდგენისთვის  </li>
-<li>დაინსტალირებულია <strong>OpenSSH Server</strong> დისტანციური წვდომისთვის  </li>
-<li>SSH გააქტიურებულია ინსტალაციის დროს  </li>
-</ul>
-<hr />
-<h2 id="openssh_server-">📦 OpenSSH Server-ის ინსტალაცია<a class="headerlink" href="#openssh_server-" title="Permanent link">&para;</a></h2>
-<p>ხელით დაყენების ბრძანება გასახსენებლად:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>openssh-server<span class="w"> </span>-y
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ssh
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>ssh
-</span></code></pre></div>
+  <h1>Firewall Setup</h1>
+
+<p>პორტების გახსნა</p>
+<p>SSH (პორტი 22): sudo ufw allow ssh (ან sudo ufw allow 22/tcp)</p>
+<p>HTTP (პორტი 80): sudo ufw allow http (ან sudo ufw allow 80/tcp)</p>
+<p>HTTPS (პორტი 443): sudo ufw allow https (ან sudo ufw allow 443/tcp)</p>
+<p>k@devserver:~$ sudo ufw allow ssh
+Rules updated
+Rules updated (v6)
+k@devserver:~$ sudo ufw allow http
+Rules updated
+Rules updated (v6)
+k@devserver:~$ sudo ufw allow https
+Rules updated
+Rules updated (v6)</p>
+<p>k@devserver:~$ sudo ufw enable
+Command may disrupt existing ssh connections. Proceed with operation (y|n)? Y
+Firewall is active and enabled on system startup</p>
+<p>k@devserver:~$ sudo ufw status verbose
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip</p>
+<p>To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    Anywhere
+80/tcp                     ALLOW IN    Anywhere
+443                        ALLOW IN    Anywhere
+22/tcp (v6)                ALLOW IN    Anywhere (v6)
+80/tcp (v6)                ALLOW IN    Anywhere (v6)
+443 (v6)                   ALLOW IN    Anywhere (v6)</p>
+<p>k@devserver:~$</p>
+<p>რას ნიშნავს
+Deny incoming: ყველაფერი, რაც შენს სერვერზე შემოდის და არ არის პორტი 22, 80 ან 443, ავტომატურად დაიბლოკება.</p>
+<p>Allow outgoing: შენს სერვერს შეუძლია ნებისმიერ პორტზე გავიდეს გარეთ (მაგალითად, განახლებების გადმოსაწერად).</p>
 
 
 
@@ -1378,7 +1193,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../setup-virtualbox/" class="md-footer__link md-footer__link--prev" aria-label="წინა: Virtualbox ინსტალაცია">
+          <a href="../task6/" class="md-footer__link md-footer__link--prev" aria-label="წინა: User and Permission Management">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1388,20 +1203,20 @@
                 წინა
               </span>
               <div class="md-ellipsis">
-                Virtualbox ინსტალაცია
+                User and Permission Management
               </div>
             </div>
           </a>
         
         
           
-          <a href="../setup-mobaxterm/" class="md-footer__link md-footer__link--next" aria-label="შემდეგი: MobaXterm ინსტალაცია">
+          <a href="../task8/" class="md-footer__link md-footer__link--next" aria-label="შემდეგი: Web Server Installation">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 შემდეგი
               </span>
               <div class="md-ellipsis">
-                MobaXterm ინსტალაცია
+                Web Server Installation
               </div>
             </div>
             <div class="md-footer__button md-icon">

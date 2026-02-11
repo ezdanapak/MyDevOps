@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://devops.kapanadze.dev/setup/setup-ubuntu/">
+        <link rel="canonical" href="https://devops.kapanadze.dev/setup/setup-mobaxterm/">
       
       
-        <link rel="prev" href="../setup-virtualbox/">
+        <link rel="prev" href="../setup-ubuntu/">
       
       
-        <link rel="next" href="../setup-mobaxterm/">
+        <link rel="next" href="../setup-recovery-ubuntu/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Ubuntu ინსტალაცია - MyDevOps Docs</title>
+        <title>MobaXterm ინსტალაცია - MyDevOps Docs</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ubuntu_server_installation_guide" class="md-skip">
+        <a href="#mobaxterm_initial_terminal_setup" class="md-skip">
           კონტენტზე გადასვლა
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Ubuntu ინსტალაცია
+              MobaXterm ინსტალაცია
             
           </span>
         </div>
@@ -332,6 +332,27 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup-ubuntu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ubuntu ინსტალაცია
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -348,7 +369,7 @@
           
   
   <span class="md-ellipsis">
-    Ubuntu ინსტალაცია
+    MobaXterm ინსტალაცია
   </span>
   
 
@@ -359,7 +380,7 @@
         
   
   <span class="md-ellipsis">
-    Ubuntu ინსტალაცია
+    MobaXterm ინსტალაცია
   </span>
   
 
@@ -381,27 +402,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#virtual_machine" class="md-nav__link">
+  <a href="#session_to_k19216856101" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 Virtual Machine რესურსების კონფიგურაცია
+      Session to k@192.168.56.101
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#ram_allocation_table" class="md-nav__link">
+  <a href="#recovery_session_k19216856102" class="md-nav__link">
     <span class="md-ellipsis">
-      📊 RAM Allocation Table
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      📌 შენიშვნა
+      Recovery Session k@192.168.56.102
     </span>
   </a>
   
@@ -411,27 +423,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../setup-mobaxterm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    MobaXterm ინსტალაცია
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1180,27 +1171,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#virtual_machine" class="md-nav__link">
+  <a href="#session_to_k19216856101" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 Virtual Machine რესურსების კონფიგურაცია
+      Session to k@192.168.56.101
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#ram_allocation_table" class="md-nav__link">
+  <a href="#recovery_session_k19216856102" class="md-nav__link">
     <span class="md-ellipsis">
-      📊 RAM Allocation Table
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      📌 შენიშვნა
+      Recovery Session k@192.168.56.102
     </span>
   </a>
   
@@ -1224,125 +1206,74 @@
   
 
 
-<h1 id="ubuntu_server_installation_guide">Ubuntu Server Installation Guide<a class="headerlink" href="#ubuntu_server_installation_guide" title="Permanent link">&para;</a></h1>
-<p>ეს დოკუმენტი აღწერს Ubuntu Server-ის ინსტალაციისას გამოყენებულ რესურსებს
-და ვირტუალური მანქანის კონფიგურაციას.</p>
+<div class="language-text highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────────────────┐
+│                 • MobaXterm Personal Edition v26.0 •           │
+│               (SSH client, X server and network tools)         │
+│                                                                │
+│ ⮞ SSH session to k@192.168.56.101                              │
+│   • Direct SSH      :  ✓                                       │
+│   • SSH compression :  ✓                                       │
+│   • SSH-browser     :  ✓                                       │
+│   • X11-forwarding  :  ✓                                       │
+│                                                                │
+│ ⮞ For more info, ctrl+click on help or visit our website.      │
+└──────────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h1 id="mobaxterm_initial_terminal_setup">MobaXterm Initial Terminal Setup<a class="headerlink" href="#mobaxterm_initial_terminal_setup" title="Permanent link">&para;</a></h1>
+<p>ეს არის MobaXterm Personal Edition v26.0-ის პირველი გახსნა და Ubuntu სერვერზე ლოგინი.</p>
 <hr />
-<h2 id="virtual_machine">💻 Virtual Machine რესურსების კონფიგურაცია<a class="headerlink" href="#virtual_machine" title="Permanent link">&para;</a></h2>
-<p>Ubuntu Server-ის ინსტალაციისას ვირტუალურ მანქანას მიენიჭა შემდეგი რესურსები:</p>
+<h2 id="session_to_k19216856101">Session to <code>k@192.168.56.101</code><a class="headerlink" href="#session_to_k19216856101" title="Permanent link">&para;</a></h2>
 <ul>
-<li>💾 RAM: <strong>8 GB</strong></li>
-<li>⚙️ CPU: <strong>4 Core</strong></li>
-<li>💽 Disk: <strong>50 GB</strong></li>
+<li><strong>Features enabled:</strong></li>
+<li>Direct SSH: ✓</li>
+<li>SSH compression: ✓</li>
+<li>SSH-browser: ✓</li>
+<li>
+<p>X11-forwarding: ✓ (remote display forwarded through SSH)</p>
+</li>
+<li>
+<p><strong>Ubuntu Login Message:</strong>
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-100-generic x86_64)</p>
+</li>
 </ul>
-<p>ეს კონფიგურაცია უზრუნველყოფს სტაბილურ მუშაობას DevOps პრაქტიკისთვის.</p>
+<p><a href="https://help.ubuntu.com">Documentation:</a></p>
+<p><a href="https://landscape.canonical.com">Management:</a></p>
+<p><a href="https://ubuntu.com/pro">Support:</a></p>
+<p>System information: <br>
+- System load: 0.37 <br>
+- Memory usage: 3% <br>
+- Processes: 171 <br>
+- Usage of /: 27.9% of 23.44GB <br>
+- Swap usage: 0% <br>
+- Users logged in: 1 <br></p>
+<div class="admonition note">
+<p class="admonition-title"><strong>Notes:</strong></p>
+<p>Expanded Security Maintenance (ESM) is not enabled. <br>
+68 updates available immediately. <br>
+<code>/usr/bin/xauth: file /home/k/.Xauthority does not exist</code> <br></p>
+</div>
 <hr />
-<h2 id="ram_allocation_table">📊 RAM Allocation Table<a class="headerlink" href="#ram_allocation_table" title="Permanent link">&para;</a></h2>
-<p>RAM-ის მინიჭებისას VirtualBox-ში მნიშვნელობები შეყვანილია <strong>MB-ებში</strong>.</p>
-<p>ქვემოთ მოცემულია გადაყვანის ცხრილი:</p>
-<table>
-<thead>
-<tr>
-<th>გიგაბაიტი (GB)</th>
-<th>მეგაბაიტი (MB)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4 GB</td>
-<td>4096 MB</td>
-</tr>
-<tr>
-<td>6 GB</td>
-<td>6144 MB</td>
-</tr>
-<tr>
-<td>8 GB</td>
-<td>8192 MB</td>
-</tr>
-<tr>
-<td>10 GB</td>
-<td>10240 MB</td>
-</tr>
-<tr>
-<td>12 GB</td>
-<td>12288 MB</td>
-</tr>
-<tr>
-<td>16 GB</td>
-<td>16384 MB</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_1">📌 შენიშვნა<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<hr />
-<h1 id="ubuntu_server-">Ubuntu Server-ის სტანდარტული კონფიგურაცია<a class="headerlink" href="#ubuntu_server-" title="Permanent link">&para;</a></h1>
-<p>ქვემოთ მოცემულია Ubuntu Server-ის ინსტალაციისა და საწყისი კონფიგურაციისას გამოყენებული ძირითადი პარამეტრები.</p>
-<hr />
-<h2 id="_2">🔧 ძირითადი პარამეტრები<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>პარამეტრი</th>
-<th>მნიშვნელობა (Default)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ენა (Language)</td>
-<td>English (US)</td>
-</tr>
-<tr>
-<td>კლავიატურა (Keyboard)</td>
-<td>English (US)</td>
-</tr>
-<tr>
-<td>ქსელი (Network)</td>
-<td>DHCP (ავტომატური IP მისამართი)</td>
-</tr>
-<tr>
-<td>Mirror მისამართი</td>
-<td>http://ge.archive.ubuntu.com/ubuntu/</td>
-</tr>
-<tr>
-<td>Disk Setup</td>
-<td>LVM – მთლიანი დისკის გამოყენება</td>
-</tr>
-<tr>
-<td>Disk Encryption</td>
-<td>LUKS + Recovery Key (პაროლით)</td>
-</tr>
-<tr>
-<td>SSH</td>
-<td>მონიშნულია გასააქტიურებლად</td>
-</tr>
-<tr>
-<td>OpenSSH Server</td>
-<td>დაინსტალირებულია</td>
-</tr>
-<tr>
-<td>მომხმარებელი</td>
-<td>შექმნილია მომხმარებელი პაროლით</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_3">🔐 უსაფრთხოება<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h2 id="recovery_session_k19216856102">Recovery Session <code>k@192.168.56.102</code><a class="headerlink" href="#recovery_session_k19216856102" title="Permanent link">&para;</a></h2>
 <ul>
-<li>დისკი დაცულია <strong>LUKS encryption</strong>-ით  </li>
-<li>გამოყენებულია <strong>Recovery Key</strong> აღდგენისთვის  </li>
-<li>დაინსტალირებულია <strong>OpenSSH Server</strong> დისტანციური წვდომისთვის  </li>
-<li>SSH გააქტიურებულია ინსტალაციის დროს  </li>
+<li><strong>Features enabled:</strong> იგივე როგორც ზემოთ</li>
+<li><strong>Ubuntu Login Message:</strong>
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-100-generic x86_64)</li>
 </ul>
-<hr />
-<h2 id="openssh_server-">📦 OpenSSH Server-ის ინსტალაცია<a class="headerlink" href="#openssh_server-" title="Permanent link">&para;</a></h2>
-<p>ხელით დაყენების ბრძანება გასახსენებლად:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>openssh-server<span class="w"> </span>-y
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ssh
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>ssh
-</span></code></pre></div>
+<p>System information:
+- System load: 0.22
+- Memory usage: 2%
+- Processes: 144
+- Usage of /: 13.5% of 48.91GB
+- Swap usage: 0%
+- Users logged in: 1</p>
+<div class="admonition note">
+<p class="admonition-title"><strong>Notes:</strong></p>
+<ul>
+<li>67 updates available immediately.</li>
+<li><code>/usr/bin/xauth: file /home/k/.Xauthority does not exist</code></li>
+<li>Root commands require <code>sudo</code>.</li>
+</ul>
+</div>
 
 
 
@@ -1378,7 +1309,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../setup-virtualbox/" class="md-footer__link md-footer__link--prev" aria-label="წინა: Virtualbox ინსტალაცია">
+          <a href="../setup-ubuntu/" class="md-footer__link md-footer__link--prev" aria-label="წინა: Ubuntu ინსტალაცია">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1388,20 +1319,20 @@
                 წინა
               </span>
               <div class="md-ellipsis">
-                Virtualbox ინსტალაცია
+                Ubuntu ინსტალაცია
               </div>
             </div>
           </a>
         
         
           
-          <a href="../setup-mobaxterm/" class="md-footer__link md-footer__link--next" aria-label="შემდეგი: MobaXterm ინსტალაცია">
+          <a href="../setup-recovery-ubuntu/" class="md-footer__link md-footer__link--next" aria-label="შემდეგი: Ubuntu Recovery ინსტალაცია">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 შემდეგი
               </span>
               <div class="md-ellipsis">
-                MobaXterm ინსტალაცია
+                Ubuntu Recovery ინსტალაცია
               </div>
             </div>
             <div class="md-footer__button md-icon">
