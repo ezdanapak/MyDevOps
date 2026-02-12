@@ -75,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#task_14_docker_installation" class="md-skip">
+          კონტენტზე გადასვლა
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -827,6 +832,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Docker Installation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -837,6 +855,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="სარჩევი">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 საჭირო პაკეტები
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-_gpg_key_repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔐 Docker-ის ოფიციალური GPG Key და Repository
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 ინსტალაციის პროცესი (Output)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1140,6 +1204,43 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      სარჩევი
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 საჭირო პაკეტები
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-_gpg_key_repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔐 Docker-ის ოფიციალური GPG Key და Repository
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 ინსტალაციის პროცესი (Output)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1157,134 +1258,104 @@
   
 
 
-  <h1>Docker Installation</h1>
-
-<p>Task 14 — Docker Installation</p>
-<p>საჭირო პაკეტები:
-bashsudo apt update
-sudo apt install ca-certificates curl gnupg -y</p>
-<p>Docker-ის ოფიციალური GPG key და repository:</p>
-<p>sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg</p>
-<p>echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</p>
-<p>Docker-ის ინსტალაცია:</p>
-<p>sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y</p>
-<p>k@devserver:~$ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-The following additional packages will be installed:
-  docker-ce-rootless-extras libslirp0 pigz slirp4netns
-Suggested packages:
-  cgroupfs-mount | cgroup-lite docker-model-plugin
-The following NEW packages will be installed:
-  containerd.io docker-buildx-plugin docker-ce docker-ce-cli docker-ce-rootless-extras docker-compose-plugin libslirp0 pigz slirp4netns
-0 upgraded, 9 newly installed, 0 to remove and 2 not upgraded.
-Need to get 96.7 MB of archives.
-After this operation, 391 MB of additional disk space will be used.
-Get:1 http://ge.archive.ubuntu.com/ubuntu noble/universe amd64 pigz amd64 2.8-1 [65.6 kB]
-Get:2 https://download.docker.com/linux/ubuntu noble/stable amd64 containerd.io amd64 2.2.1-1~ubuntu.24.04~noble [23.4 MB]
-Get:3 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libslirp0 amd64 4.7.0-1ubuntu3 [63.8 kB]
-Get:4 http://ge.archive.ubuntu.com/ubuntu noble/universe amd64 slirp4netns amd64 1.2.1-1build2 [34.9 kB]
-Get:5 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce-cli amd64 5:29.2.1-1~ubuntu.24.04~noble [16.3 MB]
-Get:6 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce amd64 5:29.2.1-1~ubuntu.24.04~noble [22.5 MB]
-Get:7 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-buildx-plugin amd64 0.31.1-1~ubuntu.24.04~noble [20.3 MB]
-Get:8 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce-rootless-extras amd64 5:29.2.1-1~ubuntu.24.04~noble [6,387 kB]
-Get:9 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-compose-plugin amd64 5.0.2-1~ubuntu.24.04~noble [7,721 kB]
-Fetched 96.7 MB in 14s (7,017 kB/s)
-Selecting previously unselected package containerd.io.
-(Reading database ... 89575 files and directories currently installed.)
-Preparing to unpack .../0-containerd.io_2.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking containerd.io (2.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-ce-cli.
-Preparing to unpack .../1-docker-ce-cli_5%3a29.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-ce-cli (5:29.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-ce.
-Preparing to unpack .../2-docker-ce_5%3a29.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-ce (5:29.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package pigz.
-Preparing to unpack .../3-pigz_2.8-1_amd64.deb ...
-Unpacking pigz (2.8-1) ...
-Selecting previously unselected package docker-buildx-plugin.
-Preparing to unpack .../4-docker-buildx-plugin_0.31.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-buildx-plugin (0.31.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-ce-rootless-extras.
-Preparing to unpack .../5-docker-ce-rootless-extras_5%3a29.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-ce-rootless-extras (5:29.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-compose-plugin.
-Preparing to unpack .../6-docker-compose-plugin_5.0.2-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-compose-plugin (5.0.2-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package libslirp0:amd64.
-Preparing to unpack .../7-libslirp0_4.7.0-1ubuntu3_amd64.deb ...
-Unpacking libslirp0:amd64 (4.7.0-1ubuntu3) ...
-Selecting previously unselected package slirp4netns.
-Preparing to unpack .../8-slirp4netns_1.2.1-1build2_amd64.deb ...
-Unpacking slirp4netns (1.2.1-1build2) ...
-Setting up docker-buildx-plugin (0.31.1-1~ubuntu.24.04~noble) ...
-Setting up containerd.io (2.2.1-1~ubuntu.24.04~noble) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
-Setting up docker-compose-plugin (5.0.2-1~ubuntu.24.04~noble) ...
-Setting up docker-ce-cli (5:29.2.1-1~ubuntu.24.04~noble) ...
-Setting up libslirp0:amd64 (4.7.0-1ubuntu3) ...
-Setting up pigz (2.8-1) ...
-Setting up docker-ce-rootless-extras (5:29.2.1-1~ubuntu.24.04~noble) ...
-Setting up slirp4netns (1.2.1-1build2) ...
-Setting up docker-ce (5:29.2.1-1~ubuntu.24.04~noble) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
-Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
-Processing triggers for man-db (2.12.0-4build2) ...
-Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
-Scanning processes...
-Scanning candidates...
-Scanning linux images...</p>
-<p>Running kernel seems to be up-to-date.</p>
-<p>Restarting services...</p>
-<p>Service restarts being deferred:
- /etc/needrestart/restart.d/dbus.service
- systemctl restart getty@tty1.service
- systemctl restart systemd-logind.service
- systemctl restart unattended-upgrades.service</p>
-<p>No containers need to be restarted.</p>
-<p>User sessions running outdated binaries:
- k @ user manager service: systemd[1006]</p>
-<p>No VM guests are running outdated hypervisor (qemu) binaries on this host.</p>
-<p>შენი user-ის დამატება docker group-ში (sudo-ს გარეშე რომ იმუშაოს):</p>
-<p>sudo usermod -aG docker $USER</p>
-<p>გადატვირთე session
- newgrp docker</p>
-<p>შემოწმება (sudo-ს გარეშე):</p>
+<h1 id="task_14_docker_installation">🚀 Task 14 — Docker Installation<a class="headerlink" href="#task_14_docker_installation" title="Permanent link">&para;</a></h1>
+<hr />
+<h2 id="_1">📦 საჭირო პაკეტები<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ca-certificates<span class="w"> </span>curl<span class="w"> </span>gnupg<span class="w"> </span>-y
+</span></code></pre></div></p>
+<h2 id="docker-_gpg_key_repository">🔐 Docker-ის ოფიციალური GPG Key და Repository<a class="headerlink" href="#docker-_gpg_key_repository" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.gpg
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.gpg
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [arch=</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.gpg] \</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s2">https://download.docker.com/linux/ubuntu \</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VERSION_CODENAME</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2"> stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+</span></code></pre></div>
+<p>🐳 Docker-ის ინსტალაცია
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin<span class="w"> </span>-y
+</span></code></pre></div>
+<h2 id="output">📋 ინსტალაციის პროცესი (Output)<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin<span class="w"> </span>-y
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">Reading package lists... Done</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">Building dependency tree... Done</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">Reading state information... Done</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">The following additional packages will be installed:</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="go">  docker-ce-rootless-extras libslirp0 pigz slirp4netns</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">Suggested packages:</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="go">  cgroupfs-mount | cgroup-lite docker-model-plugin</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="go">The following NEW packages will be installed:</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="go">  containerd.io docker-buildx-plugin docker-ce docker-ce-cli docker-ce-rootless-extras docker-compose-plugin libslirp0 pigz slirp4netns</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="go">0 upgraded, 9 newly installed, 0 to remove and 2 not upgraded.</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="go">Need to get 96.7 MB of archives.</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="go">After this operation, 391 MB of additional disk space will be used.</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="go">Get:1 http://ge.archive.ubuntu.com/ubuntu noble/universe amd64 pigz amd64 2.8-1 [65.6 kB]</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="go">Get:2 https://download.docker.com/linux/ubuntu noble/stable amd64 containerd.io amd64 2.2.1-1~ubuntu.24.04~noble [23.4 MB]</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="go">Get:3 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 libslirp0 amd64 4.7.0-1ubuntu3 [63.8 kB]</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="go">Get:4 http://ge.archive.ubuntu.com/ubuntu noble/universe amd64 slirp4netns amd64 1.2.1-1build2 [34.9 kB]</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="go">Get:5 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce-cli amd64 5:29.2.1-1~ubuntu.24.04~noble [16.3 MB]</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="go">Get:6 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce amd64 5:29.2.1-1~ubuntu.24.04~noble [22.5 MB]</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="go">Get:7 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-buildx-plugin amd64 0.31.1-1~ubuntu.24.04~noble [20.3 MB]</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="go">Get:8 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce-rootless-extras amd64 5:29.2.1-1~ubuntu.24.04~noble [6,387 kB]</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="go">Get:9 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-compose-plugin amd64 5.0.2-1~ubuntu.24.04~noble [7,721 kB]</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="go">Fetched 96.7 MB in 14s (7,017 kB/s)</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="go">Selecting previously unselected package containerd.io.</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="gp gp-VirtualEnv">(Reading database ... 89575 files and directories currently installed.)</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="go">Preparing to unpack ...</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="go">...</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="go">No VM guests are running outdated hypervisor (qemu) binaries on this host.</span>
+</span></code></pre></div>
+<p>👤 User-ის დამატება Docker Group-ში</p>
+<p>sodu-ს გარეშე მუშაობისთვის:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</span></code></pre></div></p>
+<p>Session-ის განახლება:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>newgrp<span class="w"> </span>docker
+</span></code></pre></div></p>
+<p>✅ შემოწმება (sudo-ს გარეშე)</p>
 <p>k@devserver:~$ sudo usermod -aG docker $USER
 k@devserver:~$ newgrp docker
 k@devserver:~$ docker --version
-Docker version 29.2.1, build a5c7197
-k@devserver:~$ docker compose version
+Docker version 29.2.1, build a5c7197</p>
+<p>k@devserver:~$ docker compose version
 Docker Compose version v5.0.2</p>
-<p>ტესტი
-k@devserver:~$ docker run hello-world
-Unable to find image 'hello-world:latest' locally
-latest: Pulling from library/hello-world
-17eec7bbc9d7: Pull complete
-ea52d2000f90: Download complete
-Digest: sha256:05813aedc15fb7b4d732e1be879d3252c1c9c25d885824f6295cab4538cb85cd
-Status: Downloaded newer image for hello-world:latest</p>
-<p>Hello from Docker!
-This message shows that your installation appears to be working correctly.</p>
+<p>🧪 ტესტი — hello-world</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>k@devserver:~$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>hello-world
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="go">Unable to find image &#39;hello-world:latest&#39; locally</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="go">latest: Pulling from library/hello-world</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="go">17eec7bbc9d7: Pull complete</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="go">ea52d2000f90: Download complete</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="go">Digest: sha256:05813aedc15fb7b4d732e1be879d3252c1c9c25d885824f6295cab4538cb85cd</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="go">Status: Downloaded newer image for hello-world:latest</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="go">Hello from Docker!</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="go">This message shows that your installation appears to be working correctly.</span>
+</span></code></pre></div>
+<p>📖 დამატებითი ინფორმაცია</p>
 <p>To generate this message, Docker took the following steps:
  1. The Docker client contacted the Docker daemon.
  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
     (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.</p>
-<p>To try something more ambitious, you can run an Ubuntu container with:
+ 3. The Docker daemon created a new container from that image.
+ 4. The Docker daemon streamed that output to the Docker client.</p>
+<p>To try something more ambitious:
  $ docker run -it ubuntu bash</p>
-<p>Share images, automate workflows, and more with a free Docker ID:
+<p>Docker Hub:
  https://hub.docker.com/</p>
-<p>For more examples and ideas, visit:
+<p>Docs:
  https://docs.docker.com/get-started/</p>
+<p>```</p>
 
 
 

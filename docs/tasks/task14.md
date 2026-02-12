@@ -1,25 +1,48 @@
-Task 14 — Docker Installation
+# 🚀 Task 14 — Docker Installation
 
+---
 
-საჭირო პაკეტები:
-bashsudo apt update
+## 📦 საჭირო პაკეტები
+
+```bash
+sudo apt update
+```
+```bash
 sudo apt install ca-certificates curl gnupg -y
+```
 
+## 🔐 Docker-ის ოფიციალური GPG Key და Repository
 
-Docker-ის ოფიციალური GPG key და repository:
-
+```bash
 sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+
+```bash
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+https://download.docker.com/linux/ubuntu \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
 
-Docker-ის ინსტალაცია:
-
+🐳 Docker-ის ინსტალაცია
+```bash
 sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+```
 
+```bash
+sudo apt install docker-ce docker-ce-cli containerd.io \
+docker-buildx-plugin docker-compose-plugin -y
+```
+
+## 📋 ინსტალაციის პროცესი (Output)
+
+```console
 k@devserver:~$ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 Reading package lists... Done
 Building dependency tree... Done
@@ -45,88 +68,42 @@ Get:9 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-compose
 Fetched 96.7 MB in 14s (7,017 kB/s)
 Selecting previously unselected package containerd.io.
 (Reading database ... 89575 files and directories currently installed.)
-Preparing to unpack .../0-containerd.io_2.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking containerd.io (2.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-ce-cli.
-Preparing to unpack .../1-docker-ce-cli_5%3a29.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-ce-cli (5:29.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-ce.
-Preparing to unpack .../2-docker-ce_5%3a29.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-ce (5:29.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package pigz.
-Preparing to unpack .../3-pigz_2.8-1_amd64.deb ...
-Unpacking pigz (2.8-1) ...
-Selecting previously unselected package docker-buildx-plugin.
-Preparing to unpack .../4-docker-buildx-plugin_0.31.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-buildx-plugin (0.31.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-ce-rootless-extras.
-Preparing to unpack .../5-docker-ce-rootless-extras_5%3a29.2.1-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-ce-rootless-extras (5:29.2.1-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package docker-compose-plugin.
-Preparing to unpack .../6-docker-compose-plugin_5.0.2-1~ubuntu.24.04~noble_amd64.deb ...
-Unpacking docker-compose-plugin (5.0.2-1~ubuntu.24.04~noble) ...
-Selecting previously unselected package libslirp0:amd64.
-Preparing to unpack .../7-libslirp0_4.7.0-1ubuntu3_amd64.deb ...
-Unpacking libslirp0:amd64 (4.7.0-1ubuntu3) ...
-Selecting previously unselected package slirp4netns.
-Preparing to unpack .../8-slirp4netns_1.2.1-1build2_amd64.deb ...
-Unpacking slirp4netns (1.2.1-1build2) ...
-Setting up docker-buildx-plugin (0.31.1-1~ubuntu.24.04~noble) ...
-Setting up containerd.io (2.2.1-1~ubuntu.24.04~noble) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
-Setting up docker-compose-plugin (5.0.2-1~ubuntu.24.04~noble) ...
-Setting up docker-ce-cli (5:29.2.1-1~ubuntu.24.04~noble) ...
-Setting up libslirp0:amd64 (4.7.0-1ubuntu3) ...
-Setting up pigz (2.8-1) ...
-Setting up docker-ce-rootless-extras (5:29.2.1-1~ubuntu.24.04~noble) ...
-Setting up slirp4netns (1.2.1-1build2) ...
-Setting up docker-ce (5:29.2.1-1~ubuntu.24.04~noble) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
-Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
-Processing triggers for man-db (2.12.0-4build2) ...
-Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
-Scanning processes...
-Scanning candidates...
-Scanning linux images...
-
-Running kernel seems to be up-to-date.
-
-Restarting services...
-
-Service restarts being deferred:
- /etc/needrestart/restart.d/dbus.service
- systemctl restart getty@tty1.service
- systemctl restart systemd-logind.service
- systemctl restart unattended-upgrades.service
-
-No containers need to be restarted.
-
-User sessions running outdated binaries:
- k @ user manager service: systemd[1006]
-
+Preparing to unpack ...
+...
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
+```
 
+👤 User-ის დამატება Docker Group-ში
 
-
-შენი user-ის დამატება docker group-ში (sudo-ს გარეშე რომ იმუშაოს):
-
+sodu-ს გარეშე მუშაობისთვის:
+```bash
 sudo usermod -aG docker $USER
+```
 
- გადატვირთე session
- newgrp docker
+Session-ის განახლება:
+```bash
+newgrp docker
+```
 
- შემოწმება (sudo-ს გარეშე):
+✅ შემოწმება (sudo-ს გარეშე)
 
- 
 k@devserver:~$ sudo usermod -aG docker $USER
 k@devserver:~$ newgrp docker
 k@devserver:~$ docker --version
 Docker version 29.2.1, build a5c7197
+
 k@devserver:~$ docker compose version
 Docker Compose version v5.0.2
 
-ტესტი
+
+🧪 ტესტი — hello-world
+
+```bash
 k@devserver:~$ docker run hello-world
+```
+
+
+```console
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
 17eec7bbc9d7: Pull complete
@@ -137,22 +114,25 @@ Status: Downloaded newer image for hello-world:latest
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
+```
+
+📖 დამატებითი ინფორმაცია
+
 To generate this message, Docker took the following steps:
  1. The Docker client contacted the Docker daemon.
  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
     (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
+ 3. The Docker daemon created a new container from that image.
+ 4. The Docker daemon streamed that output to the Docker client.
 
-To try something more ambitious, you can run an Ubuntu container with:
+To try something more ambitious:
  $ docker run -it ubuntu bash
 
-Share images, automate workflows, and more with a free Docker ID:
+Docker Hub:
  https://hub.docker.com/
 
-For more examples and ideas, visit:
+Docs:
  https://docs.docker.com/get-started/
 
+```
 
