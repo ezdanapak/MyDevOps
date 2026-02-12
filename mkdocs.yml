@@ -23,6 +23,23 @@ theme:
     - content.code.annotate
     - content.code.select
     - content.tooltips
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  palette:
+      # Dark Mode
+      - scheme: slate
+        toggle:
+          icon: material/weather-sunny
+          name: Light mode
+        primary: green
+        accent: orange
+      # Light Mode
+      - scheme: default
+        toggle:
+          icon: material/weather-night
+          name: Dark mode
+        primary: green
+        accent: deep orange
 
   icon:
     icon:
