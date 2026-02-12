@@ -2,115 +2,11 @@ Task 19 — Deployment Script
 
 
 სკრიპტის შექმნა:
-bashnano ~/docker-app/deploy.sh
-
-#!/bin/bash
-# ============================================
-# Deployment Script — docker-app
-# ============================================
-
-set -e
-
-APP_DIR="$HOME/docker-app"
-LOG_FILE="$APP_DIR/deploy.log"
-DATE=$(date '+%Y-%m-%d %H:%M:%S')
-
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-log() {
-    echo -e "$1"
-    echo "[$DATE] $2" >> "$LOG_FILE"
-}
-
-echo "=========================================="
-echo " Deploy Started — $DATE"
-echo "=========================================="
-
-cd "$APP_DIR"
-
-# --- Step 1: Git Pull ---
-log "${YELLOW}[1/4]${NC} Git pull..." "START: git pull"
-
-git pull 2>> "$LOG_FILE"
-
-if [ $? -ne 0 ]; then
-    log "${RED}[ERROR]${NC} Git pull ვერ მოხერხდა!" "FAILED: git pull"
-    exit 1
-fi
-log "${GREEN}[OK]${NC}    კოდი განახლდა" "SUCCESS: git pull"
-
-# --- Step 2: Stop Containers ---
-log "${YELLOW}[2/4]${NC} Container-ების გაჩერება..." "START: docker compose down"
-
-docker compose down 2>> "$LOG_FILE"
-
-log "${GREEN}[OK]${NC}    გაჩერდა" "SUCCESS: containers stopped"
-
-# --- Step 3: Rebuild ---
-log "${YELLOW}[3/4]${NC} Rebuild & Pull images..." "START: docker compose build"
-
-docker compose pull 2>> "$LOG_FILE"
-docker compose build --no-cache 2>> "$LOG_FILE"
-
-log "${GREEN}[OK]${NC}    Rebuild დასრულდა" "SUCCESS: rebuild complete"
-
-# --- Step 4: Start ---
-log "${YELLOW}[4/4]${NC} Container-ების გაშვება..." "START: docker compose up"
-
-docker compose up -d 2>> "$LOG_FILE"
-
-if [ $? -ne 0 ]; then
-    log "${RED}[ERROR]${NC} გაშვება ვერ მოხერხდა!" "FAILED: docker compose up"
-    exit 1
-fi
-log "${GREEN}[OK]${NC}    გაეშვა" "SUCCESS: containers started"
-
-# --- Health Check ---
-echo ""
-echo "=========================================="
-echo " Container Status:"
-echo "=========================================="
-docker compose ps
-echo ""
-
-echo "=========================================="
-echo -e " ${GREEN}DEPLOY COMPLETE${NC} — $DATE"
-echo "=========================================="
-
-log "" "DONE: Deploy completed successfully"
-
-გახადე გაშვებადი:
-bashchmod +x ~/docker-app/deploy.sh
-
-
-Git-ში დაამატე:
-bashcd ~/docker-app
-git add deploy.sh
-git commit -m "Add deployment script"
-
-
-k@devserver:~/docker-app$ nano ~/docker-app/deploy.sh
-k@devserver:~/docker-app$ chmod +x ~/docker-app/deploy.sh
-k@devserver:~/docker-app$ cd ~/docker-app
-k@devserver:~/docker-app$ git add deploy.sh
-k@devserver:~/docker-app$ git commit -m "Add deployment script"
-[master 7b45374] Add deployment script
- 1 file changed, 77 insertions(+)
- create mode 100755 deploy.sh
-k@devserver:~/docker-app$ ~/docker-app/deploy.sh
-==========================================
- Deploy Started — 2026-02-10 19:53:25
-==========================================
-[1/4] Git pull...
-k@devserver:~/docker-app$
-
-ხარვეზის გასწორება 
-
+```bash
 nano ~/docker-app/deploy.sh
+```
 
+```bash
 #!/bin/bash
 set -euo pipefail
 
@@ -223,14 +119,74 @@ echo "=========================================="
 echo -e " ${GREEN}DEPLOY COMPLETE${NC} — $DATE"
 echo "=========================================="
 
+```
+## სკრიპტის ძირითადი ელემენტები
 
-გახადე executable:
-chmod +x deploy.sh
+### `set -euo pipefail`
 
-გაუშვი:
+| ფლაგი | დანიშნულება |
+|-------|-------------|
+| `-e` | ნებისმიერი ბრძანების შეცდომისას სკრიპტი ჩერდება |
+| `-u` | განუსაზღვრელი ცვლადის გამოყენებისას შეცდომა |
+| `-o pipefail` | pipe-ში (`\|`) ნებისმიერი ბრძანების შეცდომა გადაეცემა |
+
+ეს სამეული Bash სკრიპტების „უსაფრთხოების ქამარია" — ხელს უშლის ჩუმად ჩავარდნილ ბრძანებებს.
+
+### `fail()` ფუნქცია
+
+```bash
+fail() {
+    log "${RED}[ERROR]${NC} $1" "FAILED: $1"
+    exit 1
+}
+```
+
+ნებისმიერ ნაბიჯში `|| fail "..."` pattern-ით გამოიყენება. თუ ბრძანება ჩავარდა — ლოგში ჩაიწერება, ტერმინალში შეცდომა გამოჩნდება, სკრიპტი შეჩერდება.
+
+
+
+### ლოგირება
+
+სკრიპტი ორადგილას წერს output-ს: ტერმინალში ფერადი შეტყობინებებით, და `deploy.log` ფაილში timestamp-იანი ჩანაწერებით. `>> "$LOG_FILE" 2>&1` — stdout და stderr ორივე ლოგ ფაილში მიდის.
+
+სკრიპტი რომ გახდეს გაშვებადი:
+```bash
+chmod +x ~/docker-app/deploy.sh
+```
+
+Git-ში დაამატე:
+```bash
+cd ~/docker-app
+git add deploy.sh
+git commit -m "Add deployment script"
+```
+
+
+```console
+k@devserver:~/docker-app$ nano ~/docker-app/deploy.sh
+k@devserver:~/docker-app$ chmod +x ~/docker-app/deploy.sh
+k@devserver:~/docker-app$ cd ~/docker-app
+k@devserver:~/docker-app$ git add deploy.sh
+k@devserver:~/docker-app$ git commit -m "Add deployment script"
+[master 7b45374] Add deployment script
+ 1 file changed, 77 insertions(+)
+ create mode 100755 deploy.sh
+k@devserver:~/docker-app$ ~/docker-app/deploy.sh
+==========================================
+ Deploy Started — 2026-02-10 19:53:25
+==========================================
+[1/4] Git pull...
+k@devserver:~/docker-app$
+```
+
+
+## სკრიპტის გამოყენება
+
+```bash
 ./deploy.sh
+```
 
-
+```console
 k@devserver:~/docker-app$ chmod +x deploy.sh
 k@devserver:~/docker-app$ ./deploy.sh
 [2026-02-10 20:09:57] === DEPLOY STARTED ===
@@ -257,16 +213,21 @@ docker-app-web-1       nginx:alpine         "/docker-entrypoint.…"   web      
  DEPLOY COMPLETE — 2026-02-10 20:09:57
 ==========================================
 k@devserver:~/docker-app$
+```
 
-
-ლოგი ჩაიწერება:
-
+## ლოგების შემოწმება:
+```bash
 ~/docker-app/deploy.log
+```
 
 შეგიძლია ნახო:
-
+```bash
 tail -f ~/docker-app/deploy.log
+```
 
+> 💡 `tail -f` real-time-ში აჩვენებს ლოგს. ახალი deploy-ის დროს მეორე ტერმინალში გაუშვით და მთელი პროცესი ცოცხლად დაინახავთ.
+
+```console
 k@devserver:~/docker-app$ tail -f ~/docker-app/deploy.log
  Container docker-app-db-1 Starting
  Container docker-app-db-1 Started
@@ -278,3 +239,19 @@ k@devserver:~/docker-app$ tail -f ~/docker-app/deploy.log
  Container docker-app-web-1 Started
 [2026-02-10 20:09:57] SUCCESS: containers started
 [2026-02-10 20:09:57] DEPLOY SUCCESS
+```
+
+
+## შედეგები
+
+### Deploy ავტომატიზაცია
+
+ხელით deploy-ის დროს ყოველ ჯერზე 5-6 ბრძანების თანმიმდევრობით აკრეფა დაუშვებელია — ადვილია რომელიმე გამოტოვო ან არასწორი თანმიმდევრობით გაუშვა. სკრიპტი ამ პროცესს სტანდარტიზებულს და განმეორებადს ხდის.
+
+### Error Handling pattern
+
+`command || fail "message"` — Bash-ის იდიომატური pattern. ნიშნავს: „გაუშვი ბრძანება, თუ ჩავარდა — fail ფუნქცია გამოიძახე." `set -e`-სთან ერთად ეს ორმაგ დაცვას იძლევა.
+
+### პირველი vs გაუმჯობესებული ვერსია
+
+პირველი ვერსია ჩავარდა იმიტომ რომ `git pull` remote-ის გარეშე error-ს აბრუნებს და `set -e` სკრიპტს აჩერებს. ეს ტიპიური სიტუაციაა — სკრიპტი ყოველთვის „ბედნიერ გზას" ვერ გაივლის. გაუმჯობესებულ ვერსიაში defensive programming-ით (წინასწარი შემოწმებებით) ასეთი edge case-ები სწორად მუშავდება.

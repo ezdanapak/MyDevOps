@@ -1167,139 +1167,242 @@
 
 
 <p>Task 23 — Security Audit</p>
-<p>სისტემის მომხმარებლების სიაUbuntu-ში ყველა მომხმარებელი ინახება /etc/passwd ფაილში. იმისთვის, რომ დაინახო მხოლოდ რეალური მომხმარებლები (და არა სისტემური სერვისები), გამოიყენე ეს ბრძანება:Bashcolumn -t -s: /etc/passwd | awk '$3 &gt;= 1000 &amp;&amp; $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'
-UID &gt;= 1000: ჩვეულებრივ, რეალური მომხმარებლების ID იწყება 1000-დან.$1: მომხმარებლის სახელი.2. ვის აქვს Sudo (Root) უფლებები?ეს ყველაზე კრიტიკული ნაწილია. უნდა ვიცოდეთ, ვის შეუძლია სისტემური ცვლილებების შეტანა. შეამოწმე sudo ჯგუფის წევრები:Bashgrep '^sudo:.*$' /etc/group | cut -d: -f4
-ასევე, გადახედე sudoers ფაილს, რომ ნახო, ხომ არ არის ვინმესთვის ინდივიდუალური უფლებები მინიჭებული:Bashsudo cat /etc/sudoers | grep -v '^#' | grep -v '^$'
-3. Fail2Ban-ის შემოწმებაFail2Ban არის პროგრამა, რომელიც ბლოკავს IP მისამართებს, რომლებიც ბევრჯერ ცდილობენ არასწორი პაროლით შესვლას (Brute Force შეტევისგან დაცვა).შეამოწმე, დაინსტალირებულია თუ არა:Bashfail2ban-client --version
-შეამოწმე, აქტიურია თუ არა სერვისი:Bashsudo systemctl status fail2ban
-ნახე, რომელი "ციხეები" (jails) არის აქტიური (მაგ. sshd):Bashsudo fail2ban-client status
-4. SSH-ის უსაფრთხოების შემოწმებადამატებითი აუდიტისთვის ნახე, დაშვებულია თუ არა root მომხმარებლით პირდაპირ შესვლა (რაც ცუდია უსაფრთხოებისთვის):Bashgrep "PermitRootLogin" /etc/ssh/sshd_config
-რეკომენდაცია: უნდა იყოს PermitRootLogin no.5. სისტემის Security Status - შეჯამება (Report)შედეგი შეგიძლია ასე ჩამოწერო შენი დოკუმენტაციისთვის:პარამეტრისტატუსიშენიშვნაActive Usersadmin, sabaმხოლოდ საჭირო პირები.Sudo Accessadminკონტროლირებადია.Fail2BanActiveSSH დაცულია.Root SSH LoginDisabledუსაფრთხოა.Open Ports22, 80, 19999მხოლოდ საჭირო პორტები.ბონუსი: როგორ ვნახოთ ბოლო წარმატებული შესვლები?თუ გაინტერესებს, ვინ შევიდა ბოლოს სერვერზე:Bashlast -a | head -n 10</p>
-<p>k@devserver:~$ column -t -s: /etc/passwd | awk '$3 &gt;= 1000 &amp;&amp; $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'
-k UID:1000 Shell:/bin/bash
-developer UID:1001 Shell:/bin/bash
-deploy UID:1002 Shell:/bin/bash</p>
-<p>k@devserver:~$ grep '^sudo:.*$' /etc/group | cut -d: -f4
-k,developer
-k@devserver:~$ sudo cat /etc/sudoers | grep -v '^#' | grep -v '^$'
-Defaults        env_reset
-Defaults        mail_badpass
-Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-Defaults        use_pty
-root    ALL=(ALL:ALL) ALL
-%admin ALL=(ALL) ALL
-%sudo   ALL=(ALL:ALL) ALL
-@includedir /etc/sudoers.d</p>
-<p>Fail2BAN</p>
-<p>k@devserver:~$ fail2ban-client --version
+<p>👥 1. სისტემის მომხმარებლების სია</p>
+<p>Ubuntu-ში ყველა მომხმარებელი ინახება ფაილში:</p>
+<p>/etc/passwd</p>
+<p>იმისთვის, რომ ნახო მხოლოდ რეალური მომხმარებლები (და არა სისტემური სერვისები), გამოიყენე:</p>
+<p>column -t -s: /etc/passwd | awk '$3 &gt;= 1000 &amp;&amp; $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'</p>
+<p>📖 განმარტება</p>
+<p>UID &gt;= 1000 — რეალური მომხმარებლები იწყება 1000-დან</p>
+<p>$1 — მომხმარებლის სახელი</p>
+<p>📄 შედეგი
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">k@devserver:~$ </span>column<span class="w"> </span>-t<span class="w"> </span>-s:<span class="w"> </span>/etc/passwd<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$3 &gt;= 1000 &amp;&amp; $3 != 65534 {print $1, &quot;UID:&quot;$3, &quot;Shell:&quot;$7}&#39;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">k UID:1000 Shell:/bin/bash</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">developer UID:1001 Shell:/bin/bash</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="go">deploy UID:1002 Shell:/bin/bash</span>
+</span></code></pre></div></p>
+<p>🛡️ 2. ვის აქვს Sudo (Root) უფლებები?</p>
+<p>ეს ყველაზე კრიტიკული ნაწილია — უნდა ვიცოდეთ, ვის შეუძლია სისტემური ცვლილებების შეტანა.</p>
+<p>▶️ sudo ჯგუფის წევრები
+grep '^sudo:.*$' /etc/group | cut -d: -f4</p>
+<p>📄 შედეგი
+k@devserver:~$ grep '^sudo:.*$' /etc/group | cut -d: -f4
+k,developer</p>
+<p>▶️ sudoers ფაილის შემოწმება</p>
+<p>ინდივიდუალური უფლებების სანახავად:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>cat<span class="w"> </span>/etc/sudoers<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^#&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^$&#39;</span>
+</span></code></pre></div></p>
+<p>📄 შედეგი</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>cat<span class="w"> </span>/etc/sudoers<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^#&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^$&#39;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">Defaults        env_reset</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="go">Defaults        mail_badpass</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="go">Defaults        secure_path=&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="go">Defaults        use_pty</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="go">root    ALL=(ALL:ALL) ALL</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="gp">%</span>admin<span class="w"> </span><span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span><span class="w"> </span>ALL
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="gp">%</span>sudo<span class="w">   </span><span class="nv">ALL</span><span class="o">=(</span>ALL:ALL<span class="o">)</span><span class="w"> </span>ALL
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="go">@includedir /etc/sudoers.d</span>
+</span></code></pre></div>
+<p>🚫 3. Fail2Ban-ის შემოწმება</p>
+<p>Fail2Ban იცავს სისტემას Brute Force შეტევებისგან და ბლოკავს საეჭვო IP-ებს.</p>
+<p>▶️ ვერსიის შემოწმება
+fail2ban-client --version</p>
+<p>📄 შედეგი (დაინსტალირებამდე)
+k@devserver:~$ fail2ban-client --version
 Command 'fail2ban-client' not found, but can be installed with:
-sudo apt install fail2ban
-k@devserver:~$ sudo apt install fail2ban
+sudo apt install fail2ban</p>
+<p>▶️ ინსტალაცია
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>fail2ban
+</span></code></pre></div></p>
+<p>📄 ინსტალაციის ლოგი
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
-The following additional packages will be installed:
-  python3-pyasyncore python3-pyinotify whois
-Suggested packages:
-  mailx monit sqlite3 python-pyinotify-doc
-The following NEW packages will be installed:
-  fail2ban python3-pyasyncore python3-pyinotify whois
-0 upgraded, 4 newly installed, 0 to remove and 3 not upgraded.
-Need to get 496 kB of archives.
-After this operation, 2,572 kB of additional disk space will be used.
-Do you want to continue? [Y/n] Y
-Get:1 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 python3-pyasyncore all 1.0.2-2 [10.1 kB]
-Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates/universe amd64 fail2ban all 1.0.2-3ubuntu0.1 [409 kB]
-Get:3 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 python3-pyinotify all 0.9.6-2ubuntu1 [25.0 kB]
-Get:4 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 whois amd64 5.5.22 [51.7 kB]
-Fetched 496 kB in 1s (368 kB/s)
-Selecting previously unselected package python3-pyasyncore.
-(Reading database ... 100564 files and directories currently installed.)
-Preparing to unpack .../python3-pyasyncore_1.0.2-2_all.deb ...
-Unpacking python3-pyasyncore (1.0.2-2) ...
-Selecting previously unselected package fail2ban.
-Preparing to unpack .../fail2ban_1.0.2-3ubuntu0.1_all.deb ...
-Unpacking fail2ban (1.0.2-3ubuntu0.1) ...
-Selecting previously unselected package python3-pyinotify.
-Preparing to unpack .../python3-pyinotify_0.9.6-2ubuntu1_all.deb ...
-Unpacking python3-pyinotify (0.9.6-2ubuntu1) ...
-Selecting previously unselected package whois.
-Preparing to unpack .../whois_5.5.22_amd64.deb ...
-Unpacking whois (5.5.22) ...
-Setting up whois (5.5.22) ...
-Setting up python3-pyasyncore (1.0.2-2) ...
-Setting up fail2ban (1.0.2-3ubuntu0.1) ...
-/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:224: SyntaxWarning: invalid escape sequence '\s'
-  "1490349000 test failed.dns.ch", "^\s<em>test <F-ID>\S+</F-ID>"
-/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:435: SyntaxWarning: invalid escape sequence '\S'
-  '^'+prefix+'<F-ID>User <F-USER>\S+</F-USER></F-ID> not allowed\n'
-/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:443: SyntaxWarning: invalid escape sequence '\S'
-  '^'+prefix+'User <F-USER>\S+</F-USER> not allowed\n'
-/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:444: SyntaxWarning: invalid escape sequence '\d'
-  '^'+prefix+'Received disconnect from <F-ID><ADDR> port \d+</F-ID>'
-/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:451: SyntaxWarning: invalid escape sequence '\s'
-  _test_variants('common', prefix="\s</em>\S+ sshd[<F-MLFID>\d+</F-MLFID>]:\s+")
-/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:537: SyntaxWarning: invalid escape sequence '['
-  'common[prefregex="^svc[<F-MLFID>\d+</F-MLFID>] connect <F-CONTENT>.+</F-CONTENT>$"'
-/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1375: SyntaxWarning: invalid escape sequence '\s'
-  "<code>{ nft -a list chain inet f2b-table f2b-chain | grep -oP '@addr-set-j-w-nft-mp\s+.*\s+\Khandle\s+(\d+)$'; } | while read -r hdl; do</code>",
-/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1378: SyntaxWarning: invalid escape sequence '\s'
-  "<code>{ nft -a list chain inet f2b-table f2b-chain | grep -oP '@addr6-set-j-w-nft-mp\s+.*\s+\Khandle\s+(\d+)$'; } | while read -r hdl; do</code>",
-/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1421: SyntaxWarning: invalid escape sequence '\s'
-  "<code>{ nft -a list chain inet f2b-table f2b-chain | grep -oP '@addr-set-j-w-nft-ap\s+.*\s+\Khandle\s+(\d+)$'; } | while read -r hdl; do</code>",
-/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1424: SyntaxWarning: invalid escape sequence '\s'
-  "<code>{ nft -a list chain inet f2b-table f2b-chain | grep -oP '@addr6-set-j-w-nft-ap\s+.*\s+\Khandle\s+(\d+)$'; } | while read -r hdl; do</code>",
-Created symlink /etc/systemd/system/multi-user.target.wants/fail2ban.service → /usr/lib/systemd/system/fail2ban.service.
-Setting up python3-pyinotify (0.9.6-2ubuntu1) ...
-Processing triggers for man-db (2.12.0-4build2) ...
-Scanning processes...
-Scanning candidates...
-Scanning linux images...</p>
-<p>Running kernel seems to be up-to-date.</p>
-<p>Restarting services...</p>
-<p>Service restarts being deferred:
- /etc/needrestart/restart.d/dbus.service
- systemctl restart systemd-logind.service
- systemctl restart unattended-upgrades.service</p>
-<p>No containers need to be restarted.</p>
-<p>User sessions running outdated binaries:
- k @ user manager service: systemd[1006]</p>
-<p>No VM guests are running outdated hypervisor (qemu) binaries on this host.
-k@devserver:~$ fail2ban-client --version
-Fail2Ban v1.0.2
-k@devserver:~$ sudo systemctl status fail2ban
+...
+No VM guests are running outdated hypervisor (qemu) binaries on this host.</p>
+<p>▶️ ვერსიის შემოწმება (დაინსტალირების შემდეგ)</p>
+<p>fail2ban-client --version</p>
+<p>Fail2Ban v1.0.2</p>
+<p>▶️ სერვისის სტატუსი
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>fail2ban
+</span></code></pre></div></p>
+<p>📄 შედეგი
 ● fail2ban.service - Fail2Ban Service
      Loaded: loaded (/usr/lib/systemd/system/fail2ban.service; enabled; preset: enabled)
      Active: active (running) since Wed 2026-02-11 06:56:37 UTC; 40s ago
-       Docs: man:fail2ban(1)
-   Main PID: 169859 (fail2ban-server)
-      Tasks: 5 (limit: 9436)
-     Memory: 25.3M (peak: 25.5M)
-        CPU: 1.689s
-     CGroup: /system.slice/fail2ban.service
-             └─169859 /usr/bin/python3 /usr/bin/fail2ban-server -xf start</p>
-<p>Feb 11 06:56:37 devserver systemd[1]: Started fail2ban.service - Fail2Ban Service.
-Feb 11 06:56:38 devserver fail2ban-server[169859]: 2026-02-11 06:56:38,299 fail2ban.configreader   [169859]: WARNING 'allowipv6' not defined in 'Definition'. Using default one: 'auto'
-Feb 11 06:56:40 devserver fail2ban-server[169859]: Server ready
-k@devserver:~$ sudo fail2ban-client status
+...
+Feb 11 06:56:40 devserver fail2ban-server[169859]: Server ready</p>
+<p>▶️ აქტიური Jail-ების ნახვა
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>fail2ban-client<span class="w"> </span>status
+</span></code></pre></div></p>
+<p>📄 შედეგი
 Status
 |- Number of jail:      1
 `- Jail list:   sshd</p>
-<p>k@devserver:~$ grep "PermitRootLogin" /etc/ssh/sshd_config</p>
+<p>🔐 4. SSH-ის უსაფრთხოების შემოწმება</p>
+<p>შეამოწმე, დაშვებულია თუ არა root მომხმარებლით შესვლა:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>grep<span class="w"> </span><span class="s2">&quot;PermitRootLogin&quot;</span><span class="w"> </span>/etc/ssh/sshd_config
+</span></code></pre></div></p>
+<p>📄 შედეგი
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>grep<span class="w"> </span><span class="s2">&quot;PermitRootLogin&quot;</span><span class="w"> </span>/etc/ssh/sshd_config
+</span></code></pre></div></p>
 <h1 id="permitrootlogin_prohibit-password">PermitRootLogin prohibit-password<a class="headerlink" href="#permitrootlogin_prohibit-password" title="Permanent link">&para;</a></h1>
 <h1 id="the_setting_of_permitrootlogin_prohibit-password">the setting of "PermitRootLogin prohibit-password".<a class="headerlink" href="#the_setting_of_permitrootlogin_prohibit-password" title="Permanent link">&para;</a></h1>
-<p>k@devserver:~$ last -a | head -n 10
-k        pts/0        Wed Feb 11 05:51   still logged in    192.168.56.1
-k        pts/0        Tue Feb 10 17:16 - 05:23  (12:06)     192.168.56.1
-k        pts/1        Tue Feb 10 16:25 - 17:16  (00:50)     192.168.56.1
-k        pts/1        Tue Feb 10 16:21 - 16:25  (00:03)     192.168.56.1
-k        pts/0        Tue Feb 10 15:21 - 16:27  (01:05)     192.168.56.1
-reboot   system boot  Tue Feb 10 15:18   still running      6.8.0-100-generic
-k        pts/0        Tue Feb 10 15:02 - crash  (00:16)     192.168.56.1
-reboot   system boot  Tue Feb 10 14:58   still running      6.8.0-100-generic
-reboot   system boot  Tue Feb 10 14:42 - 14:55  (00:13)     6.8.0-100-generic
-reboot   system boot  Tue Feb 10 07:45 - 14:39  (06:53)     6.8.0-100-generic
-k@devserver:~$</p>
+<p>✅ რეკომენდაცია</p>
+<p>უნდა იყოს:</p>
+<p>PermitRootLogin no</p>
+<p>📊 5. Security Status — შეჯამება (Report)
+პარამეტრი   სტატუსი შენიშვნა
+Active Users    admin, saba მხოლოდ საჭირო პირები
+Sudo Access admin   კონტროლირებადია
+Fail2Ban    Active  SSH დაცულია
+Root SSH Login  Disabled    უსაფრთხოა
+Open Ports  22, 80, 19999   მხოლოდ საჭირო პორტები
+⭐ ბონუსი — ბოლო წარმატებული შესვლები</p>
+<p>თუ გინდა ნახო, ვინ შევიდა ბოლოს სერვერზე:
+``bash
+last -a | head -n 10
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>```console
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>k@devserver:~$ column -t -s: /etc/passwd | awk &#39;$3 &gt;= 1000 &amp;&amp; $3 != 65534 {print $1, &quot;UID:&quot;$3, &quot;Shell:&quot;$7}&#39;
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>k UID:1000 Shell:/bin/bash
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>developer UID:1001 Shell:/bin/bash
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>deploy UID:1002 Shell:/bin/bash
+</span></code></pre></div></p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">k@devserver:~$ </span>grep<span class="w"> </span><span class="s1">&#39;^sudo:.*$&#39;</span><span class="w"> </span>/etc/group<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d:<span class="w"> </span>-f4
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">k,developer</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>cat<span class="w"> </span>/etc/sudoers<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^#&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^$&#39;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">Defaults        env_reset</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="go">Defaults        mail_badpass</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="go">Defaults        secure_path=&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin&quot;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="go">Defaults        use_pty</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="go">root    ALL=(ALL:ALL) ALL</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="gp">%</span>admin<span class="w"> </span><span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span><span class="w"> </span>ALL
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="gp">%</span>sudo<span class="w">   </span><span class="nv">ALL</span><span class="o">=(</span>ALL:ALL<span class="o">)</span><span class="w"> </span>ALL
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="go">@includedir /etc/sudoers.d</span>
+</span></code></pre></div>
+<p>Fail2BAN
+<div class="language-console highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gp">k@devserver:~$ </span>fail2ban-client<span class="w"> </span>--version
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="go">Command &#39;fail2ban-client&#39; not found, but can be installed with:</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="go">sudo apt install fail2ban</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>fail2ban
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="go">Reading package lists... Done</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="go">Building dependency tree... Done</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="go">Reading state information... Done</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="go">The following additional packages will be installed:</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="go">  python3-pyasyncore python3-pyinotify whois</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="go">Suggested packages:</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="go">  mailx monit sqlite3 python-pyinotify-doc</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="go">The following NEW packages will be installed:</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="go">  fail2ban python3-pyasyncore python3-pyinotify whois</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="go">0 upgraded, 4 newly installed, 0 to remove and 3 not upgraded.</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="go">Need to get 496 kB of archives.</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="go">After this operation, 2,572 kB of additional disk space will be used.</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="go">Do you want to continue? [Y/n] Y</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="go">Get:1 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 python3-pyasyncore all 1.0.2-2 [10.1 kB]</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="go">Get:2 http://ge.archive.ubuntu.com/ubuntu noble-updates/universe amd64 fail2ban all 1.0.2-3ubuntu0.1 [409 kB]</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="go">Get:3 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 python3-pyinotify all 0.9.6-2ubuntu1 [25.0 kB]</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="go">Get:4 http://ge.archive.ubuntu.com/ubuntu noble/main amd64 whois amd64 5.5.22 [51.7 kB]</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="go">Fetched 496 kB in 1s (368 kB/s)</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="go">Selecting previously unselected package python3-pyasyncore.</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="gp gp-VirtualEnv">(Reading database ... 100564 files and directories currently installed.)</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="go">Preparing to unpack .../python3-pyasyncore_1.0.2-2_all.deb ...</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="go">Unpacking python3-pyasyncore (1.0.2-2) ...</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="go">Selecting previously unselected package fail2ban.</span>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="go">Preparing to unpack .../fail2ban_1.0.2-3ubuntu0.1_all.deb ...</span>
+</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="go">Unpacking fail2ban (1.0.2-3ubuntu0.1) ...</span>
+</span><span id="__span-10-30"><a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a><span class="go">Selecting previously unselected package python3-pyinotify.</span>
+</span><span id="__span-10-31"><a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="go">Preparing to unpack .../python3-pyinotify_0.9.6-2ubuntu1_all.deb ...</span>
+</span><span id="__span-10-32"><a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="go">Unpacking python3-pyinotify (0.9.6-2ubuntu1) ...</span>
+</span><span id="__span-10-33"><a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="go">Selecting previously unselected package whois.</span>
+</span><span id="__span-10-34"><a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="go">Preparing to unpack .../whois_5.5.22_amd64.deb ...</span>
+</span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="go">Unpacking whois (5.5.22) ...</span>
+</span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="go">Setting up whois (5.5.22) ...</span>
+</span><span id="__span-10-37"><a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="go">Setting up python3-pyasyncore (1.0.2-2) ...</span>
+</span><span id="__span-10-38"><a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a><span class="go">Setting up fail2ban (1.0.2-3ubuntu0.1) ...</span>
+</span><span id="__span-10-39"><a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:224: SyntaxWarning: invalid escape sequence &#39;\s&#39;</span>
+</span><span id="__span-10-40"><a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="go">  &quot;1490349000 test failed.dns.ch&quot;, &quot;^\s*test &lt;F-ID&gt;\S+&lt;/F-ID&gt;&quot;</span>
+</span><span id="__span-10-41"><a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:435: SyntaxWarning: invalid escape sequence &#39;\S&#39;</span>
+</span><span id="__span-10-42"><a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="go">  &#39;^&#39;+prefix+&#39;&lt;F-ID&gt;User &lt;F-USER&gt;\S+&lt;/F-USER&gt;&lt;/F-ID&gt; not allowed\n&#39;</span>
+</span><span id="__span-10-43"><a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:443: SyntaxWarning: invalid escape sequence &#39;\S&#39;</span>
+</span><span id="__span-10-44"><a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="go">  &#39;^&#39;+prefix+&#39;User &lt;F-USER&gt;\S+&lt;/F-USER&gt; not allowed\n&#39;</span>
+</span><span id="__span-10-45"><a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:444: SyntaxWarning: invalid escape sequence &#39;\d&#39;</span>
+</span><span id="__span-10-46"><a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a><span class="go">  &#39;^&#39;+prefix+&#39;Received disconnect from &lt;F-ID&gt;&lt;ADDR&gt; port \d+&lt;/F-ID&gt;&#39;</span>
+</span><span id="__span-10-47"><a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:451: SyntaxWarning: invalid escape sequence &#39;\s&#39;</span>
+</span><span id="__span-10-48"><a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a><span class="go">  _test_variants(&#39;common&#39;, prefix=&quot;\s*\S+ sshd\[&lt;F-MLFID&gt;\d+&lt;/F-MLFID&gt;\]:\s+&quot;)</span>
+</span><span id="__span-10-49"><a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/fail2banregextestcase.py:537: SyntaxWarning: invalid escape sequence &#39;\[&#39;</span>
+</span><span id="__span-10-50"><a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a><span class="go">  &#39;common[prefregex=&quot;^svc\[&lt;F-MLFID&gt;\d+&lt;/F-MLFID&gt;\] connect &lt;F-CONTENT&gt;.+&lt;/F-CONTENT&gt;$&quot;&#39;</span>
+</span><span id="__span-10-51"><a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1375: SyntaxWarning: invalid escape sequence &#39;\s&#39;</span>
+</span><span id="__span-10-52"><a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a><span class="go">  &quot;`{ nft -a list chain inet f2b-table f2b-chain | grep -oP &#39;@addr-set-j-w-nft-mp\s+.*\s+\Khandle\s+(\d+)$&#39;; } | while read -r hdl; do`&quot;,</span>
+</span><span id="__span-10-53"><a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1378: SyntaxWarning: invalid escape sequence &#39;\s&#39;</span>
+</span><span id="__span-10-54"><a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a><span class="go">  &quot;`{ nft -a list chain inet f2b-table f2b-chain | grep -oP &#39;@addr6-set-j-w-nft-mp\s+.*\s+\Khandle\s+(\d+)$&#39;; } | while read -r hdl; do`&quot;,</span>
+</span><span id="__span-10-55"><a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1421: SyntaxWarning: invalid escape sequence &#39;\s&#39;</span>
+</span><span id="__span-10-56"><a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a><span class="go">  &quot;`{ nft -a list chain inet f2b-table f2b-chain | grep -oP &#39;@addr-set-j-w-nft-ap\s+.*\s+\Khandle\s+(\d+)$&#39;; } | while read -r hdl; do`&quot;,</span>
+</span><span id="__span-10-57"><a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a><span class="go">/usr/lib/python3/dist-packages/fail2ban/tests/servertestcase.py:1424: SyntaxWarning: invalid escape sequence &#39;\s&#39;</span>
+</span><span id="__span-10-58"><a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a><span class="go">  &quot;`{ nft -a list chain inet f2b-table f2b-chain | grep -oP &#39;@addr6-set-j-w-nft-ap\s+.*\s+\Khandle\s+(\d+)$&#39;; } | while read -r hdl; do`&quot;,</span>
+</span><span id="__span-10-59"><a id="__codelineno-10-59" name="__codelineno-10-59" href="#__codelineno-10-59"></a><span class="go">Created symlink /etc/systemd/system/multi-user.target.wants/fail2ban.service → /usr/lib/systemd/system/fail2ban.service.</span>
+</span><span id="__span-10-60"><a id="__codelineno-10-60" name="__codelineno-10-60" href="#__codelineno-10-60"></a><span class="go">Setting up python3-pyinotify (0.9.6-2ubuntu1) ...</span>
+</span><span id="__span-10-61"><a id="__codelineno-10-61" name="__codelineno-10-61" href="#__codelineno-10-61"></a><span class="go">Processing triggers for man-db (2.12.0-4build2) ...</span>
+</span><span id="__span-10-62"><a id="__codelineno-10-62" name="__codelineno-10-62" href="#__codelineno-10-62"></a><span class="go">Scanning processes...</span>
+</span><span id="__span-10-63"><a id="__codelineno-10-63" name="__codelineno-10-63" href="#__codelineno-10-63"></a><span class="go">Scanning candidates...</span>
+</span><span id="__span-10-64"><a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a><span class="go">Scanning linux images...</span>
+</span><span id="__span-10-65"><a id="__codelineno-10-65" name="__codelineno-10-65" href="#__codelineno-10-65"></a>
+</span><span id="__span-10-66"><a id="__codelineno-10-66" name="__codelineno-10-66" href="#__codelineno-10-66"></a><span class="go">Running kernel seems to be up-to-date.</span>
+</span><span id="__span-10-67"><a id="__codelineno-10-67" name="__codelineno-10-67" href="#__codelineno-10-67"></a>
+</span><span id="__span-10-68"><a id="__codelineno-10-68" name="__codelineno-10-68" href="#__codelineno-10-68"></a><span class="go">Restarting services...</span>
+</span><span id="__span-10-69"><a id="__codelineno-10-69" name="__codelineno-10-69" href="#__codelineno-10-69"></a>
+</span><span id="__span-10-70"><a id="__codelineno-10-70" name="__codelineno-10-70" href="#__codelineno-10-70"></a><span class="go">Service restarts being deferred:</span>
+</span><span id="__span-10-71"><a id="__codelineno-10-71" name="__codelineno-10-71" href="#__codelineno-10-71"></a><span class="go"> /etc/needrestart/restart.d/dbus.service</span>
+</span><span id="__span-10-72"><a id="__codelineno-10-72" name="__codelineno-10-72" href="#__codelineno-10-72"></a><span class="go"> systemctl restart systemd-logind.service</span>
+</span><span id="__span-10-73"><a id="__codelineno-10-73" name="__codelineno-10-73" href="#__codelineno-10-73"></a><span class="go"> systemctl restart unattended-upgrades.service</span>
+</span><span id="__span-10-74"><a id="__codelineno-10-74" name="__codelineno-10-74" href="#__codelineno-10-74"></a>
+</span><span id="__span-10-75"><a id="__codelineno-10-75" name="__codelineno-10-75" href="#__codelineno-10-75"></a><span class="go">No containers need to be restarted.</span>
+</span><span id="__span-10-76"><a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a>
+</span><span id="__span-10-77"><a id="__codelineno-10-77" name="__codelineno-10-77" href="#__codelineno-10-77"></a><span class="go">User sessions running outdated binaries:</span>
+</span><span id="__span-10-78"><a id="__codelineno-10-78" name="__codelineno-10-78" href="#__codelineno-10-78"></a><span class="go"> k @ user manager service: systemd[1006]</span>
+</span><span id="__span-10-79"><a id="__codelineno-10-79" name="__codelineno-10-79" href="#__codelineno-10-79"></a>
+</span><span id="__span-10-80"><a id="__codelineno-10-80" name="__codelineno-10-80" href="#__codelineno-10-80"></a><span class="go">No VM guests are running outdated hypervisor (qemu) binaries on this host.</span>
+</span></code></pre></div></p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gp">k@devserver:~$ </span>fail2ban-client<span class="w"> </span>--version
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="go">Fail2Ban v1.0.2</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>fail2ban
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="go">● fail2ban.service - Fail2Ban Service</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="go">     Loaded: loaded (/usr/lib/systemd/system/fail2ban.service; enabled; preset: enabled)</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="go">     Active: active (running) since Wed 2026-02-11 06:56:37 UTC; 40s ago</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="go">       Docs: man:fail2ban(1)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="go">   Main PID: 169859 (fail2ban-server)</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="go">      Tasks: 5 (limit: 9436)</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="go">     Memory: 25.3M (peak: 25.5M)</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="go">        CPU: 1.689s</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="go">     CGroup: /system.slice/fail2ban.service</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="go">             └─169859 /usr/bin/python3 /usr/bin/fail2ban-server -xf start</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="go">Feb 11 06:56:37 devserver systemd[1]: Started fail2ban.service - Fail2Ban Service.</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="go">Feb 11 06:56:38 devserver fail2ban-server[169859]: 2026-02-11 06:56:38,299 fail2ban.configreader   [169859]: WARNING &#39;allowipv6&#39; not defined in &#39;Definition&#39;. Using default one: &#39;auto&#39;</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="go">Feb 11 06:56:40 devserver fail2ban-server[169859]: Server ready</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>fail2ban-client<span class="w"> </span>status
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="go">Status</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="go">|- Number of jail:      1</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="go">`- Jail list:   sshd</span>
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gp">k@devserver:~$ </span>grep<span class="w"> </span><span class="s2">&quot;PermitRootLogin&quot;</span><span class="w"> </span>/etc/ssh/sshd_config
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="gp">#</span>PermitRootLogin<span class="w"> </span>prohibit-password
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="gp"># </span>the<span class="w"> </span>setting<span class="w"> </span>of<span class="w"> </span><span class="s2">&quot;PermitRootLogin prohibit-password&quot;</span>.
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="gp">k@devserver:~$ </span>last<span class="w"> </span>-a<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="go">k        pts/0        Wed Feb 11 05:51   still logged in    192.168.56.1</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="go">k        pts/0        Tue Feb 10 17:16 - 05:23  (12:06)     192.168.56.1</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="go">k        pts/1        Tue Feb 10 16:25 - 17:16  (00:50)     192.168.56.1</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="go">k        pts/1        Tue Feb 10 16:21 - 16:25  (00:03)     192.168.56.1</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="go">k        pts/0        Tue Feb 10 15:21 - 16:27  (01:05)     192.168.56.1</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="go">reboot   system boot  Tue Feb 10 15:18   still running      6.8.0-100-generic</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="go">k        pts/0        Tue Feb 10 15:02 - crash  (00:16)     192.168.56.1</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="go">reboot   system boot  Tue Feb 10 14:58   still running      6.8.0-100-generic</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="go">reboot   system boot  Tue Feb 10 14:42 - 14:55  (00:13)     6.8.0-100-generic</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="go">reboot   system boot  Tue Feb 10 07:45 - 14:39  (06:53)     6.8.0-100-generic</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="gp">k@devserver:~$</span>
+</span></code></pre></div>
 
 
 

@@ -2,12 +2,35 @@ Task 20 — System Resource Monitoring
 
 
 
-htop-ის ინსტალაცია (რეკომენდებულია დამწყებთათვის):
+## htop-ის ინსტალაცია (რეკომენდებულია დამწყებთათვის):
 
-Bash
+### ინსტალაცია
+```bash
 sudo apt update
+``
+```bash
 sudo apt install htop
+```
+### გამოყენება
 
+
+```bash
+htop
+```
+
+htop არის `top`-ის გაუმჯობესებული ვერსია — ფერადი, ინტერაქტიული ინტერფეისით.
+
+### ძირითადი კლავიშები
+
+| კლავიში | ფუნქცია |
+|---------|---------|
+| `F6` | სორტირება (CPU, MEM, TIME და სხვ.) |
+| `F5` | ხის (tree) ხედი — parent/child პროცესები |
+| `F9` | პროცესის kill |
+| `F3` | პროცესის ძებნა |
+| `F10` / `q` | გამოსვლა |
+
+```console
 k@devserver:~$ sudo apt update
 Hit:1 https://download.docker.com/linux/ubuntu noble InRelease
 Hit:2 http://ge.archive.ubuntu.com/ubuntu noble InRelease
@@ -38,15 +61,127 @@ Building dependency tree... Done
 Reading state information... Done
 htop is already the newest version (3.3.0-4build1).
 0 upgraded, 0 newly installed, 0 to remove and 2 not upgraded.
+```
+
+### htop შედეგი
+
+CPU-ს ყველაზე მეტად მოიხმარს Docker-ის daemon და containerd:
+RAM-ის მიხედვით Docker daemon-ი ლიდერობს ~105MB-ით, containerd ~59MB-ით. სერვერის 7.76GB RAM-იდან მხოლოდ ~9.8% არის გამოყენებული — რესურსები საკმარისია.
+
+```console
+ 72367 root        20   0 2511M  106M 65608 S   2.8  1.3  0:20.35 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 123104 k           20   0 15288  8084  5888 S   2.8  0.1  0:29.07 sshd: k@pts/0
+  75957 root        20   0 2257M 58800 35584 S   2.1  0.7  0:40.55 /usr/bin/containerd
+ 141499 k           20   0  9668  6148  4232 R   2.1  0.1  0:02.54 htop
+  75861 root        20   0 2257M 58800 35584 S   1.4  0.7  0:37.86 /usr/bin/containerd
+  78645 root        20   0 2511M  106M 65608 S   1.4  1.3  0:17.00 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 123108 k           20   0  7340  3704  3444 S   1.4  0.0  0:20.80 bash -c while true; do sleep 1;head -v -n 8 /proc/meminfo; head -v -n 2 /proc/stat /proc/version /proc/uptime /proc/loadavg /proc/sys/fs/fi
+ 124538 root        20   0 1205M 12940  7732 S   1.4  0.2  0:04.60 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1470bd4e23f208e546b4a7f16bf87268c05472ee3d4a6017715b4654c6c10752 -address /run/contain
+  72191 root        20   0 2257M 58800 35584 S   0.7  0.7  1:16.99 /usr/bin/containerd
+  72193 root        20   0 2257M 58800 35584 S   0.7  0.7  0:32.06 /usr/bin/containerd
+  72364 root        20   0 2511M  106M 65608 S   0.7  1.3  1:14.20 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  75932 root        20   0 2257M 58800 35584 S   0.7  0.7  0:44.66 /usr/bin/containerd
+ 110379 root        20   0 1205M 12940  7732 S   0.7  0.2  0:17.77 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1470bd4e23f208e546b4a7f16bf87268c05472ee3d4a6017715b4654c6c10752 -address /run/contain
+ 110484 root        20   0 1204M 12480  7668 S   0.7  0.2  0:03.48 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 31a8450ff79eb204df0c80f8fe4af0bcc11dd55c0ee4804e4c663a4c30119234 -address /run/contain
+ 110491 root        20   0 1204M 12480  7668 S   0.7  0.2  0:02.70 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 31a8450ff79eb204df0c80f8fe4af0bcc11dd55c0ee4804e4c663a4c30119234 -address /run/contain
+ 110627 root        20   0 1204M 12184  7604 S   0.7  0.1  0:03.36 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 8bb5ca247dfc9d93a817683d721b30aecede23aa4a1e98ef3ecdc697a807e31c -address /run/contain
+ 110630 root        20   0 1204M 12184  7604 S   0.7  0.1  0:03.54 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 8bb5ca247dfc9d93a817683d721b30aecede23aa4a1e98ef3ecdc697a807e31c -address /run/contain
+ 110634 root        20   0 1204M 12184  7604 S   0.7  0.1  0:02.43 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 8bb5ca247dfc9d93a817683d721b30aecede23aa4a1e98ef3ecdc697a807e31c -address /run/contain
+ 134282 root        20   0 2511M  106M 65608 S   0.7  1.3  0:05.42 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+      1 root        20   0 22832 14208  9768 S   0.0  0.2  0:42.28 /usr/lib/systemd/systemd --system --deserialize=59
+    819 messagebus  20   0 10116  5884  4652 S   0.0  0.1  0:08.56 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+    833 root        20   0 18160  8968  7840 S   0.0  0.1  0:02.85 /usr/lib/systemd/systemd-logind
+    903 root        20   0  107M 23144 13688 S   0.0  0.3  0:00.59 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    958 root        20   0  107M 23144 13688 S   0.0  0.3  0:00.00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    965 root        20   0  6824  2972  2728 S   0.0  0.0  0:00.26 /usr/sbin/cron -f -P
+    975 root        20   0  6944  4884  4072 S   0.0  0.1  0:00.18 /bin/login -p --
+   1006 k           20   0 20164 11124  9212 S   0.0  0.1  0:01.31 /usr/lib/systemd/systemd --user --deserialize=24
+   1007 k           20   0 21152  3696  1972 S   0.0  0.0  0:00.00 (sd-pam)
+   7361 root        20   0 12024  8264  7120 S   0.0  0.1  0:00.06 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+  17839 root        20   0  306M  9500  7720 S   0.0  0.1  0:01.87 /usr/libexec/upowerd
+```
+
+htop გაჩვენებს F6 ის დახმარებით რა პროცესო მოიხმარს RAM მეტად. 
+
+```console
+ 72363 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.67 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72364 root        20   0 2511M  105M 65608 S   0.7  1.3  1:15.44 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72365 root        20   0 2511M  105M 65608 S   0.0  1.3  0:27.24 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72366 root        20   0 2511M  105M 65608 S   0.0  1.3  0:17.02 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72367 root        20   0 2511M  105M 65608 S   0.7  1.3  0:21.11 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72368 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.00 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72369 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.04 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72370 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.01 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72371 root        20   0 2511M  105M 65608 S   0.0  1.3  0:09.09 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72392 root        20   0 2511M  105M 65608 S   1.4  1.3  0:18.52 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  73467 root        20   0 2511M  105M 65608 S   0.0  1.3  0:14.61 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  75860 root        20   0 2511M  105M 65608 S   0.0  1.3  0:28.56 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  75887 root        20   0 2511M  105M 65608 S   0.0  1.3  0:12.73 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  75888 root        20   0 2511M  105M 65608 S   0.0  1.3  0:24.33 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  77158 root        20   0 2511M  105M 65608 S   0.0  1.3  0:16.42 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  78645 root        20   0 2511M  105M 65608 S   0.0  1.3  0:17.64 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ 134282 root        20   0 2511M  105M 65608 S   1.4  1.3  0:06.37 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+  72189 root        20   0 2257M 58800 35584 S   0.0  0.7  0:00.12 /usr/bin/containerd
+  72191 root        20   0 2257M 58800 35584 S   0.7  0.7  1:18.16 /usr/bin/containerd
+  72192 root        20   0 2257M 58800 35584 S   1.4  0.7  0:29.87 /usr/bin/containerd
+  72193 root        20   0 2257M 58800 35584 S   1.4  0.7  0:32.99 /usr/bin/containerd
+  72195 root        20   0 2257M 58800 35584 S   0.0  0.7  0:00.02 /usr/bin/containerd
+  72196 root        20   0 2257M 58800 35584 S   0.0  0.7  0:00.00 /usr/bin/containerd
+```
 
 
-glances-ის ინსტალაცია (თუ მეტი ინფორმაცია გჭირდება):
-
-Bash
-sudo apt install glances
 
 
 
+
+## glances — სისტემის სრული გადახედვა
+
+
+```bash
+sudo apt install glances -y
+```
+
+> 💡 glances-ი Python-ზეა დაწერილი და ბევრ დამოკიდებულებას ითხოვს (~105 პაკეტი, ~464MB). htop-თან შედარებით მძიმეა, მაგრამ სამაგიეროდ გაცილებით მეტ ინფორმაციას აჩვენებს.
+
+
+### გამოყენება
+
+```bash
+glances
+```
+
+### რას აჩვენებს glances (htop-თან შედარებით)
+
+| მეტრიკა | htop | glances |
+|---------|------|---------|
+| CPU/RAM/Swap | ✅ | ✅ |
+| პროცესების სია | ✅ | ✅ |
+| Disk I/O | ❌ | ✅ |
+| Network traffic | ❌ | ✅ |
+| Docker containers | ❌ | ✅ |
+| File system usage | ❌ | ✅ |
+| Sensors (ტემპერატურა) | ❌ | ✅ |
+
+
+glances-ის Docker სექციაში ჩვენი სამი კონტეინერი ჩანს:
+
+```
+CONTAINERS 3
+
+Name                    Status   CPU%    MEM/MAX
+docker-app-db-1        running   25.9   19.4M/7.76G
+docker-app-adminer-1   running    0.0    8.35M/7.76G
+docker-app-web-1       running    0.0    4.61M/7.76G
+```
+
+სისტემის ზოგადი სურათი:
+- **CPU:** 28.4% დატვირთვა, 71.5% idle
+- **RAM:** 781MB გამოყენებული 7.76GB-დან (9.8%)
+- **Disk:** 8.37GB / 23.4GB (35.7%)
+- **Load Average:** 0.50 / 0.54 / 0.54 (4 core-ზე — დაბალი დატვირთვა)
+
+
+```console
 k@devserver:~$ sudo apt install glances
 Reading package lists... Done
 Building dependency tree... Done
@@ -696,73 +831,10 @@ User sessions running outdated binaries:
  k @ user manager service: systemd[1006]
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
+```
 
-
-
-htop გაჩვენებს F6 ის დახმარებით რა პროცესო მოიხმარს CPU მეტად. 
-
- 72367 root        20   0 2511M  106M 65608 S   2.8  1.3  0:20.35 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
- 123104 k           20   0 15288  8084  5888 S   2.8  0.1  0:29.07 sshd: k@pts/0
-  75957 root        20   0 2257M 58800 35584 S   2.1  0.7  0:40.55 /usr/bin/containerd
- 141499 k           20   0  9668  6148  4232 R   2.1  0.1  0:02.54 htop
-  75861 root        20   0 2257M 58800 35584 S   1.4  0.7  0:37.86 /usr/bin/containerd
-  78645 root        20   0 2511M  106M 65608 S   1.4  1.3  0:17.00 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
- 123108 k           20   0  7340  3704  3444 S   1.4  0.0  0:20.80 bash -c while true; do sleep 1;head -v -n 8 /proc/meminfo; head -v -n 2 /proc/stat /proc/version /proc/uptime /proc/loadavg /proc/sys/fs/fi
- 124538 root        20   0 1205M 12940  7732 S   1.4  0.2  0:04.60 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1470bd4e23f208e546b4a7f16bf87268c05472ee3d4a6017715b4654c6c10752 -address /run/contain
-  72191 root        20   0 2257M 58800 35584 S   0.7  0.7  1:16.99 /usr/bin/containerd
-  72193 root        20   0 2257M 58800 35584 S   0.7  0.7  0:32.06 /usr/bin/containerd
-  72364 root        20   0 2511M  106M 65608 S   0.7  1.3  1:14.20 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  75932 root        20   0 2257M 58800 35584 S   0.7  0.7  0:44.66 /usr/bin/containerd
- 110379 root        20   0 1205M 12940  7732 S   0.7  0.2  0:17.77 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 1470bd4e23f208e546b4a7f16bf87268c05472ee3d4a6017715b4654c6c10752 -address /run/contain
- 110484 root        20   0 1204M 12480  7668 S   0.7  0.2  0:03.48 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 31a8450ff79eb204df0c80f8fe4af0bcc11dd55c0ee4804e4c663a4c30119234 -address /run/contain
- 110491 root        20   0 1204M 12480  7668 S   0.7  0.2  0:02.70 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 31a8450ff79eb204df0c80f8fe4af0bcc11dd55c0ee4804e4c663a4c30119234 -address /run/contain
- 110627 root        20   0 1204M 12184  7604 S   0.7  0.1  0:03.36 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 8bb5ca247dfc9d93a817683d721b30aecede23aa4a1e98ef3ecdc697a807e31c -address /run/contain
- 110630 root        20   0 1204M 12184  7604 S   0.7  0.1  0:03.54 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 8bb5ca247dfc9d93a817683d721b30aecede23aa4a1e98ef3ecdc697a807e31c -address /run/contain
- 110634 root        20   0 1204M 12184  7604 S   0.7  0.1  0:02.43 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 8bb5ca247dfc9d93a817683d721b30aecede23aa4a1e98ef3ecdc697a807e31c -address /run/contain
- 134282 root        20   0 2511M  106M 65608 S   0.7  1.3  0:05.42 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-      1 root        20   0 22832 14208  9768 S   0.0  0.2  0:42.28 /usr/lib/systemd/systemd --system --deserialize=59
-    819 messagebus  20   0 10116  5884  4652 S   0.0  0.1  0:08.56 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
-    833 root        20   0 18160  8968  7840 S   0.0  0.1  0:02.85 /usr/lib/systemd/systemd-logind
-    903 root        20   0  107M 23144 13688 S   0.0  0.3  0:00.59 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
-    958 root        20   0  107M 23144 13688 S   0.0  0.3  0:00.00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
-    965 root        20   0  6824  2972  2728 S   0.0  0.0  0:00.26 /usr/sbin/cron -f -P
-    975 root        20   0  6944  4884  4072 S   0.0  0.1  0:00.18 /bin/login -p --
-   1006 k           20   0 20164 11124  9212 S   0.0  0.1  0:01.31 /usr/lib/systemd/systemd --user --deserialize=24
-   1007 k           20   0 21152  3696  1972 S   0.0  0.0  0:00.00 (sd-pam)
-   7361 root        20   0 12024  8264  7120 S   0.0  0.1  0:00.06 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
-  17839 root        20   0  306M  9500  7720 S   0.0  0.1  0:01.87 /usr/libexec/upowerd
-
-
-htop გაჩვენებს F6 ის დახმარებით რა პროცესო მოიხმარს RAM მეტად. 
-
-
- 72363 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.67 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72364 root        20   0 2511M  105M 65608 S   0.7  1.3  1:15.44 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72365 root        20   0 2511M  105M 65608 S   0.0  1.3  0:27.24 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72366 root        20   0 2511M  105M 65608 S   0.0  1.3  0:17.02 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72367 root        20   0 2511M  105M 65608 S   0.7  1.3  0:21.11 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72368 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.00 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72369 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.04 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72370 root        20   0 2511M  105M 65608 S   0.0  1.3  0:00.01 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72371 root        20   0 2511M  105M 65608 S   0.0  1.3  0:09.09 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72392 root        20   0 2511M  105M 65608 S   1.4  1.3  0:18.52 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  73467 root        20   0 2511M  105M 65608 S   0.0  1.3  0:14.61 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  75860 root        20   0 2511M  105M 65608 S   0.0  1.3  0:28.56 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  75887 root        20   0 2511M  105M 65608 S   0.0  1.3  0:12.73 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  75888 root        20   0 2511M  105M 65608 S   0.0  1.3  0:24.33 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  77158 root        20   0 2511M  105M 65608 S   0.0  1.3  0:16.42 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  78645 root        20   0 2511M  105M 65608 S   0.0  1.3  0:17.64 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
- 134282 root        20   0 2511M  105M 65608 S   1.4  1.3  0:06.37 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
-  72189 root        20   0 2257M 58800 35584 S   0.0  0.7  0:00.12 /usr/bin/containerd
-  72191 root        20   0 2257M 58800 35584 S   0.7  0.7  1:18.16 /usr/bin/containerd
-  72192 root        20   0 2257M 58800 35584 S   1.4  0.7  0:29.87 /usr/bin/containerd
-  72193 root        20   0 2257M 58800 35584 S   1.4  0.7  0:32.99 /usr/bin/containerd
-  72195 root        20   0 2257M 58800 35584 S   0.0  0.7  0:00.02 /usr/bin/containerd
-  72196 root        20   0 2257M 58800 35584 S   0.0  0.7  0:00.00 /usr/bin/containerd
-
-
+```console
 glances 
-
 devserver (Ubuntu 24.04 64bit / Linux 6.8.0-100-generic)                                                                                                                                       Uptime: 5:31:02
 
 Intel(R) Core(TM) i7-3740QM CPU @ 2.70GHz                                CPU      28.4%  idle    71.5%  ctx_sw     3K           MEM      9.8%  active    417M           SWAP     0.0%           LOAD    4core
@@ -806,14 +878,31 @@ Battery                        100%↑    0.4   0.0   0     0      135890 root  
                                         0.0   0.2   458M  16.5M   24468 root           0:01 6     0 S    ? ?    udisksd
                                         0.0   0.2   22.3M 13.9M       1 root           0:42 1     0 S    ? ?    systemd --system --deserialize=59
 
+```
 
-netdata
+## Netdata — Web Dashboard
+
+Netdata არის real-time მონიტორინგის სისტემა ბრაუზერზე დაფუძნებული dashboard-ით. htop-ისა და glances-ისგან განსხვავებით, Netdata ისტორიულ მონაცემებსაც ინახავს და გრაფიკებით აჩვენებს.
+
+### ინსტალაცია
+
+```bash
+wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && \
+  sh /tmp/netdata-kickstart.sh
+```
+
+ინსტალაციის პროცესი ავტომატურად:
+- დაამატებს Netdata-ს რეპოზიტორიას
+- დააინსტალირებს Netdata-ს და მის plugin-ებს
+- შექმნის `netdata` სისტემურ მომხმარებელს
+- ჩართავს და გაუშვებს systemd სერვისს
+- დააყენებს ავტომატურ განახლებას (cron)
+
 
 # მონიტორინგი ბრაუზერიდან სწრაფად ხელსაწყოს დახმარებით
 wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && sh /tmp/netdata-kickstart.sh
 
-
-
+```console
 k@devserver:~$ # ინსტალაციის სწრაფი მეთოდი
 wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && sh /tmp/netdata-kickstart.sh
 --2026-02-11 06:26:13--  https://get.netdata.cloud/kickstart.sh
@@ -1084,10 +1173,16 @@ Join our community and connect with us on:
 Root privileges required to run rm -rf /tmp/netdata-kickstart-51cwzA6KDS
 [/home/k]$ sudo rm -rf /tmp/netdata-kickstart-51cwzA6KDS
  OK
+```
+
+### სერვისის შემოწმება
 
 
+```bash
 sudo systemctl status netdata
+```
 
+```console
 k@devserver:~$ sudo systemctl status netdata
 ● netdata.service - Netdata, X-Ray Vision for your infrastructure!
      Loaded: loaded (/usr/lib/systemd/system/netdata.service; enabled; preset: enabled)
@@ -1121,16 +1216,31 @@ Feb 11 06:36:44 devserver netdata[148333]: level=info msg="skipping data collect
 Feb 11 06:36:45 devserver netdata[148333]: level=info msg="data collection resumed after 1.666846261s (skipped 1 times)" plugin=go.d collector=docker job=local
 Feb 11 06:36:46 devserver netdata[148333]: level=info msg="skipping data collection: previous run is still in progress for 1.002465818s (interval 1s)" plugin=go.d collector=docker job=local
 Feb 11 06:36:47 devserver netdata[148333]: level=info msg="data collection resumed after 1.982229167s (skipped 1 times)" plugin=go.d collector=docker job=local
+```
+
+> ✅ Netdata `active (running)` სტატუსშია და `enabled` — სერვერის რებუტის შემდეგაც ავტომატურად ჩაირთვება.
 
 
+| Plugin | დანიშნულება |
+|--------|-------------|
+| `netdata-plugin-apps` | აპლიკაციების/პროცესების მონიტორინგი |
+| `netdata-plugin-go` | Go-ზე დაწერილი კოლექტორები (Docker, Nginx, PostgreSQL...) |
+| `netdata-plugin-ebpf` | Kernel-level მონიტორინგი (eBPF) |
+| `netdata-plugin-pythond` | Python-ზე დაწერილი კოლექტორები |
+| `netdata-plugin-chartsd` | Bash-ზე დაწერილი კოლექტორები |
+| `netdata-plugin-systemd-units` | systemd სერვისების სტატუსი |
+| `netdata-plugin-journal-viewer` | systemd journal-ის ნახვა |
+| `netdata-plugin-network-viewer` | ქსელის კავშირების ვიზუალიზაცია |
+
+### Firewall-ში პორტის გახსნა
+
+
+```bash
 sudo ufw allow 19999/tcp
-
-k@devserver:~$ sudo ufw allow 19999/tcp
-Rule added
-Rule added (v6)
-
 sudo ufw reload
+```
 
+```console
 k@devserver:~$ sudo ufw reload
 Firewall reloaded
 k@devserver:~$ sudo ufw status
@@ -1150,6 +1260,48 @@ Nginx Full                 ALLOW       Anywhere
 Nginx HTTP (v6)            ALLOW       Anywhere (v6)
 Nginx Full (v6)            ALLOW       Anywhere (v6)
 19999/tcp (v6)             ALLOW       Anywhere (v6)
+```
 
 
+
+### ბრაუზერში წვდომა
+
+```
 http://192.168.56.101:19999/
+```
+
+Netdata dashboard აჩვენებს real-time გრაფიკებს: CPU, RAM, Disk I/O, Network, Docker კონტეინერების მეტრიკები, PostgreSQL სტატისტიკა, Nginx request-ები და ბევრი სხვა — ყველაფერი ავტომატურად ამოიცნობა.
+
+---
+
+## 4. სამი ინსტრუმენტის შედარება
+
+| მახასიათებელი | htop | glances | Netdata |
+|--------------|------|---------|---------|
+| ინტერფეისი | Terminal (TUI) | Terminal (TUI) | Browser (Web) |
+| ინსტალაციის ზომა | ~1MB | ~464MB | ~496MB |
+| ისტორია | ❌ | ❌ | ✅ (გრაფიკები) |
+| Docker monitoring | ❌ | ✅ | ✅ |
+| Network monitoring | ❌ | ✅ | ✅ |
+| Alerts / Alarms | ❌ | ❌ | ✅ |
+| Remote access | ❌ | ❌ | ✅ (ბრაუზერი) |
+| რესურსის მოხმარება | მინიმალური | საშუალო | მაღალი (~146MB RAM) |
+| საუკეთესო გამოყენება | სწრაფი debug | სერვერის overview | მუდმივი monitoring |
+
+
+
+## შედეგი
+
+### რატომ გვჭირდება მონიტორინგი
+
+სერვერის პრობლემების დიაგნოსტირება მონიტორინგის გარეშე ბრმად მუშაობის ტოლფასია. „საიტი ნელა მუშაობს" — CPU-ა? RAM-ი? Disk I/O? ქსელი? მონიტორინგის ინსტრუმენტები ამ კითხვებზე სწრაფად პასუხობენ.
+
+### CLI vs Web მონიტორინგი
+
+**htop/glances** — SSH-ით სერვერზე შესვლისას სწრაფი დიაგნოსტიკისთვის. ინტერნეტი არ სჭირდება, მსუბუქია, ყოველთვის ხელმისაწვდომია.
+
+**Netdata** — მუდმივი მონიტორინგისთვის. გრაფიკებით ჩანს ტრენდები — მაგალითად, RAM-ის მოხმარება თანდათან იზრდება თუ სტაბილურია? რომელ დროს არის CPU-ს პიკი? ისტორიული მონაცემები debugging-ს ბევრად აადვილებს.
+
+### Load Average
+
+glances-ში ვნახეთ `LOAD 1min: 0.50, 5min: 0.54, 15min: 0.54`. Load average აჩვენებს რამდენი პროცესი ელოდება CPU-ს. 4-core სისტემაზე load 4.0 ნიშნავს 100% დატვირთვას. ჩვენი 0.50 ნიშნავს რომ CPU-ს მხოლოდ ~12.5% ტვირთავენ — სისტემა თავისუფალია.

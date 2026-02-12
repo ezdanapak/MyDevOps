@@ -1167,49 +1167,54 @@
 
 
 <p>Task 24 — Disaster Recovery Test</p>
-<p>Backup: მონაცემების დაარქივება (ძველ სერვერზე)ჩავთვალოთ, რომ გვაქვს სტანდარტული აპლიკაცია (მაგ. ვებ-საიტი), სადაც გვჭირდება ფაილები, კონფიგურაცია და მონაცემთა ბაზა.ა) კონფიგურაციების და ფაილების დაარქივებაგამოვიყენოთ tar ბრძანება, რომელიც შეკრავს /var/www/html (ფაილები) და /etc/nginx (კონფიგურაცია) ერთ არქივში:Bashsudo tar -cvzf full_backup.tar.gz /var/www/html /etc/nginx /etc/systemd/system/myapp.service
-ბ) მონაცემთა ბაზის ექსპორტი (MySQL/MariaDB)გამოვიყენოთ mysqldump, რათა ბაზა ერთ .sql ფაილში გადავიტანოთ:Bashsudo mysqldump -u root -p my_database_name &gt; db_backup.sql
+<p>Backup: მონაცემების დაარქივება (ძველ სერვერზე)ჩავთვალოთ, რომ გვაქვს სტანდარტული აპლიკაცია (მაგ. ვებ-საიტი), სადაც გვჭირდება ფაილები, კონფიგურაცია და მონაცემთა ბაზა.ა) კონფიგურაციების და ფაილების დაარქივებაგამოვიყენოთ tar ბრძანება, რომელიც შეკრავს /var/www/html (ფაილები) და /etc/nginx (კონფიგურაცია) ერთ არქივში:
+<div class="language-Bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>tar<span class="w"> </span>-cvzf<span class="w"> </span>full_backup.tar.gz<span class="w"> </span>/var/www/html<span class="w"> </span>/etc/nginx<span class="w"> </span>/etc/systemd/system/myapp.service
+</span></code></pre></div></p>
+<p>ბ) მონაცემთა ბაზის ექსპორტი (MySQL/MariaDB)გამოვიყენოთ mysqldump, რათა ბაზა ერთ .sql ფაილში გადავიტანოთ:Bashsudo mysqldump -u root -p my_database_name &gt; db_backup.sql
 2. Transfer: მონაცემების გადატანა ახალ VM-ზეგამოვიყენოთ scp (Secure Copy), რათა ფაილები ძველი სერვერიდან ახალზე გადავგზავნოთ:Bashscp full_backup.tar.gz db_backup.sql username@NEW_SERVER_IP:/home/username/
 3. Restore: აღდგენა (ახალ VM-ზე)ახლა გადავინაცვლოთ ახალ სერვერზე და დავიწყოთ "რეანიმაცია".ა) ფაილების აღდგენაგავშალოთ არქივი თავის ადგილებზე:Bashsudo tar -xvzf full_backup.tar.gz -C /
 (შენიშვნა: -C / ნიშნავს, რომ ფაილები თავის ორიგინალ გზებზე (მაგ. /etc/nginx) დალაგდება).ბ) მონაცემთა ბაზის იმპორტიჯერ შევქმნათ ცარიელი ბაზა და შემდეგ ჩავასხათ მონაცემები:Bashmysql -u root -p -e "CREATE DATABASE my_database_name;"
 mysql -u root -p my_database_name &lt; db_backup.sql
 გ) სერვისების გადატვირთვარადგან კონფიგურაციები შევცვალეთ, სისტემამ უნდა დაინახოს ისინი:Bashsudo systemctl daemon-reload
 sudo systemctl restart nginx
-sudo systemctl restart myapp.service
-4. შემოწმება (Verification)აღდგენის შემდეგ უნდა დავრწმუნდეთ, რომ ყველაფერი მუშაობს:პორტები: ss -tunlp (ნახე, ჩაირთო თუ არა საჭირო პორტები).ლოგები: journalctl -u nginx (ნახე, ხომ არ აქვს შეცდომები).ვები: ბრაუზერში გახსენი ახალი VM-ის IP.შედეგის დოკუმენტირება:კომპონენტისტატუსიმეთოდიFiles✅ აღდგენილიაTar archiveConfigs✅ აღდგენილიაTar extraction to /etcDatabase✅ აღდგენილიაMySQL dump/importApp Status✅ RunningSystemctl check</p>
-<p>k@devserver:~$ sudo tar -cvzf full_backup.tar.gz /var/www/html /etc/nginx /etc/systemd/system/myapp.service
-tar: Removing leading <code>/' from member names
-/var/www/html/
-/var/www/html/index.html
-tar: Removing leading</code>/' from hard link targets
-/var/www/html/index.nginx-debian.html
-/etc/nginx/
-/etc/nginx/modules-enabled/
-/etc/nginx/uwsgi_params
-/etc/nginx/mime.types
-/etc/nginx/sites-enabled/
-/etc/nginx/sites-enabled/docker-proxy
-/etc/nginx/sites-available/
-/etc/nginx/sites-available/default
-/etc/nginx/sites-available/docker-proxy
-/etc/nginx/snippets/
-/etc/nginx/snippets/snakeoil.conf
-/etc/nginx/snippets/fastcgi-php.conf
-/etc/nginx/scgi_params
-/etc/nginx/ssl/
-/etc/nginx/ssl/server.crt
-/etc/nginx/ssl/server.key
-/etc/nginx/modules-available/
-/etc/nginx/fastcgi_params
-/etc/nginx/koi-utf
-/etc/nginx/nginx.conf
-/etc/nginx/koi-win
-/etc/nginx/win-utf
-/etc/nginx/fastcgi.conf
-/etc/nginx/proxy_params
-/etc/nginx/conf.d/
-tar: /etc/systemd/system/myapp.service: Cannot stat: No such file or directory
-tar: Exiting with failure status due to previous errors</p>
+sudo systemctl restart myapp.service</p>
+<ol>
+<li>შემოწმება (Verification)აღდგენის შემდეგ უნდა დავრწმუნდეთ, რომ ყველაფერი მუშაობს:პორტები: ss -tunlp (ნახე, ჩაირთო თუ არა საჭირო პორტები).ლოგები: journalctl -u nginx (ნახე, ხომ არ აქვს შეცდომები).ვები: ბრაუზერში გახსენი ახალი VM-ის IP.შედეგის დოკუმენტირება:კომპონენტისტატუსიმეთოდიFiles✅ აღდგენილიაTar archiveConfigs✅ აღდგენილიაTar extraction to /etcDatabase✅ აღდგენილიაMySQL dump/importApp Status✅ RunningSystemctl check</li>
+</ol>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>tar<span class="w"> </span>-cvzf<span class="w"> </span>full_backup.tar.gz<span class="w"> </span>/var/www/html<span class="w"> </span>/etc/nginx<span class="w"> </span>/etc/systemd/system/myapp.service
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">tar: Removing leading `/&#39; from member names</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">/var/www/html/</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">/var/www/html/index.html</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">tar: Removing leading `/&#39; from hard link targets</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">/var/www/html/index.nginx-debian.html</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">/etc/nginx/</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="go">/etc/nginx/modules-enabled/</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="go">/etc/nginx/uwsgi_params</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="go">/etc/nginx/mime.types</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="go">/etc/nginx/sites-enabled/</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="go">/etc/nginx/sites-enabled/docker-proxy</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="go">/etc/nginx/sites-available/</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="go">/etc/nginx/sites-available/default</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="go">/etc/nginx/sites-available/docker-proxy</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="go">/etc/nginx/snippets/</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="go">/etc/nginx/snippets/snakeoil.conf</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="go">/etc/nginx/snippets/fastcgi-php.conf</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="go">/etc/nginx/scgi_params</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="go">/etc/nginx/ssl/</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="go">/etc/nginx/ssl/server.crt</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="go">/etc/nginx/ssl/server.key</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="go">/etc/nginx/modules-available/</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="go">/etc/nginx/fastcgi_params</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="go">/etc/nginx/koi-utf</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="go">/etc/nginx/nginx.conf</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="go">/etc/nginx/koi-win</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="go">/etc/nginx/win-utf</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="go">/etc/nginx/fastcgi.conf</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="go">/etc/nginx/proxy_params</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="go">/etc/nginx/conf.d/</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="go">tar: /etc/systemd/system/myapp.service: Cannot stat: No such file or directory</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="go">tar: Exiting with failure status due to previous errors</span>
+</span></code></pre></div>
 <p>PostgreSQL ბაზის Backup (ძველ სერვერზე)
 Postgres-ში ვიყენებთ pg_dump ბრძანებას. ის ქმნის SQL ფაილს, რომელიც შეიცავს ბაზის აღდგენის ყველა ინსტრუქციას.</p>
 <p>Bash
@@ -1217,26 +1222,29 @@ sudo -u postgres pg_dump database_name &gt; db_backup.sql
 -u postgres: ბრძანებას ვუშვებთ postgres მომხმარებლის სახელით.</p>
 <p>database_name: ჩაწერე შენი ბაზის რეალური სახელი.</p>
 <p>თუ გსურს ყველა ბაზის, როლების და კონფიგურაციის ერთდროულად დაარქივება:</p>
-<p>Bash
-sudo -u postgres pg_dumpall &gt; full_postgres_backup.sql</p>
-<p>k@devserver:~$ sudo -u postgres pg_dump kutaisi_db &gt; db_backup.sql
-sudo -u postgres pg_dumpall &gt; full_postgres_backup.sql</p>
+<p><div class="language-Bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>pg_dumpall<span class="w"> </span>&gt;<span class="w"> </span>full_postgres_backup.sql
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>pg_dump<span class="w"> </span>kutaisi_db<span class="w"> </span>&gt;<span class="w"> </span>db_backup.sql
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>pg_dumpall<span class="w"> </span>&gt;<span class="w"> </span>full_postgres_backup.sql
+</span></code></pre></div>
 <p>1 VM იდან მეორეში გადატანა ბაზის და აღდგენა</p>
 <p>scp ./db_backup.sql k@192.168.56.102:/home/k/</p>
-<p>k@devserver:~$ scp /home/ubuntu/db_backup.sql k@192.168.56.102:/home/k/
-scp: stat local "/home/ubuntu/db_backup.sql": No such file or directory
-k@devserver:~$ ^C
-k@devserver:~$ find ~ -name "db_backup.sql" 2&gt;/dev/null
-/home/k/db_backup.sql
-k@devserver:~$ scp ./db_backup.sql k@192.168.56.102:/home/k/
-The authenticity of host '192.168.56.102 (192.168.56.102)' can't be established.
-ED25519 key fingerprint is SHA256:eBJS0fVtN6LSkHIAMom2t3hxQ+SNE7Jqp8s3mGr44ds.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? Y
-Please type 'yes', 'no' or the fingerprint: yes
-Warning: Permanently added '192.168.56.102' (ED25519) to the list of known hosts.
-k@192.168.56.102's password:
-db_backup.sql  </p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">k@devserver:~$ </span>scp<span class="w"> </span>/home/ubuntu/db_backup.sql<span class="w"> </span>k@192.168.56.102:/home/k/
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">scp: stat local &quot;/home/ubuntu/db_backup.sql&quot;: No such file or directory</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="gp">k@devserver:~$ </span>^C
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="gp">k@devserver:~$ </span>find<span class="w"> </span>~<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;db_backup.sql&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">/home/k/db_backup.sql</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="gp">k@devserver:~$ </span>scp<span class="w"> </span>./db_backup.sql<span class="w"> </span>k@192.168.56.102:/home/k/
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">The authenticity of host &#39;192.168.56.102 (192.168.56.102)&#39; can&#39;t be established.</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="go">ED25519 key fingerprint is SHA256:eBJS0fVtN6LSkHIAMom2t3hxQ+SNE7Jqp8s3mGr44ds.</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="go">This key is not known by any other names.</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="go">Are you sure you want to continue connecting (yes/no/[fingerprint])? Y</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="go">Please type &#39;yes&#39;, &#39;no&#39; or the fingerprint: yes</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="go">Warning: Permanently added &#39;192.168.56.102&#39; (ED25519) to the list of known hosts.</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="go">k@192.168.56.102&#39;s password:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="go">db_backup.sql  </span>
+</span></code></pre></div>
 <p>ვნახოთ დირექტორია</p>
 <p>k@devopsrecovery:~$ ls
 db_backup.sql
@@ -1270,52 +1278,58 @@ COPY 2
 </code></pre></div>
 <p>(1 row)</p>
 <p>ALTER TABLE</p>
-<p>შევქმნათ როლი</p>
-<p>sudo -u postgres psql -c "CREATE ROLE kapo WITH LOGIN SUPERUSER PASSWORD '0000';"</p>
+<p>შევქმნათ როლი
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE ROLE kapo WITH LOGIN SUPERUSER PASSWORD &#39;0000&#39;;&quot;</span>
+</span></code></pre></div></p>
 <p>შევამოწმოთ ცხრილები 
-sudo -u postgres psql -d database_name -c "SELECT * FROM students;"</p>
-<p>ახლა სერვერის</p>
-<p>sudo tar -cvzf ~/app_files.tar.gz /var/www/html /etc/nginx</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-d<span class="w"> </span>database_name<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;SELECT * FROM students;&quot;</span>
+</span></code></pre></div></p>
+<p>ახლა სერვერის
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>tar<span class="w"> </span>-cvzf<span class="w"> </span>~/app_files.tar.gz<span class="w"> </span>/var/www/html<span class="w"> </span>/etc/nginx
+</span></code></pre></div></p>
 <p>გადავუგზავნოთ 
 scp ~/app_files.tar.gz k@192.168.56.102:/home/k/</p>
-<p>k@devserver:~$ sudo tar -cvzf ~/app_files.tar.gz /var/www/html /etc/nginx
-[sudo] password for k:
-tar: Removing leading <code>/' from member names
-/var/www/html/
-/var/www/html/index.html
-tar: Removing leading</code>/' from hard link targets
-/var/www/html/index.nginx-debian.html
-/etc/nginx/
-/etc/nginx/modules-enabled/
-/etc/nginx/uwsgi_params
-/etc/nginx/mime.types
-/etc/nginx/sites-enabled/
-/etc/nginx/sites-enabled/docker-proxy
-/etc/nginx/sites-available/
-/etc/nginx/sites-available/default
-/etc/nginx/sites-available/docker-proxy
-/etc/nginx/snippets/
-/etc/nginx/snippets/snakeoil.conf
-/etc/nginx/snippets/fastcgi-php.conf
-/etc/nginx/scgi_params
-/etc/nginx/ssl/
-/etc/nginx/ssl/server.crt
-/etc/nginx/ssl/server.key
-/etc/nginx/modules-available/
-/etc/nginx/fastcgi_params
-/etc/nginx/koi-utf
-/etc/nginx/nginx.conf
-/etc/nginx/koi-win
-/etc/nginx/win-utf
-/etc/nginx/fastcgi.conf
-/etc/nginx/proxy_params
-/etc/nginx/conf.d/
-k@devserver:~$ scp ~/app_files.tar.gz k@192.168.56.102:/home/k/
-k@192.168.56.102's password:
-app_files.tar.gz </p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>tar<span class="w"> </span>-cvzf<span class="w"> </span>~/app_files.tar.gz<span class="w"> </span>/var/www/html<span class="w"> </span>/etc/nginx
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">[sudo] password for k:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">tar: Removing leading `/&#39; from member names</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">/var/www/html/</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="go">/var/www/html/index.html</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="go">tar: Removing leading `/&#39; from hard link targets</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="go">/var/www/html/index.nginx-debian.html</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="go">/etc/nginx/</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="go">/etc/nginx/modules-enabled/</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="go">/etc/nginx/uwsgi_params</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="go">/etc/nginx/mime.types</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="go">/etc/nginx/sites-enabled/</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="go">/etc/nginx/sites-enabled/docker-proxy</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="go">/etc/nginx/sites-available/</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="go">/etc/nginx/sites-available/default</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="go">/etc/nginx/sites-available/docker-proxy</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="go">/etc/nginx/snippets/</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="go">/etc/nginx/snippets/snakeoil.conf</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="go">/etc/nginx/snippets/fastcgi-php.conf</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="go">/etc/nginx/scgi_params</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="go">/etc/nginx/ssl/</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="go">/etc/nginx/ssl/server.crt</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="go">/etc/nginx/ssl/server.key</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="go">/etc/nginx/modules-available/</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="go">/etc/nginx/fastcgi_params</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="go">/etc/nginx/koi-utf</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="go">/etc/nginx/nginx.conf</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="go">/etc/nginx/koi-win</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="go">/etc/nginx/win-utf</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="go">/etc/nginx/fastcgi.conf</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="go">/etc/nginx/proxy_params</span>
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="go">/etc/nginx/conf.d/</span>
+</span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="gp">k@devserver:~$ </span>scp<span class="w"> </span>~/app_files.tar.gz<span class="w"> </span>k@192.168.56.102:/home/k/
+</span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="go">k@192.168.56.102&#39;s password:</span>
+</span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="go">app_files.tar.gz </span>
+</span></code></pre></div>
 <h1 id="nginx">nginx<a class="headerlink" href="#nginx" title="Permanent link">&para;</a></h1>
-<p>sudo apt install nginx
-sudo systemctl restart nginx</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nginx
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx
+</span></code></pre></div></p>
 
 
 

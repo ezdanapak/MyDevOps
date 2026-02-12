@@ -1160,114 +1160,158 @@
   <h1>Network Diagnostics</h1>
 
 <p>Task 22 — Network Diagnostics</p>
-<p>რომელი პორტებია "ღია" (Listening Ports)იმისთვის, რომ ნახო, რომელი სერვისი ელოდება კავშირს (მაგალითად, SSH პორტზე 22 ან Netdata პორტზე 19999), გამოიყენე ss ბრძანება (ეს netstat-ს თანამედროვე და უფრო სწრაფი ალტერნატივაა):Bashsudo ss -tunlp
-ფლაგების განმარტება:-t: TCP კავშირები.-u: UDP კავშირები.-n: აჩვენებს ციფრულ მისამართებს (პორტის ნომრებს) და არა სახელებს.-l: მხოლოდ "Listening" (მომლოდინე) პორტები.-p: აჩვენებს პროცესის სახელს და PID-ს, რომელიც ამ პორტს იყენებს.2. აქტიური კავშირების ნახვა (Active Connections)თუ გსურს ნახო, ვინ არის ამ წუთას შენს სერვერთან დაკავშირებული (მაგალითად, შენივე ბრაუზერი Netdata-ზე), გამოიყენე იგივე ბრძანება l (listening) ფლაგის გარეშე:Bashsudo ss -tunp
-ეს გამოგიჩენს Established კავშირებს. სვეტში Foreign Address დაინახავ იმ კომპიუტერის IP-ს, რომელიც შენს სერვერს უკავშირდება.3. ალტერნატივა: lsof (List Open Files)Linux-ში "ყველაფერი ფაილია", მათ შორის ქსელური სოკეტებიც. lsof დაგეხმარება დაინახო, რომელ პროგრამას აქვს გახსნილი ინტერნეტ კავშირი:Bashsudo lsof -i -P -n
--i: მხოლოდ ინტერნეტ (ქსელური) ფაილები.-P: პორტების ნომრებად ჩვენება (და არა სერვისის სახელებად).-n: IP მისამართების ჩვენება (DNS-ის გარეშე).4. netstat-ს გამოყენება (კლასიკური მეთოდი)ბევრი ადმინისტრატორი კვლავ იყენებს netstat-ს. თუ ის დაინსტალირებული გაქვს (sudo apt install net-tools), შეგიძლია გაუშვა:Bashsudo netstat -plntu
+<p>🔍 Listening Ports — ღია პორტების ნახვა</p>
+<p>იმისთვის, რომ ნახო რომელი სერვისი ელოდება კავშირს
+(მაგალითად: SSH → 22, Netdata → 19999), გამოიყენე ss ბრძანება
+(netstat-ის თანამედროვე და სწრაფი ალტერნატივა):</p>
+<p>sudo ss -tunlp</p>
+<p>📖 ფლაგების განმარტება</p>
+<p>-t — TCP კავშირები</p>
+<p>-u — UDP კავშირები</p>
+<p>-n — ციფრული მისამართები (პორტის ნომრები)</p>
+<p>-l — მხოლოდ Listening პორტები</p>
+<p>-p — პროცესის სახელი და PID რომელიც ამ პორტს იყენებს</p>
+<ul>
+<li>
+<p>აქტიური კავშირების ნახვა (Active Connections)თუ გსურს ნახო, ვინ არის ამ წუთას შენს სერვერთან დაკავშირებული (მაგალითად, შენივე ბრაუზერი Netdata-ზე), გამოიყენე იგივე ბრძანება l (listening) ფლაგის გარეშე: <br>
+<div class="language-Bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-tunp
+</span></code></pre></div>
+ეს გამოგიჩენს Established კავშირებს. სვეტში Foreign Address დაინახავ იმ კომპიუტერის IP-ს, რომელიც შენს სერვერს უკავშირდება.</p>
+</li>
+<li>
+<p>ალტერნატივა: lsof (List Open Files)Linux-ში "ყველაფერი ფაილია", მათ შორის ქსელური სოკეტებიც. lsof დაგეხმარება დაინახო, რომელ პროგრამას აქვს გახსნილი ინტერნეტ კავშირი:
+<div class="language-Bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>lsof<span class="w"> </span>-i<span class="w"> </span>-P<span class="w"> </span>-n
+</span></code></pre></div>
+-i: მხოლოდ ინტერნეტ (ქსელური) ფაილები.-P: პორტების ნომრებად ჩვენება (და არა სერვისის სახელებად).-n: IP მისამართების ჩვენება (DNS-ის გარეშე).</p>
+</li>
+<li>
+<p>netstat-ს გამოყენება (კლასიკური მეთოდი)ბევრი ადმინისტრატორი კვლავ იყენებს netstat-ს. თუ ის დაინსტალირებული გაქვს (sudo apt install net-tools), შეგიძლია გაუშვა:
+<div class="language-Bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>netstat<span class="w"> </span>-plntu
+</span></code></pre></div>
 შეჯამება დავალებისთვის:ბრძანებარას გვაჩვენებს?ss -tlpnრომელი სერვისები უსმენენ პორტებს (TCP).ss -tanაბსოლუტურად ყველა (Active + Listening) კავშირი.lsof -i :80კონკრეტულ პორტზე (მაგ. 80) რომელი პროცესი ზის.</p>
-<p>k@devserver:~$ sudo ss -tunlp
-Netid State  Recv-Q Send-Q         Local Address:Port  Peer Address:PortProcess
-udp   UNCONN 0      0                  127.0.0.1:8125       0.0.0.0:<em>    users:(("netdata",pid=147776,fd=57))
-udp   UNCONN 0      0                 127.0.0.54:53         0.0.0.0:</em>    users:(("systemd-resolve",pid=18791,fd=16))
-udp   UNCONN 0      0              127.0.0.53%lo:53         0.0.0.0:<em>    users:(("systemd-resolve",pid=18791,fd=14))
-udp   UNCONN 0      0      192.168.56.101%enp0s3:68         0.0.0.0:</em>    users:(("systemd-network",pid=18146,fd=23))
-udp   UNCONN 0      0           10.0.3.15%enp0s8:68         0.0.0.0:<em>    users:(("systemd-network",pid=18146,fd=26))
-tcp   LISTEN 0      4096                 0.0.0.0:8080       0.0.0.0:</em>    users:(("docker-proxy",pid=110692,fd=8))
-tcp   LISTEN 0      4096                 0.0.0.0:8081       0.0.0.0:<em>    users:(("docker-proxy",pid=110561,fd=8))
-tcp   LISTEN 0      4096               127.0.0.1:8125       0.0.0.0:</em>    users:(("netdata",pid=147776,fd=61))
-tcp   LISTEN 0      5                  127.0.0.1:61209      0.0.0.0:<em>    users:(("glances",pid=132757,fd=4))
-tcp   LISTEN 0      4096                 0.0.0.0:19999      0.0.0.0:</em>    users:(("netdata",pid=147776,fd=6))
-tcp   LISTEN 0      511                  0.0.0.0:443        0.0.0.0:<em>    users:(("nginx",pid=91368,fd=6),("nginx",pid=91367,fd=6),("nginx",pid=91366,fd=6),("nginx",pid=91365,fd=6),("nginx",pid=91364,fd=6))
-tcp   LISTEN 0      128                127.0.0.1:4317       0.0.0.0:</em>    users:(("otel-plugin",pid=148292,fd=10))
-tcp   LISTEN 0      4096           127.0.0.53%lo:53         0.0.0.0:<em>    users:(("systemd-resolve",pid=18791,fd=15))
-tcp   LISTEN 0      4096                 0.0.0.0:22         0.0.0.0:</em>    users:(("sshd",pid=7361,fd=3),("systemd",pid=1,fd=225))
-tcp   LISTEN 0      511                  0.0.0.0:80         0.0.0.0:<em>    users:(("nginx",pid=91368,fd=5),("nginx",pid=91367,fd=5),("nginx",pid=91366,fd=5),("nginx",pid=91365,fd=5),("nginx",pid=91364,fd=5))
-tcp   LISTEN 0      4096              127.0.0.54:53         0.0.0.0:</em>    users:(("systemd-resolve",pid=18791,fd=17))
-tcp   LISTEN 0      200                127.0.0.1:5432       0.0.0.0:<em>    users:(("postgres",pid=43966,fd=6))
-tcp   LISTEN 0      128                127.0.0.1:6010       0.0.0.0:</em>    users:(("sshd",pid=123104,fd=8))
-tcp   LISTEN 0      4096                    [::]:8080          [::]:<em>    users:(("docker-proxy",pid=110699,fd=8))
-tcp   LISTEN 0      4096                    [::]:8081          [::]:</em>    users:(("docker-proxy",pid=110567,fd=8))
-tcp   LISTEN 0      4096                    [::]:19999         [::]:<em>    users:(("netdata",pid=147776,fd=8))
-tcp   LISTEN 0      4096                    [::]:22            [::]:</em>    users:(("sshd",pid=7361,fd=4),("systemd",pid=1,fd=227))
-tcp   LISTEN 0      128                    [::1]:6010          [::]:*    users:(("sshd",pid=123104,fd=7))</p>
+</li>
+</ul>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>ss<span class="w"> </span>-tunlp
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="go">Netid State  Recv-Q Send-Q         Local Address:Port  Peer Address:PortProcess</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="go">udp   UNCONN 0      0                  127.0.0.1:8125       0.0.0.0:*    users:((&quot;netdata&quot;,pid=147776,fd=57))</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="go">udp   UNCONN 0      0                 127.0.0.54:53         0.0.0.0:*    users:((&quot;systemd-resolve&quot;,pid=18791,fd=16))</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="go">udp   UNCONN 0      0              127.0.0.53%lo:53         0.0.0.0:*    users:((&quot;systemd-resolve&quot;,pid=18791,fd=14))</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="go">udp   UNCONN 0      0      192.168.56.101%enp0s3:68         0.0.0.0:*    users:((&quot;systemd-network&quot;,pid=18146,fd=23))</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="go">udp   UNCONN 0      0           10.0.3.15%enp0s8:68         0.0.0.0:*    users:((&quot;systemd-network&quot;,pid=18146,fd=26))</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="go">tcp   LISTEN 0      4096                 0.0.0.0:8080       0.0.0.0:*    users:((&quot;docker-proxy&quot;,pid=110692,fd=8))</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="go">tcp   LISTEN 0      4096                 0.0.0.0:8081       0.0.0.0:*    users:((&quot;docker-proxy&quot;,pid=110561,fd=8))</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="go">tcp   LISTEN 0      4096               127.0.0.1:8125       0.0.0.0:*    users:((&quot;netdata&quot;,pid=147776,fd=61))</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="go">tcp   LISTEN 0      5                  127.0.0.1:61209      0.0.0.0:*    users:((&quot;glances&quot;,pid=132757,fd=4))</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="go">tcp   LISTEN 0      4096                 0.0.0.0:19999      0.0.0.0:*    users:((&quot;netdata&quot;,pid=147776,fd=6))</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="go">tcp   LISTEN 0      511                  0.0.0.0:443        0.0.0.0:*    users:((&quot;nginx&quot;,pid=91368,fd=6),(&quot;nginx&quot;,pid=91367,fd=6),(&quot;nginx&quot;,pid=91366,fd=6),(&quot;nginx&quot;,pid=91365,fd=6),(&quot;nginx&quot;,pid=91364,fd=6))</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="go">tcp   LISTEN 0      128                127.0.0.1:4317       0.0.0.0:*    users:((&quot;otel-plugin&quot;,pid=148292,fd=10))</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="go">tcp   LISTEN 0      4096           127.0.0.53%lo:53         0.0.0.0:*    users:((&quot;systemd-resolve&quot;,pid=18791,fd=15))</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="go">tcp   LISTEN 0      4096                 0.0.0.0:22         0.0.0.0:*    users:((&quot;sshd&quot;,pid=7361,fd=3),(&quot;systemd&quot;,pid=1,fd=225))</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="go">tcp   LISTEN 0      511                  0.0.0.0:80         0.0.0.0:*    users:((&quot;nginx&quot;,pid=91368,fd=5),(&quot;nginx&quot;,pid=91367,fd=5),(&quot;nginx&quot;,pid=91366,fd=5),(&quot;nginx&quot;,pid=91365,fd=5),(&quot;nginx&quot;,pid=91364,fd=5))</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="go">tcp   LISTEN 0      4096              127.0.0.54:53         0.0.0.0:*    users:((&quot;systemd-resolve&quot;,pid=18791,fd=17))</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="go">tcp   LISTEN 0      200                127.0.0.1:5432       0.0.0.0:*    users:((&quot;postgres&quot;,pid=43966,fd=6))</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="go">tcp   LISTEN 0      128                127.0.0.1:6010       0.0.0.0:*    users:((&quot;sshd&quot;,pid=123104,fd=8))</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="go">tcp   LISTEN 0      4096                    [::]:8080          [::]:*    users:((&quot;docker-proxy&quot;,pid=110699,fd=8))</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="go">tcp   LISTEN 0      4096                    [::]:8081          [::]:*    users:((&quot;docker-proxy&quot;,pid=110567,fd=8))</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="go">tcp   LISTEN 0      4096                    [::]:19999         [::]:*    users:((&quot;netdata&quot;,pid=147776,fd=8))</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="go">tcp   LISTEN 0      4096                    [::]:22            [::]:*    users:((&quot;sshd&quot;,pid=7361,fd=4),(&quot;systemd&quot;,pid=1,fd=227))</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="go">tcp   LISTEN 0      128                    [::1]:6010          [::]:*    users:((&quot;sshd&quot;,pid=123104,fd=7))</span>
+</span></code></pre></div>
+<p>🔗 Active Connections — აქტიური კავშირები</p>
+<p>თუ გინდა ნახო ვინ არის ამჟამად დაკავშირებული სერვერთან:</p>
 <p>აქტიური კავშირები
-k@devserver:~$ sudo ss -tunp
-Netid          State          Recv-Q          Send-Q                    Local Address:Port                    Peer Address:Port           Process
-tcp            ESTAB          0               0                        192.168.56.101:22                      192.168.56.1:63218           users:(("sshd",pid=34219,fd=4),("sshd",pid=34097,fd=4))
-tcp            ESTAB          0               0                        192.168.56.101:22                      192.168.56.1:55940           users:(("sshd",pid=123173,fd=4),("sshd",pid=122987,fd=4))
-tcp            ESTAB          0               0                        192.168.56.101:22                      192.168.56.1:55939           users:(("sshd",pid=123104,fd=4),("sshd",pid=122985,fd=4))
-k@devserver:~$</p>
-<p>ალტერნატივა lsof (List Open Files)</p>
-<p>k@devserver:~$ sudo lsof -i -P -n
-COMMAND      PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
-systemd        1            root  225u  IPv4   8390      0t0  TCP <em>:22 (LISTEN)
-systemd        1            root  227u  IPv6   8392      0t0  TCP </em>:22 (LISTEN)
-sshd        7361            root    3u  IPv4   8390      0t0  TCP <em>:22 (LISTEN)
-sshd        7361            root    4u  IPv6   8392      0t0  TCP </em>:22 (LISTEN)
-systemd-n  18146 systemd-network   23u  IPv4 410498      0t0  UDP 192.168.56.101:68
-systemd-n  18146 systemd-network   26u  IPv4 156213      0t0  UDP 10.0.3.15:68
-systemd-r  18791 systemd-resolve   14u  IPv4  27531      0t0  UDP 127.0.0.53:53
-systemd-r  18791 systemd-resolve   15u  IPv4  27532      0t0  TCP 127.0.0.53:53 (LISTEN)
-systemd-r  18791 systemd-resolve   16u  IPv4  27533      0t0  UDP 127.0.0.54:53
-systemd-r  18791 systemd-resolve   17u  IPv4  27534      0t0  TCP 127.0.0.54:53 (LISTEN)
-sshd       34097            root    4u  IPv4  51768      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:63218 (ESTABLISHED)
-sshd       34219               k    4u  IPv4  51768      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:63218 (ESTABLISHED)
-postgres   43966        postgres    6u  IPv4  63802      0t0  TCP 127.0.0.1:5432 (LISTEN)
-nginx      91364            root    5u  IPv4 119330      0t0  TCP <em>:80 (LISTEN)
-nginx      91364            root    6u  IPv4 119331      0t0  TCP </em>:443 (LISTEN)
-nginx      91365        www-data    5u  IPv4 119330      0t0  TCP <em>:80 (LISTEN)
-nginx      91365        www-data    6u  IPv4 119331      0t0  TCP </em>:443 (LISTEN)
-nginx      91366        www-data    5u  IPv4 119330      0t0  TCP <em>:80 (LISTEN)
-nginx      91366        www-data    6u  IPv4 119331      0t0  TCP </em>:443 (LISTEN)
-nginx      91367        www-data    5u  IPv4 119330      0t0  TCP <em>:80 (LISTEN)
-nginx      91367        www-data    6u  IPv4 119331      0t0  TCP </em>:443 (LISTEN)
-nginx      91368        www-data    5u  IPv4 119330      0t0  TCP <em>:80 (LISTEN)
-nginx      91368        www-data    6u  IPv4 119331      0t0  TCP </em>:443 (LISTEN)
-docker-pr 110561            root    8u  IPv4 152359      0t0  TCP <em>:8081 (LISTEN)
-docker-pr 110567            root    8u  IPv6 153741      0t0  TCP </em>:8081 (LISTEN)
-docker-pr 110692            root    8u  IPv4 152486      0t0  TCP <em>:8080 (LISTEN)
-docker-pr 110699            root    8u  IPv6 152487      0t0  TCP </em>:8080 (LISTEN)
-sshd      122985            root    4u  IPv4 190143      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55939 (ESTABLISHED)
-sshd      122987            root    4u  IPv4 190156      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55940 (ESTABLISHED)
-sshd      123104               k    4u  IPv4 190143      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55939 (ESTABLISHED)
-sshd      123104               k    7u  IPv6 190988      0t0  TCP [::1]:6010 (LISTEN)
-sshd      123104               k    8u  IPv4 190989      0t0  TCP 127.0.0.1:6010 (LISTEN)
-sshd      123173               k    4u  IPv4 190156      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55940 (ESTABLISHED)
-glances   132757            root    4u  IPv4 209344      0t0  TCP 127.0.0.1:61209 (LISTEN)
-netdata   147776         netdata    6u  IPv4 241528      0t0  TCP <em>:19999 (LISTEN)
-netdata   147776         netdata    8u  IPv6 241529      0t0  TCP </em>:19999 (LISTEN)
-netdata   147776         netdata   57u  IPv4 248938      0t0  UDP 127.0.0.1:8125
-netdata   147776         netdata   61u  IPv4 248939      0t0  TCP 127.0.0.1:8125 (LISTEN)
-otel-plug 148292         netdata   10u  IPv4 249003      0t0  TCP 127.0.0.1:4317 (LISTEN)
-k@devserver:~$</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>ss<span class="w"> </span>-tunp
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">Netid          State          Recv-Q          Send-Q                    Local Address:Port                    Peer Address:Port           Process</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">tcp            ESTAB          0               0                        192.168.56.101:22                      192.168.56.1:63218           users:((&quot;sshd&quot;,pid=34219,fd=4),(&quot;sshd&quot;,pid=34097,fd=4))</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">tcp            ESTAB          0               0                        192.168.56.101:22                      192.168.56.1:55940           users:((&quot;sshd&quot;,pid=123173,fd=4),(&quot;sshd&quot;,pid=122987,fd=4))</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">tcp            ESTAB          0               0                        192.168.56.101:22                      192.168.56.1:55939           users:((&quot;sshd&quot;,pid=123104,fd=4),(&quot;sshd&quot;,pid=122985,fd=4))</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="gp">k@devserver:~$</span>
+</span></code></pre></div></p>
+<p>📂 ალტერნატივა — lsof (List Open Files)</p>
+<p>Linux-ში "ყველაფერი ფაილია", მათ შორის ქსელური სოკეტებიც.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>lsof<span class="w"> </span>-i<span class="w"> </span>-P<span class="w"> </span>-n
+</span></code></pre></div>
+📖 ფლაგები</p>
+<p>-i — მხოლოდ ქსელური ფაილები</p>
+<p>-P — პორტების ნომრები</p>
+<p>-n — DNS-ის გარეშე</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>lsof<span class="w"> </span>-i<span class="w"> </span>-P<span class="w"> </span>-n
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">COMMAND      PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">systemd        1            root  225u  IPv4   8390      0t0  TCP *:22 (LISTEN)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">systemd        1            root  227u  IPv6   8392      0t0  TCP *:22 (LISTEN)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">sshd        7361            root    3u  IPv4   8390      0t0  TCP *:22 (LISTEN)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="go">sshd        7361            root    4u  IPv6   8392      0t0  TCP *:22 (LISTEN)</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">systemd-n  18146 systemd-network   23u  IPv4 410498      0t0  UDP 192.168.56.101:68</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="go">systemd-n  18146 systemd-network   26u  IPv4 156213      0t0  UDP 10.0.3.15:68</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="go">systemd-r  18791 systemd-resolve   14u  IPv4  27531      0t0  UDP 127.0.0.53:53</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="go">systemd-r  18791 systemd-resolve   15u  IPv4  27532      0t0  TCP 127.0.0.53:53 (LISTEN)</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="go">systemd-r  18791 systemd-resolve   16u  IPv4  27533      0t0  UDP 127.0.0.54:53</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="go">systemd-r  18791 systemd-resolve   17u  IPv4  27534      0t0  TCP 127.0.0.54:53 (LISTEN)</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="go">sshd       34097            root    4u  IPv4  51768      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:63218 (ESTABLISHED)</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="go">sshd       34219               k    4u  IPv4  51768      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:63218 (ESTABLISHED)</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="go">postgres   43966        postgres    6u  IPv4  63802      0t0  TCP 127.0.0.1:5432 (LISTEN)</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="go">nginx      91364            root    5u  IPv4 119330      0t0  TCP *:80 (LISTEN)</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="go">nginx      91364            root    6u  IPv4 119331      0t0  TCP *:443 (LISTEN)</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="go">nginx      91365        www-data    5u  IPv4 119330      0t0  TCP *:80 (LISTEN)</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="go">nginx      91365        www-data    6u  IPv4 119331      0t0  TCP *:443 (LISTEN)</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="go">nginx      91366        www-data    5u  IPv4 119330      0t0  TCP *:80 (LISTEN)</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="go">nginx      91366        www-data    6u  IPv4 119331      0t0  TCP *:443 (LISTEN)</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="go">nginx      91367        www-data    5u  IPv4 119330      0t0  TCP *:80 (LISTEN)</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="go">nginx      91367        www-data    6u  IPv4 119331      0t0  TCP *:443 (LISTEN)</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="go">nginx      91368        www-data    5u  IPv4 119330      0t0  TCP *:80 (LISTEN)</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="go">nginx      91368        www-data    6u  IPv4 119331      0t0  TCP *:443 (LISTEN)</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="go">docker-pr 110561            root    8u  IPv4 152359      0t0  TCP *:8081 (LISTEN)</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="go">docker-pr 110567            root    8u  IPv6 153741      0t0  TCP *:8081 (LISTEN)</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="go">docker-pr 110692            root    8u  IPv4 152486      0t0  TCP *:8080 (LISTEN)</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="go">docker-pr 110699            root    8u  IPv6 152487      0t0  TCP *:8080 (LISTEN)</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="go">sshd      122985            root    4u  IPv4 190143      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55939 (ESTABLISHED)</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="go">sshd      122987            root    4u  IPv4 190156      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55940 (ESTABLISHED)</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="go">sshd      123104               k    4u  IPv4 190143      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55939 (ESTABLISHED)</span>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="go">sshd      123104               k    7u  IPv6 190988      0t0  TCP [::1]:6010 (LISTEN)</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="go">sshd      123104               k    8u  IPv4 190989      0t0  TCP 127.0.0.1:6010 (LISTEN)</span>
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="go">sshd      123173               k    4u  IPv4 190156      0t0  TCP 192.168.56.101:22-&gt;192.168.56.1:55940 (ESTABLISHED)</span>
+</span><span id="__span-6-36"><a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="go">glances   132757            root    4u  IPv4 209344      0t0  TCP 127.0.0.1:61209 (LISTEN)</span>
+</span><span id="__span-6-37"><a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a><span class="go">netdata   147776         netdata    6u  IPv4 241528      0t0  TCP *:19999 (LISTEN)</span>
+</span><span id="__span-6-38"><a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="go">netdata   147776         netdata    8u  IPv6 241529      0t0  TCP *:19999 (LISTEN)</span>
+</span><span id="__span-6-39"><a id="__codelineno-6-39" name="__codelineno-6-39" href="#__codelineno-6-39"></a><span class="go">netdata   147776         netdata   57u  IPv4 248938      0t0  UDP 127.0.0.1:8125</span>
+</span><span id="__span-6-40"><a id="__codelineno-6-40" name="__codelineno-6-40" href="#__codelineno-6-40"></a><span class="go">netdata   147776         netdata   61u  IPv4 248939      0t0  TCP 127.0.0.1:8125 (LISTEN)</span>
+</span><span id="__span-6-41"><a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a><span class="go">otel-plug 148292         netdata   10u  IPv4 249003      0t0  TCP 127.0.0.1:4317 (LISTEN)</span>
+</span><span id="__span-6-42"><a id="__codelineno-6-42" name="__codelineno-6-42" href="#__codelineno-6-42"></a><span class="gp">k@devserver:~$</span>
+</span></code></pre></div>
+<p>📡 ალტერნატივა — netstat (კლასიკური მეთოდი)
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>net-tools
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>netstat<span class="w"> </span>-plntu
+</span></code></pre></div></p>
 <p>ალტერნატივა netstat</p>
-<p>k@devserver:~$ sudo netstat -plntu
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 0.0.0.0:8080            0.0.0.0:<em>               LISTEN      110692/docker-proxy
-tcp        0      0 0.0.0.0:8081            0.0.0.0:</em>               LISTEN      110561/docker-proxy
-tcp        0      0 127.0.0.1:8125          0.0.0.0:<em>               LISTEN      147776/netdata
-tcp        0      0 127.0.0.1:61209         0.0.0.0:</em>               LISTEN      132757/python3
-tcp        0      0 0.0.0.0:19999           0.0.0.0:<em>               LISTEN      147776/netdata
-tcp        0      0 0.0.0.0:443             0.0.0.0:</em>               LISTEN      91364/nginx: master
-tcp        0      0 127.0.0.1:4317          0.0.0.0:<em>               LISTEN      148292/otel-plugin
-tcp        0      0 127.0.0.53:53           0.0.0.0:</em>               LISTEN      18791/systemd-resol
-tcp        0      0 0.0.0.0:22              0.0.0.0:<em>               LISTEN      1/systemd
-tcp        0      0 0.0.0.0:80              0.0.0.0:</em>               LISTEN      91364/nginx: master
-tcp        0      0 127.0.0.54:53           0.0.0.0:<em>               LISTEN      18791/systemd-resol
-tcp        0      0 127.0.0.1:5432          0.0.0.0:</em>               LISTEN      43966/postgres
-tcp        0      0 127.0.0.1:6010          0.0.0.0:<em>               LISTEN      123104/sshd: k@pts/
-tcp6       0      0 :::8080                 :::</em>                    LISTEN      110699/docker-proxy
-tcp6       0      0 :::8081                 :::<em>                    LISTEN      110567/docker-proxy
-tcp6       0      0 :::19999                :::</em>                    LISTEN      147776/netdata
-tcp6       0      0 :::22                   :::<em>                    LISTEN      1/systemd
-tcp6       0      0 ::1:6010                :::</em>                    LISTEN      123104/sshd: k@pts/
-udp        0      0 127.0.0.1:8125          0.0.0.0:<em>                           147776/netdata
-udp        0      0 127.0.0.54:53           0.0.0.0:</em>                           18791/systemd-resol
-udp        0      0 127.0.0.53:53           0.0.0.0:<em>                           18791/systemd-resol
-udp        0      0 192.168.56.101:68       0.0.0.0:</em>                           18146/systemd-netwo
-udp        0      0 10.0.3.15:68            0.0.0.0:*                           18146/systemd-netwo
-k@devserver:~$</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">k@devserver:~$ </span>sudo<span class="w"> </span>netstat<span class="w"> </span>-plntu
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">Active Internet connections (only servers)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      110692/docker-proxy</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="go">tcp        0      0 0.0.0.0:8081            0.0.0.0:*               LISTEN      110561/docker-proxy</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="go">tcp        0      0 127.0.0.1:8125          0.0.0.0:*               LISTEN      147776/netdata</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="go">tcp        0      0 127.0.0.1:61209         0.0.0.0:*               LISTEN      132757/python3</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="go">tcp        0      0 0.0.0.0:19999           0.0.0.0:*               LISTEN      147776/netdata</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="go">tcp        0      0 0.0.0.0:443             0.0.0.0:*               LISTEN      91364/nginx: master</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="go">tcp        0      0 127.0.0.1:4317          0.0.0.0:*               LISTEN      148292/otel-plugin</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="go">tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      18791/systemd-resol</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="go">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1/systemd</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="go">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      91364/nginx: master</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="go">tcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN      18791/systemd-resol</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="go">tcp        0      0 127.0.0.1:5432          0.0.0.0:*               LISTEN      43966/postgres</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="go">tcp        0      0 127.0.0.1:6010          0.0.0.0:*               LISTEN      123104/sshd: k@pts/</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="go">tcp6       0      0 :::8080                 :::*                    LISTEN      110699/docker-proxy</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="go">tcp6       0      0 :::8081                 :::*                    LISTEN      110567/docker-proxy</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="go">tcp6       0      0 :::19999                :::*                    LISTEN      147776/netdata</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="go">tcp6       0      0 :::22                   :::*                    LISTEN      1/systemd</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="go">tcp6       0      0 ::1:6010                :::*                    LISTEN      123104/sshd: k@pts/</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="go">udp        0      0 127.0.0.1:8125          0.0.0.0:*                           147776/netdata</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="go">udp        0      0 127.0.0.54:53           0.0.0.0:*                           18791/systemd-resol</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="go">udp        0      0 127.0.0.53:53           0.0.0.0:*                           18791/systemd-resol</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="go">udp        0      0 192.168.56.101:68       0.0.0.0:*                           18146/systemd-netwo</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="go">udp        0      0 10.0.3.15:68            0.0.0.0:*                           18146/systemd-netwo</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="gp">k@devserver:~$</span>
+</span></code></pre></div>
 
 
 

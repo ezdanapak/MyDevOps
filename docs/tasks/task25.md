@@ -15,12 +15,21 @@ systemd-analyze blame
 
 Bash
 # მაგალითად, თუ გაქვს bluetooth სერვერზე (რაც არ გჭირდება)
+```bash
 sudo systemctl stop bluetooth
+```
+
+```bash
 sudo systemctl disable bluetooth
+```
 
 # თუ არ იყენებ Snap პაკეტებს (Snap ხშირად ანელებს სისტემას)
+```bash
 sudo systemctl stop snapd
+```
+```bash
 sudo systemctl disable snapd
+```
 3. მეხსიერების (RAM) ოპტიმიზაცია: "Swappiness"
 Linux იყენებს Swap-ს (მყარ დისკს), როცა RAM ივსება. ნაგულისხმევად, Ubuntu ნაადრევად იწყებს Swap-ის გამოყენებას, რაც სისტემას ანელებს. შეამოწმე მიმდინარე მნიშვნელობა:
 
@@ -58,7 +67,7 @@ Load Average: დაიკლო თუ არა დატვირთვამ
 
 RAM: რამდენად ნაკლები მეხსიერებაა გამოყენებული "IDLE" (დასვენების) რეჟიმში?
 
-
+```console
 k@devserver:~$ systemd-analyze blame
 5.514s motd-news.service
 4.413s dev-mapper-ubuntu\x2d\x2dvg\x2dubuntu\x2d\x2dlv.device
@@ -109,6 +118,8 @@ k@devserver:~$ cat /proc/sys/vm/swappiness
 k@devserver:~$ sudo sysctl vm.swappiness=10
 vm.swappiness = 10
 k@devserver:~$ sudo nano /etc/sysctl.conf
+
+```
 
 ცვლილება ახლავე
 
@@ -239,6 +250,8 @@ k@devserver:~$ ulimit -n
 
 htop გადამოწმება რესურსებზე CPU
 
+```console
+
  1791 netdata     20   0 99804  9304  5616 R   7.6  0.1  0:14.74 /usr/libexec/netdata/plugins.d/apps.plugin 1
    2969 k           20   0  7340  3700  3440 S   0.8  0.0  0:03.00 bash -c while true; do sleep 1;head -v -n 8 /proc/meminfo; head -v -n 2 /proc/stat /proc/version /proc/uptime /proc/loadavg /proc/sys/fs/fi
    4600 k           20   0  9740  6252  4200 R   8.0  0.1  0:01.89 htop
@@ -277,10 +290,11 @@ htop გადამოწმება რესურსებზე CPU
    1797 netdata     20   0  126M  5796  4888 S   0.0  0.1  0:00.34 /usr/libexec/netdata/plugins.d/network-viewer.plugin 1
    1866 netdata     20   0 87984  6076  5100 S   0.4  0.1  0:00.69 /usr/libexec/netdata/plugins.d/debugfs.plugin 1
    1888 netdata     20   0 1322M  107M 67444 S   0.8  1.4  0:01.55 /usr/libexec/netdata/plugins.d/go.d.plugin 1
-
+```
 
 RAM
 
+```console
   1778 netdata     20   0 1322M  107M 67444 S   0.0  1.4  0:02.71 /usr/libexec/netdata/plugins.d/go.d.plugin 1
    1887 netdata     20   0 1322M  107M 67444 S   2.2  1.4  0:07.42 /usr/libexec/netdata/plugins.d/go.d.plugin 1
    1888 netdata     20   0 1322M  107M 67444 S   0.0  1.4  0:01.92 /usr/libexec/netdata/plugins.d/go.d.plugin 1
@@ -318,3 +332,5 @@ RAM
    1628 netdata     20   0  723M 95264 25952 S   0.0  1.2  0:00.06 /usr/sbin/netdata -P /run/netdata/netdata.pid -D
    1629 netdata     20   0  723M 95264 25952 S   0.7  1.2  0:00.06 /usr/sbin/netdata -P /run/netdata/netdata.pid -D
    1630 netdata     20   0  723M 95264 25952 S   0.0  1.2  0:00.91 /usr/sbin/netdata -P /run/netdata/netdata.pid -D
+
+```

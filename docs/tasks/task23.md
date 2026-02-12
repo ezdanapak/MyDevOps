@@ -1,23 +1,156 @@
 Task 23 — Security Audit
 
+👥 1. სისტემის მომხმარებლების სია
 
-სისტემის მომხმარებლების სიაUbuntu-ში ყველა მომხმარებელი ინახება /etc/passwd ფაილში. იმისთვის, რომ დაინახო მხოლოდ რეალური მომხმარებლები (და არა სისტემური სერვისები), გამოიყენე ეს ბრძანება:Bashcolumn -t -s: /etc/passwd | awk '$3 >= 1000 && $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'
-UID >= 1000: ჩვეულებრივ, რეალური მომხმარებლების ID იწყება 1000-დან.$1: მომხმარებლის სახელი.2. ვის აქვს Sudo (Root) უფლებები?ეს ყველაზე კრიტიკული ნაწილია. უნდა ვიცოდეთ, ვის შეუძლია სისტემური ცვლილებების შეტანა. შეამოწმე sudo ჯგუფის წევრები:Bashgrep '^sudo:.*$' /etc/group | cut -d: -f4
-ასევე, გადახედე sudoers ფაილს, რომ ნახო, ხომ არ არის ვინმესთვის ინდივიდუალური უფლებები მინიჭებული:Bashsudo cat /etc/sudoers | grep -v '^#' | grep -v '^$'
-3. Fail2Ban-ის შემოწმებაFail2Ban არის პროგრამა, რომელიც ბლოკავს IP მისამართებს, რომლებიც ბევრჯერ ცდილობენ არასწორი პაროლით შესვლას (Brute Force შეტევისგან დაცვა).შეამოწმე, დაინსტალირებულია თუ არა:Bashfail2ban-client --version
-შეამოწმე, აქტიურია თუ არა სერვისი:Bashsudo systemctl status fail2ban
-ნახე, რომელი "ციხეები" (jails) არის აქტიური (მაგ. sshd):Bashsudo fail2ban-client status
-4. SSH-ის უსაფრთხოების შემოწმებადამატებითი აუდიტისთვის ნახე, დაშვებულია თუ არა root მომხმარებლით პირდაპირ შესვლა (რაც ცუდია უსაფრთხოებისთვის):Bashgrep "PermitRootLogin" /etc/ssh/sshd_config
-რეკომენდაცია: უნდა იყოს PermitRootLogin no.5. სისტემის Security Status - შეჯამება (Report)შედეგი შეგიძლია ასე ჩამოწერო შენი დოკუმენტაციისთვის:პარამეტრისტატუსიშენიშვნაActive Usersadmin, sabaმხოლოდ საჭირო პირები.Sudo Accessadminკონტროლირებადია.Fail2BanActiveSSH დაცულია.Root SSH LoginDisabledუსაფრთხოა.Open Ports22, 80, 19999მხოლოდ საჭირო პორტები.ბონუსი: როგორ ვნახოთ ბოლო წარმატებული შესვლები?თუ გაინტერესებს, ვინ შევიდა ბოლოს სერვერზე:Bashlast -a | head -n 10
+Ubuntu-ში ყველა მომხმარებელი ინახება ფაილში:
+
+/etc/passwd
 
 
+იმისთვის, რომ ნახო მხოლოდ რეალური მომხმარებლები (და არა სისტემური სერვისები), გამოიყენე:
+
+column -t -s: /etc/passwd | awk '$3 >= 1000 && $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'
+
+📖 განმარტება
+
+UID >= 1000 — რეალური მომხმარებლები იწყება 1000-დან
+
+$1 — მომხმარებლის სახელი
+
+📄 შედეგი
+```console
 k@devserver:~$ column -t -s: /etc/passwd | awk '$3 >= 1000 && $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'
 k UID:1000 Shell:/bin/bash
 developer UID:1001 Shell:/bin/bash
 deploy UID:1002 Shell:/bin/bash
+```
 
+🛡️ 2. ვის აქვს Sudo (Root) უფლებები?
 
+ეს ყველაზე კრიტიკული ნაწილია — უნდა ვიცოდეთ, ვის შეუძლია სისტემური ცვლილებების შეტანა.
 
+▶️ sudo ჯგუფის წევრები
+grep '^sudo:.*$' /etc/group | cut -d: -f4
+
+📄 შედეგი
+k@devserver:~$ grep '^sudo:.*$' /etc/group | cut -d: -f4
+k,developer
+
+▶️ sudoers ფაილის შემოწმება
+
+ინდივიდუალური უფლებების სანახავად:
+```bash
+sudo cat /etc/sudoers | grep -v '^#' | grep -v '^$'
+```
+
+📄 შედეგი
+
+```console
+k@devserver:~$ sudo cat /etc/sudoers | grep -v '^#' | grep -v '^$'
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults        use_pty
+root    ALL=(ALL:ALL) ALL
+%admin ALL=(ALL) ALL
+%sudo   ALL=(ALL:ALL) ALL
+@includedir /etc/sudoers.d
+```
+
+🚫 3. Fail2Ban-ის შემოწმება
+
+Fail2Ban იცავს სისტემას Brute Force შეტევებისგან და ბლოკავს საეჭვო IP-ებს.
+
+▶️ ვერსიის შემოწმება
+fail2ban-client --version
+
+📄 შედეგი (დაინსტალირებამდე)
+k@devserver:~$ fail2ban-client --version
+Command 'fail2ban-client' not found, but can be installed with:
+sudo apt install fail2ban
+
+▶️ ინსტალაცია
+```bash
+sudo apt install fail2ban
+```
+
+📄 ინსტალაციის ლოგი
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+...
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+
+▶️ ვერსიის შემოწმება (დაინსტალირების შემდეგ)
+
+fail2ban-client --version
+
+Fail2Ban v1.0.2
+
+▶️ სერვისის სტატუსი
+```bash
+sudo systemctl status fail2ban
+```
+
+📄 შედეგი
+● fail2ban.service - Fail2Ban Service
+     Loaded: loaded (/usr/lib/systemd/system/fail2ban.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-02-11 06:56:37 UTC; 40s ago
+...
+Feb 11 06:56:40 devserver fail2ban-server[169859]: Server ready
+
+▶️ აქტიური Jail-ების ნახვა
+```bash
+sudo fail2ban-client status
+```
+
+📄 შედეგი
+Status
+|- Number of jail:      1
+`- Jail list:   sshd
+
+🔐 4. SSH-ის უსაფრთხოების შემოწმება
+
+შეამოწმე, დაშვებულია თუ არა root მომხმარებლით შესვლა:
+```bash
+grep "PermitRootLogin" /etc/ssh/sshd_config
+```
+
+📄 შედეგი
+```bash
+grep "PermitRootLogin" /etc/ssh/sshd_config
+```
+#PermitRootLogin prohibit-password
+# the setting of "PermitRootLogin prohibit-password".
+
+✅ რეკომენდაცია
+
+უნდა იყოს:
+
+PermitRootLogin no
+
+📊 5. Security Status — შეჯამება (Report)
+პარამეტრი	სტატუსი	შენიშვნა
+Active Users	admin, saba	მხოლოდ საჭირო პირები
+Sudo Access	admin	კონტროლირებადია
+Fail2Ban	Active	SSH დაცულია
+Root SSH Login	Disabled	უსაფრთხოა
+Open Ports	22, 80, 19999	მხოლოდ საჭირო პორტები
+⭐ ბონუსი — ბოლო წარმატებული შესვლები
+
+თუ გინდა ნახო, ვინ შევიდა ბოლოს სერვერზე:
+``bash
+last -a | head -n 10
+```
+
+```console
+k@devserver:~$ column -t -s: /etc/passwd | awk '$3 >= 1000 && $3 != 65534 {print $1, "UID:"$3, "Shell:"$7}'
+k UID:1000 Shell:/bin/bash
+developer UID:1001 Shell:/bin/bash
+deploy UID:1002 Shell:/bin/bash
+```
+
+```console
 k@devserver:~$ grep '^sudo:.*$' /etc/group | cut -d: -f4
 k,developer
 k@devserver:~$ sudo cat /etc/sudoers | grep -v '^#' | grep -v '^$'
@@ -29,10 +162,10 @@ root    ALL=(ALL:ALL) ALL
 %admin ALL=(ALL) ALL
 %sudo   ALL=(ALL:ALL) ALL
 @includedir /etc/sudoers.d
-
+```
 
 Fail2BAN
-
+```console
 k@devserver:~$ fail2ban-client --version
 Command 'fail2ban-client' not found, but can be installed with:
 sudo apt install fail2ban
@@ -113,6 +246,10 @@ User sessions running outdated binaries:
  k @ user manager service: systemd[1006]
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
+```
+
+
+```console
 k@devserver:~$ fail2ban-client --version
 Fail2Ban v1.0.2
 k@devserver:~$ sudo systemctl status fail2ban
@@ -134,8 +271,11 @@ k@devserver:~$ sudo fail2ban-client status
 Status
 |- Number of jail:      1
 `- Jail list:   sshd
+```
 
 
+
+```console
 k@devserver:~$ grep "PermitRootLogin" /etc/ssh/sshd_config
 #PermitRootLogin prohibit-password
 # the setting of "PermitRootLogin prohibit-password".
@@ -154,3 +294,4 @@ reboot   system boot  Tue Feb 10 14:58   still running      6.8.0-100-generic
 reboot   system boot  Tue Feb 10 14:42 - 14:55  (00:13)     6.8.0-100-generic
 reboot   system boot  Tue Feb 10 07:45 - 14:39  (06:53)     6.8.0-100-generic
 k@devserver:~$
+```
