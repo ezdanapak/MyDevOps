@@ -1,13 +1,69 @@
 Task 15 — Containerized Application
 
-პროექტის ფოლდერის შექმნა:
-bashmkdir -p ~/docker-app/nginx
+## არქიტექტურა
+```mermaid
+flowchart TD
+    subgraph HOST["🖥️ Host Machine"]
+        P1["Port 8080"]
+        P2["Port 8081"]
+    end
+
+    subgraph DOCKER["🐳 Docker Network — docker-app_default"]
+        subgraph WEB["web — Nginx"]
+            W1["📄 Static Files — index.html"]
+            W2["🔀 Reverse Proxy — /adminer/"]
+        end
+
+        subgraph DB["db — PostgreSQL 16"]
+            D1["🗄️ app_db"]
+            D2["👤 appuser"]
+            D3["💚 Healthcheck — pg_isready"]
+        end
+
+        subgraph ADM["adminer — DB Panel"]
+            A1["🌐 Web UI :8080"]
+        end
+    end
+
+    subgraph VOL["💾 Persistent Storage"]
+        V1["pgdata volume"]
+    end
+
+    P1 -->|":8080 → :80"| WEB
+    P2 -->|":8081 → :8080"| ADM
+    W2 -->|"proxy_pass"| A1
+    A1 -->|"SQL"| D1
+    DB --- V1
+
+```
+
+## პროექტის სტრუქტურა:
+
+```bash
+mkdir -p ~/docker-app/nginx
 cd ~/docker-app
+```
+
+### საბოლოო სტრუქტურა ასე გამოიყურება:
+
+```
+docker-app/
+├── docker-compose.yml        # სერვისების აღწერა 
+└── nginx/
+    ├── nginx.conf            # Nginx კონფიგურაცია
+    └── index.html            # Web გვერდი
+```
+
+## Docker Compose კონფიგურაცია
+
+ეს არის მთავარი ფაილი, რომელიც სამივე სერვისს აღწერს და მათ შორის კავშირს ადგენს.
 
 
-docker-compose.yml:
-bashnano ~/docker-app/docker-compose.yml
+```bash
+nano ~/docker-app/docker-compose.yml
+```
 
+```yaml
 services:
   web:
     image: nginx:alpine
@@ -46,13 +102,50 @@ services:
 
 volumes:
   pgdata:
+```
+
+## სერვისების განმარტება
+
+### Nginx Web Server კონფიგურაცია
 
 
-Nginx კონფიგურაცია:
-bash
+| პარამეტრი | მნიშვნელობა |
+|-----------|-------------|
+| `image: nginx:alpine` | მსუბუქი Nginx image (~40MB Alpine Linux-ზე) |
+| `ports: "8080:80"` | ჰოსტის 8080 პორტს აკავშირებს კონტეინერის 80-თან |
+| `volumes: ...index.html:ro` | ლოკალურ ფაილს mount-ავს კონტეინერში (read-only) |
+| `depends_on: db: condition: service_healthy` | ელოდება სანამ DB healthcheck-ს გაივლის |
+| `restart: unless-stopped` | ავტომატურად გადაიტვირთება crash-ის შემთხვევაში |
 
+
+#### `db` — PostgreSQL Database
+
+| პარამეტრი | მნიშვნელობა |
+|-----------|-------------|
+| `image: postgres:16-alpine` | PostgreSQL 16 Alpine-ზე |
+| `environment` | ბაზის სახელი, მომხმარებელი, პაროლი |
+| `volumes: pgdata:/var/lib/...` | Named volume — მონაცემები შენარჩუნდება კონტეინერის წაშლის შემდეგაც |
+| `healthcheck` | `pg_isready` ბრძანებით ამოწმებს მზადყოფნას ყოველ 5 წამში |
+
+#### `adminer` — Database Management UI
+
+| პარამეტრი | მნიშვნელობა |
+|-----------|-------------|
+| `image: adminer:latest` | ვებ-ინტერფეისი DB მართვისთვის |
+| `ports: "8081:8080"` | ჰოსტის 8081 → კონტეინერის 8080 |
+| `depends_on: db` | DB-ს შემდეგ ეშვება (healthcheck-ის გარეშე) |
+
+#### `volumes: pgdata`
+
+Named volume-ი უზრუნველყოფს რომ PostgreSQL-ის მონაცემები არ დაიკარგება `docker compose down`-ის შემდეგ. მონაცემები მხოლოდ `docker volume rm`-ით იშლება.
+
+---
+
+```bash
 nano ~/docker-app/nginx/nginx.conf
+```
 
+```nginx
 server {
     listen 80;
     server_name localhost;
@@ -68,13 +161,26 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
+```
 
-Web გვერდი (database სტატუსით):
-bash
+## Location
+რას აკეთებს თითოეული `location` ბლოკი:
 
+- **`/`** — მთავარი გვერდი, ჩვენი `index.html` ფაილიდან
+- **`/adminer/`** — მოთხოვნას გადამისამართებს Adminer-ის კონტეინერზე. Docker-ის შიდა DNS-ის წყალობით, `adminer` სახელი ავტომატურად resolve-დება სწორ IP-ზე
+
+> 💡 `proxy_set_header` ჰედერები აუცილებელია — Adminer-მა იცოდეს კლიენტის რეალური IP მისამართი და hostname.
+
+
+## Web გვერდი 
+
+### database სტატუსი
+
+```bash
 nano ~/docker-app/nginx/index.html
+```
 
-
+```html
 <!DOCTYPE html>
 <html lang="ka">
 <head>
@@ -167,17 +273,19 @@ nano ~/docker-app/nginx/index.html
 </body>
 </html>
 
+```
 
+## აპლიკაციის გაშვება
 
-გაშვება:
-bash
+```bash
 cd ~/docker-app
 docker compose up -d
+```
 
 
+`-d` ფლაგი (detached) სერვისებს background-ში უშვებს.
 
-
-
+```console
 k@devserver:~$ mkdir -p ~/docker-app/nginx
 k@devserver:~$ cd ~/docker-app
 k@devserver:~/docker-app$ nano ~/docker-app/docker-compose.yml
@@ -195,42 +303,80 @@ k@devserver:~/docker-app$ docker compose up -d
  ✔ Container docker-app-adminer-1 Created                                                                                                                                                          1.7s
  ✔ Container docker-app-web-1     Created                                                                                                                                                          1.7s
 k@devserver:~/docker-app$
+```
 
 
-შემოწმება:
-bash
+## სტატუსის შემოწმება
+```bash
 docker compose ps
+```
 
+```console
 k@devserver:~/docker-app$ docker compose ps
 NAME                   IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
 docker-app-adminer-1   adminer:latest       "entrypoint.sh docke…"   adminer   4 minutes ago   Up 4 minutes             0.0.0.0:8081->8080/tcp, [::]:8081->8080/tcp
 docker-app-db-1        postgres:16-alpine   "docker-entrypoint.s…"   db        4 minutes ago   Up 4 minutes (healthy)   5432/tcp
 docker-app-web-1       nginx:alpine         "/docker-entrypoint.…"   web       4 minutes ago   Up 3 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
 k@devserver:~/docker-app$
+```
+
+> ✅ სამივე სერვისი `Up` სტატუსშია, PostgreSQL-ს `(healthy)` აწერია — healthcheck წარმატებით გავიდა.
 
 
-Browser-ში:
 
-Web გვერდი: http://192.168.56.101:8080
-Adminer (DB Panel): http://192.168.56.101:8081
+## ბრაუზერში წვდომა
 
-Adminer-ში შესვლისას:
-ველიმნიშვნელობა
-System
-PostgreSQL 
-Server db
-Username appuser
-Password securepass123
-Database app_db
+| რა | მისამართი |
+|----|-----------|
+| Web გვერდი | `http://192.168.56.101:8080` |
+| Adminer (პირდაპირ) | `http://192.168.56.101:8081` |
+| Adminer (Nginx proxy-ით) | `http://192.168.56.101:8080/adminer/` |
 
 
-ბრძანებები:
-bash
-docker compose logs        # ლოგები
-docker compose down        # გაჩერება
-docker compose up -d       # თავიდან გაშვება
+### Adminer-ში შესვლა
+
+Adminer-ის ფორმაში შემდეგი მონაცემები შეიყვანეთ:
+
+| ველი | მნიშვნელობა |
+|------|-------------|
+| System | PostgreSQL |
+| Server | `db` |
+| Username | `appuser` |
+| Password | `securepass123` |
+| Database | `app_db` |
+
+> 💡 Server ველში `db` ვწერთ და არა IP-ს — Docker Compose-ის შიდა ქსელში სერვისები ერთმანეთს სახელით პოულობენ.
 
 
+
+## ხშირად გამოყენებული ბრძანებები
+
+```bash
+# სერვისების გაშვება (background-ში)
+docker compose up -d
+```
+```bash
+# სტატუსის ნახვა
+docker compose ps
+```
+```bash
+# ლოგების ნახვა (ყველა სერვისის)
+docker compose logs
+```
+```bash
+# კონკრეტული სერვისის ლოგები (real-time)
+docker compose logs -f db
+```
+```bash
+# სერვისების გაჩერება (კონტეინერების წაშლა, volume რჩება)
+docker compose down
+```
+```bash
+# სერვისების გაჩერება + volume-ების წაშლა (მონაცემები დაიკარგება!)
+docker compose down -v
+```
+
+```console
 k@devserver:~/docker-app$ docker compose logs
 web-1  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 adminer-1  | [Tue Feb 10 19:11:29 2026] PHP 8.4.17 Development Server (http://[::]:8080) started
@@ -368,3 +514,5 @@ db-1       | 2026-02-10 19:11:38.420 UTC [1] LOG:  database system is ready to a
 db-1       | 2026-02-10 19:16:38.483 UTC [62] LOG:  checkpoint starting: time
 db-1       | 2026-02-10 19:16:41.469 UTC [62] LOG:  checkpoint complete: wrote 31 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.875 s, sync=0.047 s, total=2.987 s; sync files=11, longest=0.023 s, average=0.005 s; distance=139 kB, estimate=139 kB; lsn=0/19418F0, redo lsn=0/19418B8
 k@devserver:~/docker-app$
+
+```
