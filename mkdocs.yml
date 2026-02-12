@@ -21,6 +21,7 @@ theme:
     - search.share
     - content.code.copy
     - content.code.annotate
+    - content.code.select
     - content.tooltips
 
   icon:
