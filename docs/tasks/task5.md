@@ -33,8 +33,9 @@ k@devserver:~$
 
 ## სისტემის განახლება
 ```bash
-apt upgrade -y
+sudo apt upgrade -y
 ```
+თუ ფანჯარა სერვისის გადატვირთვას ითხოვს, დატოვე ნაგულისხმევი არჩევანი და დააჭირე Enter. <br>
 
 ## რეპოზიტორების განახლება: 
 
@@ -42,6 +43,12 @@ apt upgrade -y
 sudo apt update
 ```
 ## ინსტალაციები
+
+ყველა პაკეტის ერთდროულად დაყენება ერთი ბრძანებით: <br>
+```bash
+sudo apt install -y git curl vim htop net-tools
+```
+ან თითოეული ცალ-ცალკე: <br>
 
 
 git: კოდის ვერსიების მართვისთვის. <br>
@@ -172,3 +179,20 @@ VIM - Vi IMproved 9.1 (2024 Jan 02, compiled Sep 05 2025 19:44:46)
 htop 3.3.0
 net-tools 2.10
 ```
+
+## სწრაფი შემოწმება
+ხუთივე პაკეტი დაყენებულია, თუ თითოეულს `ii` სტატუსი აქვს: <br>
+```bash
+dpkg -l git curl vim htop net-tools | grep ^ii
+```
+
+## გადატვირთვა ჭირდება თუ არა
+ბირთვის განახლების შემდეგ სისტემა შეიძლება გადატვირთვას ითხოვდეს: <br>
+```bash
+[ -f /var/run/reboot-required ] && echo "reboot needed"
+```
+თუ დაიწერა `reboot needed`: <br>
+```bash
+sudo reboot
+```
+გადატვირთვის შემდეგ SSH-ით ისევ შეგიძლია შესვლა, რადგან IP სტატიკურია (Task 3).
