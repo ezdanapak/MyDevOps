@@ -181,8 +181,6 @@ MyDevOps/
 
 🌐 ხელმისაწვდომია ვებზე: 
 **[github repo web MyDevOps](https://ezdanapak.github.io/MyDevOps/)**
-ან
-**[devops.kapanadze.dev](https://devops.kapanadze.dev/)**
 
 **2. თითოეული Task-ის დეტალები:**
 
