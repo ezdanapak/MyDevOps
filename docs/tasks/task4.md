@@ -81,10 +81,26 @@ MobaXterm-ში დააწკაპუნე მარჯვენა ღი�
 ```bash
 sudo nano /etc/ssh/sshd_config
 ```
-მოძებნე ეს ხაზი
-PasswordAuthentication <br>
-და გადააკეთე ასე 
-PasswordAuthentication no <br>
+მოძებნე ეს ხაზები და გადააკეთე ასე: <br>
+```text
+PasswordAuthentication no
+PubkeyAuthentication yes
+PermitRootLogin no
+```
+- `PasswordAuthentication no` — პაროლით შესვლა აკრძალულია, მხოლოდ key-ით
+- `PubkeyAuthentication yes` — SSH key-ით ავტორიზაცია ჩართულია
+- `PermitRootLogin no` — root იუზერით პირდაპირ შესვლა აკრძალულია
+
+!!! warning
+    ეს გააკეთე მხოლოდ მას შემდეგ, რაც key-ით შესვლა წარმატებით შეამოწმე, თორემ სერვერიდან გამოიკეტები.
+
+!!! tip
+    Ubuntu-ზე `/etc/ssh/sshd_config.d/` ფოლდერის ფაილებიც იკითხება და `50-cloud-init.conf`-ს შეუძლია `PasswordAuthentication yes` დააბრუნოს. ამიტომ სუფთა გზაა ცალკე ფაილი: `sudo nano /etc/ssh/sshd_config.d/00-keys-only.conf` და იმ სამი ხაზის ჩაწერა მასში. `00-` სახელი პირველი იკითხება და იმარჯვებს.
+
+კონფიგურაციის შემოწმება გადატვირთვამდე: <br>
+```bash
+sudo sshd -t
+```
 
 ### გადატვირთვა SSH
 ```bash
