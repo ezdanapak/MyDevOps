@@ -179,3 +179,11 @@ host-იდან ტერმინალითაც შეგიძლია 
 curl -I http://192.168.56.10
 ```
 `HTTP/1.1 200 OK` ნიშნავს, რომ Task-ის შედეგი შესრულებულია: Nginx welcome page ჩანს VM-ის IP-ზე.
+
+## თუ არ იხსნება
+
+- `sudo ufw status` — 80/tcp უნდა იყოს `ALLOW`
+- `sudo nginx -t` — კონფიგურაციის სინტაქსი უნდა იყოს `ok`
+- `sudo ss -tlnp | grep :80` — nginx-მა 80-ე პორტზე უნდა მოუსმინოს
+- `sudo journalctl -u nginx --no-pager | tail` — ერორის ლოგი
+
