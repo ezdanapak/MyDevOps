@@ -94,7 +94,7 @@ log "" "DONE: Backup completed successfully"
 
 გაშვებადი რომ იყოს სკრიპტი:
 ```bash
-bashchmod +x ~/db_backup.sh
+chmod +x ~/db_backup.sh
 ```
 
 ## უსაფრთხოება
@@ -159,3 +159,112 @@ k@devserver:~$ ~/db_backup.sh
  ზომა:  4.0K
 ==========================================
 ```
+
+---
+
+## განახლებული ვერსია: მარტივი სკრიპტი `app_db`-ისთვის
+Task 10-ის ახალ ბაზას (`app_db`, `appuser`) შესაბამისი უფრო მოკლე სკრიპტი. ზემოთ ბევრი ფერი და ლოგი იყო, აქ მხოლოდ საჭირო ნაწილია. <br>
+
+### 1. პაროლი `~/.pgpass`-ში
+```bash
+nano ~/.pgpass
+```
+ფორმატი `ჰოსტი:პორტი:ბაზა:იუზერი:პაროლი`, ერთი ხაზი, ინტერვალების გარეშე: <br>
+```text
+localhost:5432:app_db:appuser:შენი_პაროლი
+```
+```bash
+chmod 600 ~/.pgpass
+```
+
+### 2. სკრიპტი
+```bash
+mkdir -p ~/scripts
+```
+```bash
+nano ~/scripts/backup-db.sh
+```
+```bash
+#!/usr/bin/env bash
+# backup-db.sh — PostgreSQL ბაზის backup tar.gz ფორმატში, timestamp-ით
+set -euo pipefail
+
+DB_NAME="app_db"
+DB_USER="appuser"
+DB_HOST="localhost"
+BACKUP_DIR="$HOME/backups"
+TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+DUMP_FILE="${DB_NAME}_${TIMESTAMP}.sql"
+ARCHIVE="${DB_NAME}_${TIMESTAMP}.tar.gz"
+
+mkdir -p "$BACKUP_DIR"
+chmod 700 "$BACKUP_DIR"
+
+# 1. ბაზის ექსპორტი SQL ფაილში (-w: პაროლს არ ითხოვს, იღებს ~/.pgpass-იდან)
+pg_dump -w -h "$DB_HOST" -U "$DB_USER" -d "$DB_NAME" -f "$BACKUP_DIR/$DUMP_FILE"
+
+# 2. ჩაკუმშვა tar.gz-ში
+tar -czf "$BACKUP_DIR/$ARCHIVE" -C "$BACKUP_DIR" "$DUMP_FILE"
+
+# 3. დროებითი .sql ფაილის წაშლა
+rm "$BACKUP_DIR/$DUMP_FILE"
+
+echo "Backup შეიქმნა: $BACKUP_DIR/$ARCHIVE"
+```
+```bash
+chmod +x ~/scripts/backup-db.sh
+```
+
+| ნაწილი | რისთვის არის |
+|--------|--------------|
+| `set -euo pipefail` | სკრიპტი პირველივე ერორზე ჩერდება და არ გრძელდება ნახევრად გატეხილი მდგომარეობით |
+| `pg_dump -w` | ბაზას SQL ფაილად ექსპორტს უკეთებს, პაროლს არ ითხოვს (cron-ში ვერავინ ჩაწერდა) |
+| `tar -czf` | SQL ფაილს ჩაკუმშავს `.tar.gz`-ში |
+| `rm` | დროებით `.sql` ფაილს შლის, რჩება მხოლოდ არქივი |
+| `$TIMESTAMP` | ფაილის სახელში თარიღი და დრო, რომ ახალი backup ძველს არ გადააწეროს |
+| `chmod 700` | backup-ებს მხოლოდ შენ კითხულობ |
+
+### 3. გაშვება და შედეგი
+```bash
+~/scripts/backup-db.sh
+```
+```console
+Backup შეიქმნა: /home/k/backups/app_db_2026-11-10_08-57-52.tar.gz
+Backup შეიქმნა: /home/k/backups/app_db_2026-11-10_08-58-03.tar.gz
+```
+(ორჯერ გაშვების შედეგი. სახელები განსხვავებულია timestamp-ის გამო.) <br>
+```bash
+ls -lh ~/backups/
+```
+```console
+total 8.0K
+-rw-rw-r-- 1 k k 1.1K Nov 10 08:57 app_db_2026-11-10_08-57-52.tar.gz
+-rw-rw-r-- 1 k k 1.1K Nov 10 08:58 app_db_2026-11-10_08-58-03.tar.gz
+```
+
+### 4. შიგთავსის შემოწმება
+არქივის გახსნის გარეშე ვაჩვენებთ SQL-ში `users` ცხრილის აღწერას: <br>
+```bash
+tar -xzOf "$(ls -t ~/backups/*.tar.gz | head -1)" | grep -A6 "CREATE TABLE public.users"
+```
+```console
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    email character varying(150) NOT NULL,
+    created_at timestamp without time zone DEFAULT now()
+);
+```
+ცხრილის სტრუქტურა backup-შია, ანუ არქივი რეალურად შეიცავს ბაზას. <br>
+
+### შეცდომა: `fe_sendauth: no password supplied`
+```console
+pg_dump: error: connection to server at "localhost" (127.0.0.1), port 5432 failed: fe_sendauth: no password supplied
+```
+ეს ნიშნავს, რომ `pg_dump`-მა `~/.pgpass`-იდან პაროლი ვერ აიღო. ჩვეულებრივი მიზეზებია: <br>
+- ფაილი ცარიელია ან ხაზი არ ემთხვევა: ბაზის (`app_db`) და იუზერის (`appuser`) სახელები ზუსტად იგივე უნდა იყოს, რაც სკრიპტშია
+- ფორმატში ზედმეტი ინტერვალი ან გადატანილი ხაზია
+- ფაილს `chmod 600` არ აქვს
+
+გამოსწორების შემდეგ (`nano ~/.pgpass`, `chmod 600 ~/.pgpass`) სკრიპტი ჩვეულებრივად გაეშვა.
+
