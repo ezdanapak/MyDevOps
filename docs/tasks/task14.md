@@ -186,6 +186,77 @@ This message shows that your installation appears to be working correctly.
 > ✅ თუ ეს შეტყობინება გამოჩნდა — Docker სწორად არის დაინსტალირებული და მუშაობს `sudo`-ს გარეშე.
 
 
+## ⚡ ალტერნატივა: Docker Ubuntu-ს რეპოდან (სწრაფი ვარიანტი)
+ზემოთ აღწერილი გზა Docker-ის ოფიციალურ რეპოს (`docker-ce`) იყენებს. უფრო მარტივი ვარიანტია Ubuntu-ს საკუთარი პაკეტები, რომლებიც ერთი ბრძანებით დგება და GPG გასაღების ხელით იმპორტს არ საჭიროებს: <br>
+```bash
+sudo apt update
+```
+```bash
+sudo apt install -y docker.io docker-compose-v2
+```
+```bash
+sudo systemctl enable --now docker
+```
+```bash
+sudo usermod -aG docker $USER
+```
+ცვლილება ძალაში შედის ახალ სესიაზე (`exit` და ხელახლა შესვლა ან `newgrp docker`). შემოწმება: <br>
+```bash
+groups
+```
+```console
+k adm cdrom sudo dip plugdev users lxd docker
+```
+სიაში `docker` ჯგუფი ჩანს. <br>
+
+### შედეგი (sudo-ს გარეშე)
+```bash
+docker --version
+```
+```console
+Docker version 29.1.3, build 29.1.3-0ubuntu4.1
+```
+```bash
+docker compose version
+```
+```console
+Docker Compose version 2.40.3+ds1-0ubuntu1
+```
+```bash
+docker run --rm hello-world
+```
+```console
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+4f55086f7dd0: Pull complete
+d5e71e642bf5: Download complete
+Digest: sha256:c567b231f65614688711a75f31518a064258a51d442117a3e771a3a8fdba78ef
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+`--rm` კონტეინერს გაშვების შემდეგ ავტომატურად წაშლის. <br>
+
+### `docker-ce` და `docker.io` რა განსხვავებაა
+| | `docker-ce` (ოფიციალური რეპო) | `docker.io` (Ubuntu-ს რეპო) |
+|---|---|---|
+| ვინ ქმნის პაკეტს | Docker | Ubuntu |
+| ვერსიის სახელი | მაგ. `29.2.1` | მაგ. `29.1.3-0ubuntu4.1` |
+| დაყენება | უფრო მეტი ნაბიჯი (გასაღები, რეპო) | ერთი `apt install` |
+| განახლება | ახალი ვერსია უფრო მალე | ვერსია Ubuntu-ს გამოშვებას მიჰყვება |
+
+ორივე ერთსა და იმავე შედეგს იძლევა და Task 14-ის მოთხოვნებს (`docker --version`, `docker compose version` sudo-ს გარეშე) აკმაყოფილებს. ერთდროულად ორივე არ დააყენო. <br>
+
+### `docker compose` და `docker-compose` განსხვავება
+!!! warning "plugin და ცალკე პროგრამა"
+    სახელი ერთნაირად ჟღერს, მაგრამ ორი სხვადასხვა რამ არის:
+
+    - **`docker compose`** (ინტერვალით) — ახალი **plugin**, რომელიც Docker-ის ნაწილია. ვერსია 2.x (მაგ. `2.40.3`). დღეს სწორი და აქტუალური ბრძანებაა.
+    - **`docker-compose`** (ტირეთი) — ძველი **ცალკე პროგრამა** (v1, Python-ზე). ცალკე ინსტალაცია სჭირდება და აღარ მოვლილობს.
+
+    Task-ის ტექსტში წერია `docker-compose --version`, მაგრამ ამ ინსტრუქციით დაყენებულ სისტემაში მუშაობს `docker compose version`. ტირეთი ვარიანტი რომ დაგჭირდეს, `sudo apt install -y docker-compose`. ფაილის ფორმატი (`docker-compose.yml`) ორივეს ერთი და იგივეა.
+
 ## 📖 დამატებითი ინფორმაცია
 
 ## როგორ მუშაობს hello-world კულისებს მიღმა
