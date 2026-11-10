@@ -222,7 +222,7 @@ sudo systemctl restart postgresql
 
 თავიდან დაკავშირება ბაზაზე:
 ```sql
-bashpsql -U kapo -d kutaisi_db -h localhost
+psql -U kapo -d kutaisi_db -h localhost
 ```
 ```sql
 CREATE TABLE students (
@@ -255,3 +255,76 @@ kutaisi_db-> \dt
  public | students | table | kapo
 (1 row)
 ```
+
+---
+
+## განახლებული ვერსია: `appuser` და `app_db`
+იგივე პროცესი ახალი სახელებით. ეს სახელები Task 15-ის docker-compose-შიც გამოიყენება (`POSTGRES_USER: appuser`, `POSTGRES_DB: app_db`), ამიტომ ორივე ამოცანა ერთმანეთს ემთხვევა. <br>
+
+### 1. ბაზისა და იუზერის შექმნა
+```bash
+sudo -u postgres psql
+```
+```sql
+CREATE USER appuser WITH PASSWORD 'შენი_პაროლი';
+CREATE DATABASE app_db OWNER appuser;
+GRANT ALL PRIVILEGES ON DATABASE app_db TO appuser;
+\q
+```
+
+!!! warning
+    პაროლად აირჩიე რთული და უნიკალური. ზემოთ მაგალითში გამოყენებული მარტივი პაროლი (`0000`) მხოლოდ სასწავლო მაგალითია და რეალურ სერვერზე არ გამოდგება.
+
+### 2. კავშირი ახალი იუზერით
+```bash
+psql -h localhost -U appuser -d app_db
+```
+
+### 3. ცხრილის შექმნა და მონაცემები
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO users (name, email) VALUES
+    ('Giorgi', 'giorgi@example.com'),
+    ('Nino', 'nino@example.com');
+
+SELECT * FROM users;
+```
+```console
+app_db=> SELECT * FROM users;
+ id |  name  |       email        |         created_at
+----+--------+--------------------+----------------------------
+  1 | Giorgi | giorgi@example.com | 2026-11-10 08:41:09.443436
+  2 | Nino   | nino@example.com   | 2026-11-10 08:41:09.443436
+(2 rows)
+```
+- `SERIAL PRIMARY KEY` — id ავტომატურად იზრდება და ჩანაწერს უნიკალურად განსაზღვრავს
+- `UNIQUE NOT NULL` — ერთი email ორჯერ ვერ დაემატება
+- `DEFAULT NOW()` — დრო ავტომატურად ჩაიწერება
+
+### 4. იუზერების შემოწმება
+```sql
+\du
+```
+```console
+app_db=> \du
+                             List of roles
+ Role name |                         Attributes
+-----------+------------------------------------------------------------
+ appuser   |
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS
+```
+`appuser`-ს ატრიბუტები არ აქვს, ანუ ჩვეულებრივი იუზერია და სუპერუზერის უფლებები არ გააჩნია. ეს სწორია უსაფრთხოების თვალსაზრისით. <br>
+
+### უსაფრთხოება
+- PostgreSQL ნაგულისხმევად მხოლოდ `localhost`-ზე უსმენს, ამიტომ firewall-ზე 5432-ს არ ვხსნით (Task 7). გარედან ბაზა მიუწვდომელია.
+- აპლიკაციისთვის ცალკე იუზერი (`appuser`) გამოიყენე და არა `postgres` სუპერუზერი.
+
+!!! hint "სასარგებლო ბრძანებები psql-ში"
+    `\dt` — ცხრილები, `\l` — ბაზები, `\du` — იუზერები, `\q` — გასვლა.
+
