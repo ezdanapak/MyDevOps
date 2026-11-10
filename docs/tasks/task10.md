@@ -182,7 +182,7 @@ Type "help" for help.
 ბაზის სახელი, მომხმარებელი და პაროლი არის შაბლონური, 
 შეცვლა შესაძლებელია.
 ```sql
-postgres=# CREATE USER kapo WITH PASSWORD '0000'; CREATE DATABASE kutaisi_db OWNER kapo; GRANT ALL PRIVILEGES ON DATABASE kutaisi_db TO kapo; \q
+postgres=# CREATE USER kapo WITH PASSWORD 'შენი_პაროლი'; CREATE DATABASE kutaisi_db OWNER kapo; GRANT ALL PRIVILEGES ON DATABASE kutaisi_db TO kapo; \q
 CREATE ROLE
 CREATE DATABASE
 GRANT
@@ -273,7 +273,7 @@ GRANT ALL PRIVILEGES ON DATABASE app_db TO appuser;
 ```
 
 !!! warning
-    პაროლად აირჩიე რთული და უნიკალური. ზემოთ მაგალითში გამოყენებული მარტივი პაროლი (`0000`) მხოლოდ სასწავლო მაგალითია და რეალურ სერვერზე არ გამოდგება.
+    პაროლად აირჩიე რთული და უნიკალური. მარტივი პაროლები (მაგალითად `0000`) მხოლოდ სასწავლო VM-ში გამოდგება და რეალურ სერვერზე არასოდეს.
 
 ### 2. კავშირი ახალი იუზერით
 ```bash
