@@ -404,5 +404,20 @@ sudo apt install wtmpdb
 ```bash
 cat ~/log_report.txt
 ```
-`last` მუშაობს მხოლოდ `wtmpdb`-ის დაყენების შემდეგ.
+`last` მუშაობს მხოლოდ `wtmpdb`-ის დაყენების შემდეგ. მისი შედეგი (შესვლების ისტორია): <br>
+```console
+k@myubuntuserver:~$ last -n 10
+k        pts/0        192.168.56.1     Tue Nov 10 10:43 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:15 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:08 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:06 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:05 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:00 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 22:53 - still logged in
+k        pts/1        192.168.56.1     Mon Nov  9 22:48 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 22:44 - still logged in
+
+wtmpdb begins Mon Nov  9 22:44:22 2026
+```
+ყველა შესვლა მოდის `192.168.56.1`-დან (host) და მხოლოდ იუზერ `k`-ს ეკუთვნის. უცხო იუზერი ან IP არ ჩანს, ანუ არასანქცირებული წვდომა არ ყოფილა. <br>
 

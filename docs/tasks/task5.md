@@ -194,7 +194,20 @@ sudo apt install -y wtmpdb
 ```bash
 last -n 10
 ```
-`wtmpdb` ისტორიას მხოლოდ დაყენების შემდეგ აგროვებს, ამიტომ ადრინდელი შესვლები ჩანაწერში არ იქნება. <br>
+```console
+k        pts/0        192.168.56.1     Tue Nov 10 10:43 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:15 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:08 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:06 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:05 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 23:00 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 22:53 - still logged in
+k        pts/1        192.168.56.1     Mon Nov  9 22:48 - still logged in
+k        pts/0        192.168.56.1     Mon Nov  9 22:44 - still logged in
+
+wtmpdb begins Mon Nov  9 22:44:22 2026
+```
+`192.168.56.1` host-ის Host-Only მისამართია, საიდანაც SSH-ით შევდივარ. ბოლო ხაზი გვეუბნება, რომ `wtmpdb`-ის ბაზა 9 ნოემბრიდან იწყება, ამ თარიღამდე შესვლები ჩანაწერში არ არის. <br>
 
 ## სწრაფი შემოწმება
 ხუთივე პაკეტი დაყენებულია, თუ თითოეულს `ii` სტატუსი აქვს: <br>
