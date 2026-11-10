@@ -108,5 +108,72 @@ Feb 10 18:05:01 devserver CRON[52978]: pam_unix(cron:session): session closed fo
 cat ~/backups/cron.log
 ```
 
-!!! quote ""log ფაილი"
+!!! quote "log ფაილი"
     cron.log მხოლოდ მაშინ შეიქმნება, როცა cron გაუშვებს სკრიპტს (3:00 AM-ზე). ხელით გაშვებისას ლოგი ტერმინალში გამოჩნდა პირდაპირ
+
+---
+
+## განახლებული ვერსია: `backup-db.sh` (Task 11-ის ახალი სკრიპტი)
+Task 11-ში სკრიპტი `~/scripts/backup-db.sh`-ზე გადავიტანეთ, ამიტომ cron-ის ხაზიც მასზე უნდა მიუთითებდეს. <br>
+
+### 1. დროის სარტყელი
+cron სერვერის დროით მუშაობს. VM-ში ნაგულისხმევი `UTC`-ია, თბილისში კი +4 საათია, ამიტომ `0 3 * * *` UTC-ში თბილისის 07:00 იქნებოდა. სარტყლის შეცვლა: <br>
+```bash
+timedatectl | grep "Time zone"
+```
+```console
+                Time zone: Etc/UTC (UTC, +0000)
+```
+```bash
+sudo timedatectl set-timezone Asia/Tbilisi
+```
+```bash
+sudo systemctl restart cron
+```
+ახლა `0 3 * * *` თბილისის დროით 03:00-ია. <br>
+
+### 2. cron-ის შემოწმება
+```bash
+systemctl is-active cron
+```
+```console
+active
+```
+
+### 3. Job-ის დამატება
+```bash
+crontab -e
+```
+ფაილის ბოლოს (თითო ხაზი, სხვა ტექსტის გარეშე): <br>
+```text
+0 3 * * * /home/k/scripts/backup-db.sh >> /home/k/backups/cron.log 2>&1
+```
+- `/home/k/...` სრული გზაა. `~` და `$HOME` cron-ის ხაზში არ გამოვიყენეთ, რადგან გარემო მცირეა და სრული გზა უსაფრთხოა
+- `>> cron.log 2>&1` ჩაწერს სკრიპტის გამოტანასაც და შეცდომებსაც ფაილში
+
+### 4. შედეგი
+```bash
+crontab -l | cat -n
+```
+```console
+    22  # m h  dom mon dow   command
+    23  0 3 * * * /home/k/scripts/backup-db.sh >> /home/k/backups/cron.log 2>&1
+```
+ხაზი `crontab -l`-ში ჩანს, ანუ job დაინსტალირებულია და backup ავტომატურად შეიქმნება ყოველ დღე 03:00-ზე. <br>
+
+### შეცდომა: `bad minute`
+```console
+"/tmp/crontab.q1zShK/crontab":23: bad minute
+errors in crontab file, can't install.
+Do you want to retry the same edit? (y/n)
+```
+ეს ნიშნავს, რომ მითითებული ხაზი (აქ 23-ე) cron-ს არ ესმის. ჩვეულებრივი მიზეზები: <br>
+- ხაზში ზედმეტი ტექსტი მოხვდა კოპირებისას (მაგალითად \`\`\`, სიტყვა `text`, ახსნა)
+- ხაზის დასაწყისში ზედმეტი სიმბოლო ან ინტერვალებია
+- ხაზი გადატეხილია რამდენიმე ხაზად
+
+გამოსწორება: ჩაწერე `y`, წაშალე პრობლემური ხაზი, ჩაწერე სუფთა ერთი ხაზი `0 3 * * * ...` ფორმატით და შეინახე. წარმატებისას `crontab -l` ხაზს აჩვენებს. <br>
+
+!!! info "ტესტი"
+    cron.log და ახალი backup მხოლოდ მაშინ გაჩნდება, როცა cron პირველად გაუშვებს სკრიპტს (03:00-ზე). სკრიპტი ხელითაც გამართულად მუშაობს (Task 11), ხოლო `crontab -l`-ში ხაზის არსებობა ამტკიცებს, რომ დაგეგმარება გააქტიურებულია.
+
