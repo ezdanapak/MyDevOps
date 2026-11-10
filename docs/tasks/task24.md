@@ -140,7 +140,7 @@ ALTER TABLE
 
 შევქმნათ როლი
 ```bash
-sudo -u postgres psql -c "CREATE ROLE kapo WITH LOGIN SUPERUSER PASSWORD '0000';"
+sudo -u postgres psql -c "CREATE ROLE kapo WITH LOGIN SUPERUSER PASSWORD 'შენი_პაროლი';"
 ```
 
 შევამოწმოთ ცხრილები 
