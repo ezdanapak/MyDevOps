@@ -64,12 +64,10 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 ```
 
 
-სერვისის გაშვება ჩართვა და გადამოწმება
+## სერვისის გაშვება, ავტოსტარტი და გადამოწმება
+ერთი ბრძანებით ჩაირთვება ახლავე და ავტომატურად ჩაირთვება VM-ის ყოველ ჩატვირთვაზე: <br>
 ```bash
-sudo systemctl start nginx
-```
-```bash
-sudo systemctl enable nginx
+sudo systemctl enable --now nginx
 ```
 ```console
 Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
@@ -77,42 +75,56 @@ Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
 ```
 
 ```bash
-k@devserver:~$ sudo systemctl status nginx
+systemctl status nginx
 ```
 
 ```console
 ● nginx.service - A high performance web server and a reverse proxy server
      Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
-     Active: active (running) since Tue 2026-02-10 17:12:39 UTC; 1min 19s ago
+     Active: active (running) since Tue 2026-11-10 07:39:24 UTC; 1min 5s ago
+ Invocation: 8a404a0c8aae4936b5d561e171e1ec91
        Docs: man:nginx(8)
-   Main PID: 32513 (nginx)
-      Tasks: 5 (limit: 9436)
-     Memory: 3.7M (peak: 8.1M)
-        CPU: 156ms
+   Main PID: 3193 (nginx)
+      Tasks: 5 (limit: 6061)
+     Memory: 4.5M (peak: 10.8M)
+        CPU: 73ms
      CGroup: /system.slice/nginx.service
-             ├─32513 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
-             ├─32516 "nginx: worker process"
-             ├─32517 "nginx: worker process"
-             ├─32518 "nginx: worker process"
-             └─32519 "nginx: worker process"
-
-Feb 10 17:12:39 devserver systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
-Feb 10 17:12:39 devserver systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
+             ├─3193 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─3195 "nginx: worker process"
+             ├─3196 "nginx: worker process"
+             ├─3197 "nginx: worker process"
+             └─3198 "nginx: worker process"
 ```
+`Loaded: ... enabled` ნიშნავს, რომ ავტოსტარტი ჩართულია, `Active: active (running)` კი — რომ ახლა მუშაობს. გასასვლელად დააჭირე `q`. <br>
 
 ## Firewall
 
-Firewall-ში HTTP-ის დაშვება UFW ჩართულია:
-
-```bash
-sudo ufw allow 'Nginx HTTP'
-```
-სტატუსის შემოწმება
+Task 7-ში 80/tcp და 443/tcp უკვე დაშვებულია, ამიტომ Nginx-ისთვის დამატებითი წესი არ გჭირდება. შეამოწმე: <br>
 ```bash
 sudo ufw status
 ```
+სიაში უნდა იყოს `80/tcp ALLOW IN Anywhere`. <br>
+
+!!! tip
+    თუ Task 7-ში 80-ე პორტი არ გიდევს დაშვებული, გამოიყენე `sudo ufw allow 'Nginx HTTP'` (ან `sudo ufw allow 80/tcp`).
 
 ## ლოკალური ტესტი სერვერზე:
+მხოლოდ სათაურებით (სწრაფი შემოწმება): <br>
+```bash
+curl -I http://localhost
+```
+```console
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Date: Tue, 10 Nov 2026 07:41:44 GMT
+Content-Type: text/html
+Content-Length: 615
+Last-Modified: Tue, 10 Nov 2026 07:39:21 GMT
+Connection: keep-alive
+ETag: "6af2ca29-267"
+Accept-Ranges: bytes
+```
+`HTTP/1.1 200 OK` ნიშნავს, რომ Nginx პასუხობს. სრული გვერდისთვის: <br>
 ```bash
 curl http://localhost
 ```
@@ -145,11 +157,11 @@ Commercial support is available at
 
 ## IP მისამართზე ვებ სერვერი
 
-მისამართი Ubuntu server მა რაც აიღო სტანდარტულად 80 პორტზე მუშაობს ვებ სერვერი <br>
+Nginx სტანდარტულად 80 პორტზე მუშაობს. VM-ის Host-Only მისამართია `192.168.56.10` (სტატიკური, Task 3). <br>
 თუ გვინდა რომ სხვა კომპიუტერიდან(იმავე ქსელის შიდა როუტერით) მივწვდეთ სერვერს უნდა <br> გამოვიყენოთ ნებისმიერ ინტერნეტ ბრაუზერში მისი IP.
 
 ```console
-http://192.168.56.101/ 
+http://192.168.56.10/
 ```
 უნდა ხედავდე ამ შეტყობინებას იგივენაირად
 ```html
@@ -161,3 +173,9 @@ Commercial support is available at nginx.com.
 
 Thank you for using nginx.
 ```
+
+host-იდან ტერმინალითაც შეგიძლია შეამოწმო: <br>
+```bash
+curl -I http://192.168.56.10
+```
+`HTTP/1.1 200 OK` ნიშნავს, რომ Task-ის შედეგი შესრულებულია: Nginx welcome page ჩანს VM-ის IP-ზე.
