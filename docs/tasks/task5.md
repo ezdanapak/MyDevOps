@@ -180,6 +180,22 @@ htop 3.3.0
 net-tools 2.10
 ```
 
+## დამატებითი პაკეტი: wtmpdb (`last` ბრძანებისთვის)
+ახალ Ubuntu-ზე `last` (შესვლების ისტორია) ნაგულისხმევად არ არის დაყენებული: <br>
+```console
+k@myubuntuserver:~$ last -n 10
+Command 'last' not found, but can be installed with:
+sudo apt install wtmpdb
+```
+`last` ბრძანებას ახლა `wtmpdb` პაკეტი იძლევა. ის Task 13-ში (Log Monitoring) გვჭირდება: <br>
+```bash
+sudo apt install -y wtmpdb
+```
+```bash
+last -n 10
+```
+`wtmpdb` ისტორიას მხოლოდ დაყენების შემდეგ აგროვებს, ამიტომ ადრინდელი შესვლები ჩანაწერში არ იქნება. <br>
+
 ## სწრაფი შემოწმება
 ხუთივე პაკეტი დაყენებულია, თუ თითოეულს `ii` სტატუსი აქვს: <br>
 ```bash

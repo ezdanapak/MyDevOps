@@ -273,7 +273,7 @@ wtmp begins Tue Feb 10 07:45:42 2026
 ### ჩავარდნილი ავტორიზაციების Failed SSH ნახვა
 
 თუ გინდა ნახო SSH hacking მცდელობები:
-```basg
+```bash
 sudo grep "Failed password" /var/log/auth.log | tail -20
 ```
 
@@ -293,3 +293,116 @@ sudo grep "Failed password" /var/log/auth.log | wc -l
 ```bash
 sudo grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr | head
 ```
+
+---
+
+## განახლებული ვერსია: ახალი Ubuntu (`myubuntuserver`)
+ახალ სისტემაში რამდენიმე ბრძანება სხვანაირად მუშაობს. ქვემოთ რეალური შედეგებია და ახსნა, რატომ. <br>
+
+### 1. წარუმატებელი login-ები
+**გამოტანა არ აქვს:**
+```bash
+sudo journalctl _COMM=sshd --no-pager | grep -i "failed password\|authentication failure\|invalid user" | tail -n 50
+```
+ეს ბრძანება ცარიელია, რადგან ახალ Ubuntu-ზე SSH-ის პროცესი ახლა `sshd-session` ჰქვია და არა `sshd`. ამიტომ `_COMM=sshd` ფილტრი მას ვერ პოულობს. გამოსავალი: სერვისის სახელით (`-u ssh`) ძებნა: <br>
+```bash
+sudo journalctl -u ssh --no-pager | grep -i "fail\|invalid\|denied" | tail -n 50
+```
+```console
+Nov 09 22:42:33 myubuntuserver sshd-session[2376]: banner exchange: Connection from 192.168.56.1 port 52754: invalid format
+```
+
+**`/var/log/auth.log`-ში `Failed password` არ არის:**
+```bash
+sudo grep -i "failed password" /var/log/auth.log | tail -n 50
+```
+```console
+2026-11-10T13:17:11.532172+00:00 myubuntuserver sudo: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/grep -i failed password /var/log/auth.log
+```
+ერთადერთი ხაზი ამ ბრძანების საკუთარი გაშვებაა (sudo ყოველთვის ლოგში ჩაიწერება). Task 4-ში პაროლით შესვლა გამორთე, ამიტომ პაროლის მცდელობა სერვერამდე არ აღწევს. <br>
+
+### 2. ტესტი: ყალბი იუზერით შესვლა
+host-იდან: <br>
+```bash
+ssh wrong_user@192.168.56.10
+```
+და VM-ში ისევ: <br>
+```bash
+sudo journalctl -u ssh --no-pager | grep -i "fail\|invalid\|denied" | tail -n 50
+```
+```console
+Nov 09 22:42:33 myubuntuserver sshd-session[2376]: banner exchange: Connection from 192.168.56.1 port 52754: invalid format
+Nov 10 17:19:08 myubuntuserver sshd-session[7799]: Invalid user wrong_user from 192.168.56.1 port 40994
+Nov 10 17:19:08 myubuntuserver sshd-session[7799]: Connection closed by invalid user wrong_user 192.168.56.1 port 40994 [preauth]
+```
+ახლა ჩანაწერი გაჩნდა: `Invalid user wrong_user from 192.168.56.1`. ეს ნიშნავს, რომ სერვერი ყველა უცნობი იუზერის მცდელობას აფიქსირებს. <br>
+
+### 3. ბოლო 20 sudo ბრძანება
+```bash
+sudo journalctl _COMM=sudo --no-pager | grep "COMMAND" | tail -n 20
+```
+```console
+Nov 10 12:26:25 myubuntuserver sudo[3592]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/nano /etc/nginx/sites-available/mysite
+Nov 10 12:26:37 myubuntuserver sudo[3599]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/nano /etc/nginx/sites-available/mgawm
+Nov 10 12:26:53 myubuntuserver sudo[3607]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/ln -s /etc/nginx/sites-available/mgawm /etc/nginx/sites-enabled/
+Nov 10 12:27:04 myubuntuserver sudo[3615]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/rm -f /etc/nginx/sites-enabled/default
+Nov 10 12:27:17 myubuntuserver sudo[3622]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/sbin/nginx -t
+Nov 10 12:27:29 myubuntuserver sudo[3629]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+Nov 10 12:36:14 myubuntuserver sudo[3662]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/apt update
+Nov 10 12:37:06 myubuntuserver sudo[3763]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/apt install -y postgresql postgresql-contrib
+Nov 10 12:39:46 myubuntuserver sudo[6124]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=postgres ; COMMAND=/usr/bin/psql
+Nov 10 12:42:11 myubuntuserver sudo[6152]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=postgres ; COMMAND=/usr/bin/psql -c \\l
+Nov 10 12:42:32 myubuntuserver sudo[6165]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=postgres ; COMMAND=/usr/bin/psql -c \\l
+Nov 10 12:45:09 myubuntuserver sudo[6186]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=postgres ; COMMAND=/usr/bin/psql -c \\l
+Nov 10 17:07:56 myubuntuserver sudo[7639]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/timedatectl set-timezone Asia/Tbilisi
+Nov 10 17:08:20 myubuntuserver sudo[7655]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/systemctl restart cron
+Nov 10 17:15:56 myubuntuserver sudo[7745]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/journalctl _COMM=sshd --no-pager
+Nov 10 17:16:57 myubuntuserver sudo[7759]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/journalctl _COMM=sshd --no-pager
+Nov 10 17:17:11 myubuntuserver sudo[7772]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/grep -i failed password /var/log/auth.log
+Nov 10 17:18:10 myubuntuserver sudo[7783]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/journalctl -u ssh --no-pager
+Nov 10 17:19:21 myubuntuserver sudo[7810]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/journalctl -u ssh --no-pager
+Nov 10 17:20:12 myubuntuserver sudo[7826]: k : TTY=/dev/pts/0 ; PWD=/home/k ; USER=root ; COMMAND=/usr/bin/journalctl _COMM=sudo --no-pager
+```
+ჩანაწერი გვიჩვენებს **ვინ** (`k`), **საიდან** (`PWD=/home/k`), **რომელი იუზერის სახელით** (`USER=root`/`postgres`) და **რა** გაუშვა (`COMMAND=...`). ხაზების თანმიმდევრობიდან ჩანს მთელი ისტორია: Nginx-ის კონფიგურაცია, PostgreSQL-ის დაყენება, დროის სარტყლის შეცვლა და ლოგების ძიება. <br>
+
+### 4. SSH შესვლების რაოდენობა
+```bash
+sudo journalctl _COMM=sshd --no-pager | grep -c "Accepted"
+```
+```console
+0
+```
+ეს `0` არ ნიშნავს, რომ შესვლა არ ყოფილა. იგივე მიზეზით (`sshd` ≠ `sshd-session`) ფილტრი ჩანაწერებს ვერ პოულობს. სწორი ვარიანტი: <br>
+```bash
+sudo journalctl -u ssh --no-pager | grep -c "Accepted"
+```
+
+### 5. `lastb` და `last`
+```console
+k@myubuntuserver:~$ sudo lastb | head -n 50
+sudo: 'lastb': command not found
+k@myubuntuserver:~$ last -n 10
+Command 'last' not found, but can be installed with:
+sudo apt install wtmpdb
+```
+- `lastb` (წარუმატებელი login-ების სია) ახალ სისტემაში აღარ არსებობს. მის ნაცვლად ვიყენებთ `journalctl -u ssh`-ს (იხილე ზემოთ).
+- `last` (წარმატებული login-ების სია) დასაყენებელია: `sudo apt install -y wtmpdb`. ეს ბრძანება დავამატეთ [Task 5](task5.md)-ში დანარჩენ პაკეტებთან ერთად. <br>
+
+### 6. ანგარიშის შენახვა ფაილში (Task-ის დასამტკიცებლად)
+```bash
+{
+  echo "=== FAILED LOGINS ==="
+  sudo journalctl -u ssh --no-pager | grep -i "fail\|invalid\|denied" | tail -n 50
+  echo ""
+  echo "=== SUDO COMMANDS ==="
+  sudo journalctl _COMM=sudo --no-pager | grep "COMMAND" | tail -n 20
+  echo ""
+  echo "=== RECENT LOGINS ==="
+  last -n 20
+} > ~/log_report.txt
+```
+```bash
+cat ~/log_report.txt
+```
+`last` მუშაობს მხოლოდ `wtmpdb`-ის დაყენების შემდეგ.
+
