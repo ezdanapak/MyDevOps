@@ -1,6 +1,97 @@
 Task 9 — Custom Website Deploy
 
-## საკუთარი ვებ გვერდი
+## ვარიანტი 1: საიტი GitHub-იდან (რეკომენდებული)
+საიტი [mgawm](https://github.com/ezdanapak/mgawm) სტატიკურია (`index.html`, `styles.css`, `script.js`, `favicon.svg`, `og.jpg`), ამიტომ build არ სჭირდება და Nginx-ს პირდაპირ მოერგება. <br>
+
+### 1. საიტის გადმოწერა
+```bash
+sudo mkdir -p /var/www/mgawm
+```
+```bash
+sudo chown -R $USER:$USER /var/www/mgawm
+```
+```bash
+git clone https://github.com/ezdanapak/mgawm /var/www/mgawm
+```
+!!! note
+    თუ საქაღალდე ცარიელი არ არის, `git clone` ერორს დაწერს. წაშალე მისი შიგთავსი ან სხვა სახელი გამოიყენე.
+
+### 2. Nginx-ის კონფიგურაცია
+შექმენი ახალი server block: <br>
+```bash
+sudo nano /etc/nginx/sites-available/mgawm
+```
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    root /var/www/mgawm;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+გააქტიურე და default გათიშე (ორიგინალი `sites-available/default`-ში რჩება): <br>
+```bash
+sudo ln -s /etc/nginx/sites-available/mgawm /etc/nginx/sites-enabled/
+```
+```bash
+sudo rm -f /etc/nginx/sites-enabled/default
+```
+!!! tip
+    თუ `mysite`-ის ან სხვა კონფიგურაცია უკვე გაქვს, შეგიძლია მასში უბრალოდ `root` ხაზი შეცვალო: `root /var/www/mgawm;`.
+
+### 3. შემოწმება და გადატვირთვა
+```bash
+sudo nginx -t
+```
+```bash
+sudo systemctl reload nginx
+```
+
+### 4. შედეგი
+```bash
+curl -I http://localhost
+```
+```console
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Date: Tue, 10 Nov 2026 08:28:14 GMT
+Content-Type: text/html
+Content-Length: 3108
+Last-Modified: Tue, 10 Nov 2026 08:25:38 GMT
+Connection: keep-alive
+ETag: "6af2d502-c24"
+Accept-Ranges: bytes
+```
+`Content-Length: 3108` ემთხვევა `index.html`-ის ზომას რეპოში. host-ის browser-ში გახსენი: <br>
+```console
+http://192.168.56.10/
+```
+თუ ძველი გვერდი ჩანს, გაასუფთავე browser-ის ქეში (++ctrl+shift+r++). <br>
+
+### განახლება მომავალში
+GitHub-ზე ცვლილების შემდეგ VM-ში საკმარისია: <br>
+```bash
+cd /var/www/mgawm && git pull
+```
+Nginx-ის გადატვირთვა სტატიკური ფაილებისთვის არ სჭირდება. <br>
+
+### თუ არ მუშაობს
+- `sudo nginx -t` — სინტაქსის ერორი
+- `ls -l /etc/nginx/sites-enabled/` — უნდა ჩანდეს `mgawm` და `default` არა
+- `sudo journalctl -u nginx --no-pager | tail` — ერორის ლოგი
+- 403 Forbidden: `ls -ld /var/www/mgawm` — საქაღალდე წაკითხვადი უნდა იყოს
+
+---
+
+## ვარიანტი 2: ხელით შექმნილი გვერდი
+
+### საკუთარი ვებ გვერდი
 ვებ სერვერზე გასაშვებად დავაგენერირებინოთ AI - ს სასურველი შაბლონური გვერდი<br>
 გავხსნათ ფაილი 
 
@@ -17,7 +108,7 @@ sudo nano /var/www/html/index.html
     ++ctrl+y++ დაგეხმარება დასტურში ფაილის სახელზე <br>
     ++enter++ უბრალოდ თანხმობა და ფაილი დაიხურება <br>
 
-## შაბლონი ვებ გვერდი
+### შაბლონი ვებ გვერდი
 ეს ჩემი შემოქმედებაა და შაბლონად სრულებით საკმარისი, შეგიძლია ისარგებლო. 
 
 ```html
@@ -443,7 +534,7 @@ sudo nano /var/www/html/index.html
 </html>
 ```
 
-## უფლებების დაყენება
+### უფლებების დაყენება
 
 ```bash
 sudo chown www-data:www-data /var/www/html/index.html
@@ -452,13 +543,13 @@ sudo chown www-data:www-data /var/www/html/index.html
 sudo chmod 644 /var/www/html/index.html
 ```
 
-## Nginx
+### Nginx
 ```bash
 sudo systemctl restart nginx
 ```
 
-## **Browser-ში შემოწმება:**
+### Browser-ში შემოწმება
 
 ```console
-http://192.168.56.101/
+http://192.168.56.10/
 ```
