@@ -516,3 +516,155 @@ db-1       | 2026-02-10 19:16:41.469 UTC [62] LOG:  checkpoint complete: wrote 3
 k@devserver:~/docker-app$
 
 ```
+
+---
+
+## განახლებული ვერსია: უსაფრთხო კონფიგურაცია და რატომ ვაკეთებთ ასე
+იგივე აპლიკაცია ახალ VM-ზე (`myubuntuserver`, `192.168.56.10`), ოდნავ გაუმჯობესებული უსაფრთხოებით. ქვემოთ ნათქვამია არა მხოლოდ **რა** გავაკეთეთ, არამედ **რატომ**. <br>
+
+### რას ვაშენებთ
+ერთი აპლიკაცია სამი ცალკე კონტეინერისგან, რომლებიც ერთ შიდა ქსელში მუშაობენ: <br>
+- **web** (Nginx) — მომხმარებელს ვებ-გვერდს აჩვენებს და `/adminer/`-ზე მოთხოვნებს გადასცემს Adminer-ს (reverse proxy)
+- **db** (PostgreSQL 16) — მონაცემთა ბაზა
+- **adminer** — ბაზის სამართავი ვებ-პანელი
+
+მთელი აპლიკაცია ერთი ფაილით (`docker-compose.yml`) და ერთი ბრძანებით (`docker compose up -d`) გაიშვება. ეს არის Docker Compose-ის მთავარი ღირებულება: ინფრასტრუქტურა კოდად დაწერილია და ნებისმიერ სერვერზე ერთნაირად აღდგება.
+
+### 1. პაროლი `.env` ფაილში და არა `docker-compose.yml`-ში
+```bash
+nano ~/docker-app/.env
+```
+```text
+DB_PASSWORD=ჩაწერე_რთული_პაროლი
+```
+```bash
+chmod 600 ~/docker-app/.env
+```
+**რატომ:**
+- `docker-compose.yml` ხშირად git-ში იდება და სხვებსაც უჩვენებენ. თუ პაროლი მასშია, ის გამჟღავნდება
+- `.env` ცალკე ფაილია, რომელიც git-ში **არასოდეს** იდება (დაამატე `.gitignore`-ში)
+- `chmod 600` ნიშნავს, რომ ფაილს მხოლოდ შენ კითხულობ
+- Docker Compose `.env`-ს ავტომატურად კითხულობს და `${DB_PASSWORD}` ცვლადს მნიშვნელობას ანიჭებს
+
+### 2. `docker-compose.yml`
+```yaml
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/index.html:/usr/share/nginx/html/index.html:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d app_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:latest
+    depends_on:
+      - db
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+```
+
+### რატომ არის თითოეული გადაწყვეტილება
+| გადაწყვეტილება | რატომ |
+|----------------|-------|
+| `ports: "8080:80"` (web) | VM-ზე ჩვეულებრივი Nginx (Task 8/9) უკვე 80-ე პორტს იყენებს. კონტეინერის Nginx-ს იმავე პორტზე ვერ გავუშვებთ და ამიტომ ჰოსტზე 8080-ს ვიყენებთ |
+| `adminer`-ს `ports` არ აქვს | ბაზის პანელი გარედან პირდაპირ არ უნდა ჩანდეს. მასთან მხოლოდ Nginx-ის გავლით შეიძლება (`/adminer/`). ასე ერთი შესასვლელი გვაქვს და თავდასხმის ზედაპირი მცირდება |
+| `db`-ს `ports` არ აქვს | PostgreSQL მხოლოდ Docker-ის შიდა ქსელშია (`5432/tcp`). ბაზა გარედან მიუწვდომელია, მასთან მხოლოდ სხვა კონტეინერები ახერხებენ დაკავშირებას |
+| `healthcheck` + `condition: service_healthy` | `web` ელოდება, სანამ ბაზა მზად იქნება (`pg_isready`). `depends_on` მარტო კონტეინერის გაშვებას ამოწმებს და არა იმას, რომ PostgreSQL უკვე იღებს კავშირებს |
+| `volumes: pgdata` (named volume) | ბაზის მონაცემები კონტეინერის გარეთ ინახება. `docker compose down`-ის შემდეგაც არ იკარგება. წასაშლელად საჭიროა ცალკე `docker volume rm` |
+| `:ro` (read-only) mount-ები | Nginx-ის კონტეინერს ფაილების შეცვლა არ შეუძლია. თუ კონტეინერი გატეხილია, თავდამსხმელი ვერ შეცვლის კონფიგურაციას ან გვერდს |
+| `restart: unless-stopped` | კონტეინერი crash-ის ან VM-ის გადატვირთვის შემდეგ ავტომატურად ჩაირთვება, თუ ხელით არ გაგიჩერებია |
+| `${DB_PASSWORD}` | პაროლი `.env`-იდან, იხილე ზემოთ |
+| `nginx:alpine`, `postgres:16-alpine` | Alpine-ზე დაფუძნებული image-ები უფრო მცირეა (ნაკლები ადგილი, ნაკლები დაუცველობა) |
+| სერვისების სახელები (`db`, `adminer`) | Docker-ის შიდა DNS სახელს თავად გადაწყვეტს. Nginx-ში `proxy_pass http://adminer:8080/`, Adminer-ში Server = `db`. IP-ებს არ ვიმახსოვრებთ |
+
+### 3. გაშვება
+```bash
+cd ~/docker-app
+```
+```bash
+docker compose up -d
+```
+```console
+k@myubuntuserver:~/docker-app$ docker compose up -d
+[+] Running 42/42
+ ✔ adminer Pulled                                                                                20.5s
+ ✔ web Pulled                                                                                    13.0s
+ ✔ db Pulled                                                                                     31.9s
+[+] Running 5/5
+ ✔ Network docker-app_default      Created                                                        0.2s
+ ✔ Volume docker-app_pgdata        Created                                                        0.0s
+ ✔ Container docker-app-db-1       Healthy                                                       32.0s
+ ✔ Container docker-app-adminer-1  Started                                                       13.8s
+ ✔ Container docker-app-web-1      Started                                                       29.8s
+```
+`Container docker-app-db-1 Healthy` ჯერ ბაზა გახდა მზად, მხოლოდ ამის შემდეგ დაიწყო `web`. ეს `service_healthy`-ის მუშაობაა. <br>
+
+### 4. სტატუსი და პორტები
+```bash
+docker compose ps
+```
+```console
+NAME                   IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+docker-app-adminer-1   adminer:latest       "entrypoint.sh docke…"   adminer   35 seconds ago   Up 25 seconds             8080/tcp
+docker-app-db-1        postgres:16-alpine   "docker-entrypoint.s…"   db        37 seconds ago   Up 28 seconds (healthy)   5432/tcp
+docker-app-web-1       nginx:alpine         "/docker-entrypoint.…"   web       35 seconds ago   Up 5 seconds              0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+```
+`PORTS` სვეტი ზუსტად ადასტურებს ზემოთ ნათქვამს: <br>
+- `web` — `0.0.0.0:8080->80/tcp`: ერთადერთი სერვისი, რომელიც გარედან ჩანს
+- `adminer` — მხოლოდ `8080/tcp` (შიდა), გარეთ არ არის გამოტანილი
+- `db` — მხოლოდ `5432/tcp` (შიდა), გარეთ არ არის გამოტანილი
+- `db`-ს აწერია `(healthy)` — healthcheck წარმატებით გავიდა
+
+### 5. შედეგის შემოწმება
+VM-ში: <br>
+```bash
+curl -I http://localhost:8080
+```
+```console
+HTTP/1.1 200 OK
+Server: nginx/1.31.8
+Date: Tue, 10 Nov 2026 14:05:37 GMT
+Content-Type: text/html
+Content-Length: 599
+```
+host-იდან შემოწმებისას: <br>
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" http://192.168.56.10:8080/
+```
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" http://192.168.56.10:8080/adminer/
+```
+ორივე `200`-ს აბრუნებს (web გვერდი და Nginx-ის proxy-ით Adminer). უსაფრთხოების შესამოწმებლად, ძველი პირდაპირი Adminer-ის პორტი (8081) აღარ პასუხობს: <br>
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" --max-time 3 http://192.168.56.10:8081/
+```
+შედეგი `000` (კავშირი არ არსებობს) — ანუ ბაზის პანელი პირდაპირ დახურულია. <br>
+
+browser-ში: `http://192.168.56.10:8080` და `http://192.168.56.10:8080/adminer/`. Adminer-ის ფორმაში: System = PostgreSQL, **Server = `db`** (და არა IP), Username = `appuser`, Password = `.env`-ის პაროლი, Database = `app_db`. <br>
+
+!!! warning "Docker და firewall (UFW)"
+    Docker-ით გამოქვეყნებული პორტი (`8080`) UFW-ს წესებს გვერდს უვლის: `ufw status`-ში 8080 არ ჩანს, მაგრამ მაინც ღიაა. ჩვენი VM Host-Only ქსელშია, ამიტომ აქ ეს პრობლემა არ არის. რეალურ სერვერზე ეს უნდა გახსოვდეს და გამოსაქვეყნებელი პორტები შეგნებულად შეარჩიო (მაგალითად `127.0.0.1:8080:80`, თუ გარედან არ უნდა ჩანდეს).
+
