@@ -1,5 +1,8 @@
 Task 16 — Reverse Proxy Configuration
 
+!!! info "გვერდის ვერსიები"
+    ქვემოთ ჯერ წინა ვერსიაა (ძველი VM, ერთი საიტი 80-ზე, Adminer 8081 პორტით). გვერდის ბოლოს არის **განახლებული ვერსია** ახალი სქემით: ცალკე hostname (`app.test`), `mgawm` საიტის შენარჩუნებით და დახურული Docker-ის პორტით.
+
 
 ## არქიტექტურა
 ```mermaid
@@ -299,3 +302,130 @@ Host Nginx (:80)  →  Docker Nginx (:8080)  →  Static files
 ```
 
 **Host-ის Nginx** — reverse proxy-ის როლში, მოთხოვნებს ანაწილებს. **Docker-ის Nginx** — web server-ის როლში, სტატიკურ ფაილებს ასერვირებს. პროდაქშენში ეს ორი ხშირად ერთდება ერთ Nginx-ში, მაგრამ სასწავლო მიზნით ცალ-ცალკე კარგად აჩვენებს proxy-ისა და web server-ის განსხვავებას.
+
+---
+
+## განახლებული ვერსია: `app.test` virtual host და დახურული Docker-ის პორტი
+ახალ VM-ზე (`myubuntuserver`, `192.168.56.10`) სიტუაცია შეიცვალა და ძველი სქემა აღარ გამოდგება: <br>
+- VM-ის Nginx-ი 80-ზე უკვე ემსახურება `mgawm` საიტს (Task 9) და ძველი კონფიგურაცია, რომელიც `default`-ს ანაცვლებდა და `location /`-ს Docker-ზე გადამისამართებდა, ამ საიტს გააქრობდა
+- Adminer-ს (Task 15-ის უსაფრთხო ვერსიაში) პორტი აღარ აქვს (`8081` აღარ არსებობს), `/adminer/`-ს Docker-ის Nginx თავად ამუშავებს
+
+გამოსავალი: მოთხოვნებს Nginx **hostname-ით** ანაწილებს (name-based virtual host). `mgawm` რჩება ნაგულისხმევ საიტად, `app.test` კი Docker-ზე გადადის. <br>
+
+### სქემა
+```mermaid
+flowchart LR
+    U["🌐 Browser"] -->|"Host: app.test"| N1
+    U -->|"192.168.56.10"| N1
+
+    subgraph VM["🖥️ VM — myubuntuserver"]
+        N1["Nginx (host)<br/>:80"]
+        S["/var/www/mgawm<br/>სტატიკური საიტი"]
+        subgraph DOCKER["🐳 Docker"]
+            N2["Nginx (container)<br/>127.0.0.1:8080"]
+            AD["Adminer"]
+            DB["PostgreSQL"]
+        end
+    end
+
+    N1 -->|"სხვა hostname"| S
+    N1 -->|"app.test → proxy_pass"| N2
+    N2 -->|"/adminer/"| AD
+    AD --> DB
+```
+ჯაჭვი: **browser → VM-ის Nginx → Docker-ის Nginx → Adminer → PostgreSQL**. VM-ის Nginx-ი ერთადერთი შესასვლელია. <br>
+
+### 1. Proxy-ს კონფიგურაცია
+```bash
+sudo nano /etc/nginx/sites-available/docker-proxy
+```
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name app.test;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+| ხაზი | რატომ |
+|------|-------|
+| `server_name app.test` | Nginx ამ ბლოკს იყენებს მხოლოდ მაშინ, როცა მოთხოვნის `Host` ჰედერი `app.test`-ია. დანარჩენი მოთხოვნები (მაგალითად `192.168.56.10`) `mgawm`-ს მიდის |
+| `proxy_pass http://127.0.0.1:8080` | Docker-ის კონტეინერი VM-ის შიგნით 8080-ზე უსმენს |
+| `Host $host` | ორიგინალი hostname გადაეცემა backend-ს |
+| `X-Real-IP`, `X-Forwarded-For` | backend-მა იცის კლიენტის რეალური IP (და არა proxy-ის) |
+| `X-Forwarded-Proto` | backend-მა იცის, პირვანდელი პროტოკოლი http იყო თუ https |
+| `/adminer/` ცალკე `location` არ გვაქვს | Docker-ის Nginx-ი `/adminer/`-ს თავად გადასცემს Adminer-ს, ამიტომ VM-ის Nginx-ს ორმაგი წესი არ სჭირდება |
+
+### 2. ჩართვა
+```bash
+sudo ln -s /etc/nginx/sites-available/docker-proxy /etc/nginx/sites-enabled/
+```
+`mgawm` და სხვა ჩართული საიტი არ წაშალო. <br>
+```bash
+sudo nginx -t
+```
+უნდა დაწეროს `syntax is ok` და `test is successful`. <br>
+```bash
+sudo systemctl reload nginx
+```
+!!! note "რომელი საიტია ნაგულისხმევი"
+    როცა `Host` არც ერთ `server_name`-ს არ ემთხვევა, Nginx პირველ ბლოკს იყენებს. `sites-enabled/` ანბანის რიგით იკითხება: `docker-proxy` ანბანით `mgawm`-მდეა, ამიტომ ის პირველი ბლოკი გამოდის. საიტის `server_name _;` ბლოკი (`mgawm`) რომ ნაგულისხმევი დარჩეს, ორივე `listen` ხაზში დაუმატე `default_server`: `listen 80 default_server;` და `listen [::]:80 default_server;`. ამის შემდეგ `192.168.56.10` ყოველთვის `mgawm`-ს აჩვენებს.
+
+### 3. ტესტი VM-ში (`Host` ჰედერით, hostname-ის გარეშე)
+```bash
+curl -I -H "Host: app.test" http://localhost/
+```
+ელოდე `HTTP/1.1 200 OK`-ს (Docker-ის Nginx-ის პასუხი). Adminer proxy-ით: <br>
+```bash
+curl -I -H "Host: app.test" http://localhost/adminer/
+```
+და `mgawm` არ გაფუჭებულა: <br>
+```bash
+curl -s -H "Host: 192.168.56.10" http://localhost/ | head -n 5
+```
+
+### 4. Hostname-ის მიბმა შენს კომპიუტერზე
+browser-მა `app.test` უნდა გადაწყვიტოს VM-ის IP-ზე. host-ზე: <br>
+```bash
+echo "192.168.56.10 app.test" | sudo tee -a /etc/hosts
+```
+ახლა: <br>
+- `http://app.test/` — Docker-ის აპლიკაცია, პორტის გარეშე
+- `http://app.test/adminer/` — Adminer
+- `http://192.168.56.10/` — `mgawm` (უცვლელი)
+
+`.test` რეზერვირებული დომენია, რომელიც ინტერნეტში არასოდეს გამოიყენება, ამიტომ ლოკალური ტესტისთვის უსაფრთხოა. `.local` არ ავიღეთ, რადგან Linux-ზე mDNS-თან კონფლიქტობს და ნელა იხსნება. <br>
+
+### 5. გამაგრება: Docker-ის პორტის დახურვა
+ამჟამად აპლიკაცია ორი გზით ჩანს: proxy-ით და პირდაპირ `:8080`-ზე. რეალურ სერვერზე გარედან მხოლოდ proxy უნდა იყოს მისაწვდომი. `~/docker-app/docker-compose.yml`-ში `web`-ის `ports` შეცვალე: <br>
+```yaml
+    ports:
+      - "127.0.0.1:8080:80"
+```
+```bash
+cd ~/docker-app
+docker compose up -d
+```
+`127.0.0.1:` პორტს მხოლოდ VM-ის შიგნით ტოვებს. ამის შემდეგ `http://192.168.56.10:8080/` აღარ უნდა პასუხობდეს, `http://app.test/` კი მუშაობს. <br>
+
+!!! warning "რატომ არ გვყოფნის UFW"
+    Docker-ის გამოქვეყნებული პორტი UFW-ს წესებს გვერდს უვლის (Task 15), ამიტომ firewall-ით `8080` ვერ დაიხურება. ერთადერთი სწორი გზა პორტის `127.0.0.1`-ზე მიბმაა.
+
+### თუ არ მუშაობს
+| სიმპტომი | შესაძლო მიზეზი |
+|----------|----------------|
+| `502 Bad Gateway` | Docker კონტეინერი არ მუშაობს ან პორტი არასწორია: `docker compose ps` (ნაბიჯი 5-ის შემდეგ უნდა ჩანდეს `127.0.0.1:8080->80/tcp`) |
+| `app.test` არ იხსნება browser-ში | `/etc/hosts`-ის ხაზი არ არის ან არასწორია: `ping app.test` |
+| `app.test` გიჩვენებს `mgawm`-ს | `server_name` ან `Host` არ ემთხვევა: `sudo nginx -T \| grep server_name` |
+| `nginx -t` ერორს წერს | სინტაქსი: `;`, `{}` ან `server_name` ხაზი |
+
+!!! info "შენიშვნა"
+    ამ განყოფილების ტესტის შედეგები (`curl`-ის გამოტანები) ჯერ არ არის ჩაწერილი: ისინი ზემოთ აღწერილია როგორც მოსალოდნელი შედეგი და შესრულების შემდეგ ჩავანაცვლებთ რეალური გამოტანებით.
+
