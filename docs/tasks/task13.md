@@ -299,6 +299,24 @@ sudo grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq 
 ## განახლებული ვერსია: ახალი Ubuntu (`myubuntuserver`)
 ახალ სისტემაში რამდენიმე ბრძანება სხვანაირად მუშაობს. ქვემოთ რეალური შედეგებია და ახსნა, რატომ. <br>
 
+### დიაგრამა: სად იწერება და რომელი ბრძანება რას კითხულობს
+```mermaid
+flowchart TD
+    subgraph SRC["📥 სად იწერება ინფორმაცია"]
+        SSH["🔐 sshd-session<br/>SSH შესვლები და მცდელობები"] --> J["📚 journald"]
+        SUD["⚡ sudo"] --> J
+        SUD --> AL["📄 /var/log/auth.log"]
+        PAM["👤 PAM: წარმატებული შესვლა"] --> W["🗃️ wtmpdb"]
+    end
+    J -->|"journalctl -u ssh<br/>grep fail / invalid / denied"| R1["❌ წარუმატებელი login-ები"]
+    J -->|"journalctl _COMM=sudo<br/>grep COMMAND"| R2["⚡ ბოლო 20 sudo ბრძანება"]
+    W -->|"last -n 10"| R3["✅ შესვლების ისტორია"]
+    R1 --> RP["📋 log_report.txt"]
+    R2 --> RP
+    R3 --> RP
+```
+**როგორ წავიკითხოთ:** ერთი და იგივე ქმედება შეიძლება რამდენიმე ადგილას ჩაიწეროს. sudo ჩაიწერება როგორც journald-ში, ისე `/var/log/auth.log`-ში, ამიტომ ორივე გზა მუშაობს. წარუმატებელი SSH მცდელობების საპოვნელად კი მხოლოდ `journalctl -u ssh` გამოდგება: სერვისის სახელით (`ssh`) ვეძებთ და პროცესის სახელით (`_COMM=sshd`) არა, რადგან პროცესს ახლა `sshd-session` ჰქვია და `sshd` ფილტრი ვერაფერს პოულობს. წარმატებული შესვლების ისტორია სხვა ადგილას, `wtmpdb`-შია და მას `last` კითხულობს. სამივე შედეგი ბოლოს ერთ ანგარიშად (`log_report.txt`) იკრიბება. <br>
+
 ### 1. წარუმატებელი login-ები
 **გამოტანა არ აქვს:**
 ```bash
