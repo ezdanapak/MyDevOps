@@ -429,3 +429,41 @@ docker compose up -d
 !!! info "შენიშვნა"
     ამ განყოფილების ტესტის შედეგები (`curl`-ის გამოტანები) ჯერ არ არის ჩაწერილი: ისინი ზემოთ აღწერილია როგორც მოსალოდნელი შედეგი და შესრულების შემდეგ ჩავანაცვლებთ რეალური გამოტანებით.
 
+
+## ბონუსი: წვდომა ტელეფონიდან Tailscale-ით
+
+!!! info "სტატუსი"
+    ეს განყოფილება ჯერ არ არის გატესტილი, რეალური გამოტანები დაემატება შემოწმების შემდეგ.
+
+**რატომ:** `app.test` მხოლოდ ჰოსტზე მუშაობს (`/etc/hosts`), ხოლო `192.168.56.10` Host-Only ქსელია და ტელეფონისთვის მიუწვდომელია. Tailscale ქმნის კერძო ქსელს (tailnet) მოწყობილობებს შორის, ინტერნეტში პორტის გახსნის გარეშე.
+
+```mermaid
+flowchart TD
+    P["ტელეფონი<br>Tailscale"] -->|"WireGuard, tailnet"| V["VM Tailscale IP 100.x<br>Nginx :80"]
+    V -->|"server_name app.test 100.x"| N["proxy_pass"]
+    N --> D["Docker 127.0.0.1:8080"]
+```
+
+### გზა A (არჩეული): Tailscale VM-ზე
+VM თვითონ ხდება tailnet-ის წევრი, ამიტომ ჰოსტზე მარშრუტიზაცია არ გვჭირდება. <br>
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
+tailscale ip -4
+```
+`tailscale up` გამოიტანს ბმულს, ავტორიზაცია იმავე ანგარიშით, რაც ტელეფონზეა. <br>
+
+Nginx-ში `app.test` ბლოკს დაუმატე VM-ის Tailscale IP: <br>
+```nginx
+server_name app.test 100.x.y.z;
+```
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+ტელეფონზე ჩართე Tailscale და გახსენი `http://100.x.y.z/`. <br>
+
+| გადაწყვეტილება | რატომ |
+|----------------|-------|
+| IP-ის დამატება `server_name`-ში | ტელეფონმა `app.test` არ იცის და Nginx-ი Host header-ით არჩევს ბლოკს; IP-ით მოსული მოთხოვნა სხვაგვარად `mgawm`-ზე მოხვდებოდა |
+| Tailscale VM-ზე და არა ჰოსტზე | `192.168.56.0/24` tailnet-ში არ ჩანს; ჰოსტზე subnet router (`--advertise-routes`, IP forwarding, ადმინ-დამტკიცება) უფრო რთულია |
+| ახალი ufw წესი არ არის | 80 უკვე ღიაა (Task 7), ინტერნეტში არაფერი იხსნება |
