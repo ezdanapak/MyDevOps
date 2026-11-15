@@ -255,3 +255,97 @@ k@devserver:~/docker-app$ tail -f ~/docker-app/deploy.log
 ### პირველი vs გაუმჯობესებული ვერსია
 
 პირველი ვერსია ჩავარდა იმიტომ რომ `git pull` remote-ის გარეშე error-ს აბრუნებს და `set -e` სკრიპტს აჩერებს. ეს ტიპიური სიტუაციაა — სკრიპტი ყოველთვის „ბედნიერ გზას" ვერ გაივლის. გაუმჯობესებულ ვერსიაში defensive programming-ით (წინასწარი შემოწმებებით) ასეთი edge case-ები სწორად მუშავდება.
+
+---
+
+## განახლებული ვერსია: `deploy.sh` ახალ VM-ზე
+
+ახალ VM-ზე ვიყენებთ უფრო მოკლე და უსაფრთხო სკრიპტს, რომელიც `~/docker-app`-ის repo-შია (`deploy.sh`). ის განსხვავდება ძველისგან: კონტეინერებს **არ ჩამოვხსნით**, არამედ `docker compose up -d` მხოლოდ შეცვლილს ქმნის თავიდან, ამიტომ საიტი ხელახლა გაშვებისას არ იკეტება. <br>
+
+### სქემა
+```mermaid
+flowchart TD
+    DEV["💻 ცვლილება<br>git push → GitHub"] --> S["./deploy.sh"]
+    S --> L{"flock<br>სხვა deploy მუშაობს?"}
+    L -->|"კი"| X["გასვლა"]
+    L -->|"არა"| P["git pull --ff-only"]
+    P --> U["docker compose up -d --build<br>--remove-orphans"]
+    U --> C{"nginx/ შეიცვალა?"}
+    C -->|"კი"| R["docker compose restart web"]
+    C -->|"არა"| H
+    R --> H["health check<br>curl 127.0.0.1:8080 → 200"]
+    H -->|"200"| OK["✅ ლოგი + docker compose ps"]
+    H -->|"10 ცდა ვერ"| ERR["❌ ლოგი + docker compose logs"]
+```
+
+### რას აკეთებს ყველა ნაწილი და რატომ
+| ნაწილი | რატომ |
+|--------|-------|
+| `set -euo pipefail` | სკრიპტი პირველივე შეცდომაზე ჩერდება: ცუდი `pull`-ის შემდეგ `docker compose up` აღარ გაეშვება |
+| `flock -n` | ორი deploy ერთდროულად (ხელით + cron) ერთმანეთს არ დაუფუჭებს მდგომარეობას |
+| `[ -f .env ] \|\| exit` | `.env` Git-ში არ არის (`.gitignore`); მის გარეშე DB-ს პაროლი ცარიელი იქნებოდა |
+| `git pull --ff-only` | მხოლოდ სწორხაზოვანი განახლება; თუ სერვერზე ხელით ცვლილება გაკეთდა და კონფლიქტია, deploy ჩერდება და არ ქმნის უცნაურ merge-ს |
+| `OLD`/`NEW` commit-ის შედარება | ლოგში ჩანს, რა იყო და რა გახდა; გამოიყენება იმის გასარკვევად, რა ფაილები შეიცვალა |
+| `docker compose up -d --build --remove-orphans` | შეცვლილ სერვისს თავიდან ქმნის, დანარჩენს არ ეხება. `--build` მომავალში Dockerfile-ისთვის, `--remove-orphans` წაშლილ სერვისებს ასუფთავებს |
+| `restart web` როცა `nginx/` შეიცვალა | `index.html` და `nginx.conf` კონტეინერში ფაილების სახით არის მიბმული (bind mount); compose მათი ცვლილების შიგთავსს ვერ ამჩნევს, ამიტომ `up -d` მარტო არ კმარა |
+| health check (10 ცდა × 2წმ) | `up -d` ბრძანება წარმატებით დასრულდება მაშინაც, როცა აპი ვარდება. `curl` ამოწმებს, რომ რეალურად პასუხობს |
+| ლოგი `~/deploy-docker-app.log` | deploy-ის ისტორია შეცდომის დროსაც ხელმისაწვდომია |
+
+### მოთხოვნა: GitHub remote
+`git pull`-ს remote სჭირდება. VM-ს ავუშვით **deploy key** (SSH გასაღები მხოლოდ ამ ერთი repo-სთვის):
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/github_docker_app -N "" -C "myubuntuserver-deploy"
+```
+საჯარო ნაწილი დავამატეთ GitHub-ზე: repo → Settings → Deploy keys (✔ Allow write access). `~/.ssh/config`-ში ალიასი: <br>
+```text
+Host github-docker-app
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github_docker_app
+    IdentitiesOnly yes
+```
+| გადაწყვეტილება | რატომ |
+|----------------|-------|
+| deploy key და არა პირადი ტოკენი | გაჟონვისას მხოლოდ ეს ერთი repo დაზარალდება და არა მთელი GitHub ანგარიში |
+| repo კერძოა | compose-ში კონფიგურაციის სტრუქტურა და სერვისები საჯარო არ უნდა იყოს |
+| fingerprint-ის შემოწმება პირველ `ssh`-ზე | `SHA256:+DiY3wvv...CqU` ემთხვევა GitHub-ის ოფიციალურს, ე.ი. ნამდვილ GitHub-თან ვართ |
+
+### რეალური შედეგები
+**ტესტი 1: ცვლილება არ არის**
+```text
+$ ./deploy.sh
+[2026-11-15 23:35:21] git pull origin/main (ახლა: 1e4d26a)
+Already up to date.
+[2026-11-15 23:35:23] ახალი commit არ არის
+[2026-11-15 23:35:23] კონტეინერების rebuild/განახლება
+ ✔ Container docker-app-web-1      Running
+[2026-11-15 23:35:25] OK: http://127.0.0.1:8080/ -> 200 (1e4d26a)
+```
+კონტეინერები არ გადატვირთულა (`Running`), სკრიპტი უსაფრთხოდ გადის განმეორებით. <br>
+
+**ტესტი 2: ცვლილება GitHub-იდან**
+მეორე ასლიდან (`~/docker-app-edit`) `index.html`-ში დავამატეთ ხაზი და `git push`. შემდეგ: <br>
+```text
+$ ~/docker-app/deploy.sh
+[2026-11-15 23:36:11] git pull origin/main (ახლა: ce2e325)
+Updating ce2e325..e6fdfa1
+Fast-forward
+ nginx/index.html | 1 +
+[2026-11-15 23:36:13] განახლდა: ce2e325 -> e6fdfa1
+[2026-11-15 23:36:13] კონტეინერების rebuild/განახლება
+[2026-11-15 23:36:14] nginx/ შეიცვალა -> web restart
+ ✔ Container docker-app-web-1  Started
+[2026-11-15 23:36:15] OK: http://127.0.0.1:8080/ -> 200 (e6fdfa1)
+
+$ curl -s http://127.0.0.1:8080/ | grep "deploy test"
+<p>deploy test</p>
+```
+`web` კონტეინერი ახალი შიგთავსით გადაიტვირთა, `curl` ახალ ხაზს აბრუნებს. სრული deploy ერთი ბრძანებით და ~4 წამში. <br>
+
+!!! tip "რატომ არ გვეყო `docker compose up -d`"
+    `up -d` კონტეინერს მხოლოდ მაშინ ქმნის თავიდან, როცა იცვლება compose ფაილი ან იმიჯი. bind-mount-ით მიბმული ფაილის ცვლილება ამას არ იწვევს, ამიტომ პირველი ცდისას გვერდი ძველად დარჩებოდა. სკრიპტი `git diff`-ით ამოწმებს, `nginx/` შეიცვალა თუ არა და მხოლოდ მაშინ აკეთებს `restart web`.
+
+### შემდგომი გაუმჯობესებები
+- **Rollback:** ჩავარდნისას `git reset --hard $OLD` და ხელახალი `up -d`, რომ საიტი ბოლო მუშა ვერსიაზე დაბრუნდეს.
+- **ავტომატური გაშვება:** Task 9-ის მსგავსი polling (cron/systemd timer) ან GitHub webhook; VM ინტერნეტიდან მიუწვდომელია, ამიტომ polling უფრო რეალისტურია.

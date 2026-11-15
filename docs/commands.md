@@ -156,6 +156,17 @@ flowchart TD
 | `git ls-files` | Git-ის მიერ თვალყურდევნებული ფაილები | საბოლოო შემოწმება: პაროლიანი ფაილი არ არის |
 | `git commit -m "..."` / `git log --oneline` | snapshot-ის შენახვა / ისტორია | ცვლილების ჩაწერა და შემოწმება |
 | `git status -sb` | მოკლე სტატუსი ბრენჩით | ერთი ხაზით ჩანს `## main` |
+| `git pull --ff-only origin main` | მხოლოდ სწორხაზოვანი განახლება | კონფლიქტის შემთხვევაში deploy ჩერდება და ფაილებს არ აფუჭებს |
+| `git rev-parse HEAD` | მიმდინარე commit-ის სრული hash | deploy-მდე/შემდეგ შესადარებლად |
+| `git diff --name-only OLD NEW` | ორ commit-ს შორის შეცვლილი ფაილების სია | გადავწყვიტოთ, `web` უნდა გადაიტვირთოს თუ არა |
+| `ssh-keygen -t ed25519 -f ~/.ssh/github_docker_app -N ""` | ცალკე გასაღები კონკრეტული repo-სთვის (deploy key) | ტოკენზე უსაფრთხოა: გაჟონვისას მხოლოდ ეს repo დაზარალდება |
+| `ssh -T git@github-docker-app` | ამოწმებს GitHub-თან SSH წვდომას | `Hi ezdanapak/docker-app! You've successfully authenticated` |
+| `git remote add origin ...` / `git push -u origin main` | remote-ის მიბმა და პირველი ატვირთვა | `-u` იმახსოვრებს `main → origin/main` კავშირს |
+| `docker compose up -d --build --remove-orphans` | მხოლოდ შეცვლილი სერვისები თავიდან იქმნება, წაშლილი სერვისები იწმინდება | deploy ჩამოხსნის გარეშე, საიტი არ იკეტება |
+| `docker compose restart web` | ერთი სერვისის გადატვირთვა | bind-mount ფაილის ცვლილება `up -d`-ით არ ჩანს |
+| `curl -s -o /dev/null -w '%{http_code}' URL` | მხოლოდ HTTP კოდს ბეჭდავს | სკრიპტში health check |
+| `exec 9>lock; flock -n 9` | სკრიპტის ერთდროული გაშვების დაბლოკვა | ორი deploy ერთმანეთს არ ეჯახება |
+| `set -euo pipefail` | bash სკრიპტი შეცდომაზე ჩერდება | ცუდი `pull`-ის შემდეგ rebuild არ გაეშვება |
 
 ## ხშირი დიაგნოსტიკა: სიმპტომი → პირველი ბრძანება
 

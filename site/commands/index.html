@@ -2348,6 +2348,61 @@
 <td>მოკლე სტატუსი ბრენჩით</td>
 <td>ერთი ხაზით ჩანს <code>## main</code></td>
 </tr>
+<tr>
+<td><code>git pull --ff-only origin main</code></td>
+<td>მხოლოდ სწორხაზოვანი განახლება</td>
+<td>კონფლიქტის შემთხვევაში deploy ჩერდება და ფაილებს არ აფუჭებს</td>
+</tr>
+<tr>
+<td><code>git rev-parse HEAD</code></td>
+<td>მიმდინარე commit-ის სრული hash</td>
+<td>deploy-მდე/შემდეგ შესადარებლად</td>
+</tr>
+<tr>
+<td><code>git diff --name-only OLD NEW</code></td>
+<td>ორ commit-ს შორის შეცვლილი ფაილების სია</td>
+<td>გადავწყვიტოთ, <code>web</code> უნდა გადაიტვირთოს თუ არა</td>
+</tr>
+<tr>
+<td><code>ssh-keygen -t ed25519 -f ~/.ssh/github_docker_app -N ""</code></td>
+<td>ცალკე გასაღები კონკრეტული repo-სთვის (deploy key)</td>
+<td>ტოკენზე უსაფრთხოა: გაჟონვისას მხოლოდ ეს repo დაზარალდება</td>
+</tr>
+<tr>
+<td><code>ssh -T git@github-docker-app</code></td>
+<td>ამოწმებს GitHub-თან SSH წვდომას</td>
+<td><code>Hi ezdanapak/docker-app! You've successfully authenticated</code></td>
+</tr>
+<tr>
+<td><code>git remote add origin ...</code> / <code>git push -u origin main</code></td>
+<td>remote-ის მიბმა და პირველი ატვირთვა</td>
+<td><code>-u</code> იმახსოვრებს <code>main → origin/main</code> კავშირს</td>
+</tr>
+<tr>
+<td><code>docker compose up -d --build --remove-orphans</code></td>
+<td>მხოლოდ შეცვლილი სერვისები თავიდან იქმნება, წაშლილი სერვისები იწმინდება</td>
+<td>deploy ჩამოხსნის გარეშე, საიტი არ იკეტება</td>
+</tr>
+<tr>
+<td><code>docker compose restart web</code></td>
+<td>ერთი სერვისის გადატვირთვა</td>
+<td>bind-mount ფაილის ცვლილება <code>up -d</code>-ით არ ჩანს</td>
+</tr>
+<tr>
+<td><code>curl -s -o /dev/null -w '%{http_code}' URL</code></td>
+<td>მხოლოდ HTTP კოდს ბეჭდავს</td>
+<td>სკრიპტში health check</td>
+</tr>
+<tr>
+<td><code>exec 9&gt;lock; flock -n 9</code></td>
+<td>სკრიპტის ერთდროული გაშვების დაბლოკვა</td>
+<td>ორი deploy ერთმანეთს არ ეჯახება</td>
+</tr>
+<tr>
+<td><code>set -euo pipefail</code></td>
+<td>bash სკრიპტი შეცდომაზე ჩერდება</td>
+<td>ცუდი <code>pull</code>-ის შემდეგ rebuild არ გაეშვება</td>
+</tr>
 </tbody>
 </table>
 <h2 id="_2">ხშირი დიაგნოსტიკა: სიმპტომი → პირველი ბრძანება<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>

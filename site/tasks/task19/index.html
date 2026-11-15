@@ -1369,6 +1369,78 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploysh_vm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        განახლებული ვერსია: deploy.sh ახალ VM-ზე
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="განახლებული ვერსია: deploy.sh ახალ VM-ზე">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        სქემა
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        რას აკეთებს ყველა ნაწილი და რატომ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github_remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        მოთხოვნა: GitHub remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        რეალური შედეგები
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        შემდგომი გაუმჯობესებები
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1755,6 +1827,78 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploysh_vm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        განახლებული ვერსია: deploy.sh ახალ VM-ზე
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="განახლებული ვერსია: deploy.sh ახალ VM-ზე">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        სქემა
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        რას აკეთებს ყველა ნაწილი და რატომ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github_remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        მოთხოვნა: GitHub remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        რეალური შედეგები
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        შემდგომი გაუმჯობესებები
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2056,6 +2200,122 @@
 <p><code>command || fail "message"</code> — Bash-ის იდიომატური pattern. ნიშნავს: „გაუშვი ბრძანება, თუ ჩავარდა — fail ფუნქცია გამოიძახე." <code>set -e</code>-სთან ერთად ეს ორმაგ დაცვას იძლევა.</p>
 <h3 id="vs">პირველი vs გაუმჯობესებული ვერსია<a class="headerlink" href="#vs" title="Permanent link">&para;</a></h3>
 <p>პირველი ვერსია ჩავარდა იმიტომ რომ <code>git pull</code> remote-ის გარეშე error-ს აბრუნებს და <code>set -e</code> სკრიპტს აჩერებს. ეს ტიპიური სიტუაციაა — სკრიპტი ყოველთვის „ბედნიერ გზას" ვერ გაივლის. გაუმჯობესებულ ვერსიაში defensive programming-ით (წინასწარი შემოწმებებით) ასეთი edge case-ები სწორად მუშავდება.</p>
+<hr />
+<h2 id="deploysh_vm-">განახლებული ვერსია: <code>deploy.sh</code> ახალ VM-ზე<a class="headerlink" href="#deploysh_vm-" title="Permanent link">&para;</a></h2>
+<p>ახალ VM-ზე ვიყენებთ უფრო მოკლე და უსაფრთხო სკრიპტს, რომელიც <code>~/docker-app</code>-ის repo-შია (<code>deploy.sh</code>). ის განსხვავდება ძველისგან: კონტეინერებს <strong>არ ჩამოვხსნით</strong>, არამედ <code>docker compose up -d</code> მხოლოდ შეცვლილს ქმნის თავიდან, ამიტომ საიტი ხელახლა გაშვებისას არ იკეტება. <br></p>
+<h3 id="_6">სქემა<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    DEV["💻 ცვლილება&lt;br&gt;git push → GitHub"] --&gt; S["./deploy.sh"]
+    S --&gt; L{"flock&lt;br&gt;სხვა deploy მუშაობს?"}
+    L --&gt;|"კი"| X["გასვლა"]
+    L --&gt;|"არა"| P["git pull --ff-only"]
+    P --&gt; U["docker compose up -d --build&lt;br&gt;--remove-orphans"]
+    U --&gt; C{"nginx/ შეიცვალა?"}
+    C --&gt;|"კი"| R["docker compose restart web"]
+    C --&gt;|"არა"| H
+    R --&gt; H["health check&lt;br&gt;curl 127.0.0.1:8080 → 200"]
+    H --&gt;|"200"| OK["✅ ლოგი + docker compose ps"]
+    H --&gt;|"10 ცდა ვერ"| ERR["❌ ლოგი + docker compose logs"]</code></pre>
+<h3 id="_7">რას აკეთებს ყველა ნაწილი და რატომ<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ნაწილი</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>set -euo pipefail</code></td>
+<td>სკრიპტი პირველივე შეცდომაზე ჩერდება: ცუდი <code>pull</code>-ის შემდეგ <code>docker compose up</code> აღარ გაეშვება</td>
+</tr>
+<tr>
+<td><code>flock -n</code></td>
+<td>ორი deploy ერთდროულად (ხელით + cron) ერთმანეთს არ დაუფუჭებს მდგომარეობას</td>
+</tr>
+<tr>
+<td><code>[ -f .env ] \|\| exit</code></td>
+<td><code>.env</code> Git-ში არ არის (<code>.gitignore</code>); მის გარეშე DB-ს პაროლი ცარიელი იქნებოდა</td>
+</tr>
+<tr>
+<td><code>git pull --ff-only</code></td>
+<td>მხოლოდ სწორხაზოვანი განახლება; თუ სერვერზე ხელით ცვლილება გაკეთდა და კონფლიქტია, deploy ჩერდება და არ ქმნის უცნაურ merge-ს</td>
+</tr>
+<tr>
+<td><code>OLD</code>/<code>NEW</code> commit-ის შედარება</td>
+<td>ლოგში ჩანს, რა იყო და რა გახდა; გამოიყენება იმის გასარკვევად, რა ფაილები შეიცვალა</td>
+</tr>
+<tr>
+<td><code>docker compose up -d --build --remove-orphans</code></td>
+<td>შეცვლილ სერვისს თავიდან ქმნის, დანარჩენს არ ეხება. <code>--build</code> მომავალში Dockerfile-ისთვის, <code>--remove-orphans</code> წაშლილ სერვისებს ასუფთავებს</td>
+</tr>
+<tr>
+<td><code>restart web</code> როცა <code>nginx/</code> შეიცვალა</td>
+<td><code>index.html</code> და <code>nginx.conf</code> კონტეინერში ფაილების სახით არის მიბმული (bind mount); compose მათი ცვლილების შიგთავსს ვერ ამჩნევს, ამიტომ <code>up -d</code> მარტო არ კმარა</td>
+</tr>
+<tr>
+<td>health check (10 ცდა × 2წმ)</td>
+<td><code>up -d</code> ბრძანება წარმატებით დასრულდება მაშინაც, როცა აპი ვარდება. <code>curl</code> ამოწმებს, რომ რეალურად პასუხობს</td>
+</tr>
+<tr>
+<td>ლოგი <code>~/deploy-docker-app.log</code></td>
+<td>deploy-ის ისტორია შეცდომის დროსაც ხელმისაწვდომია</td>
+</tr>
+</tbody>
+</table>
+<h3 id="github_remote">მოთხოვნა: GitHub remote<a class="headerlink" href="#github_remote" title="Permanent link">&para;</a></h3>
+<p><code>git pull</code>-ს remote სჭირდება. VM-ს ავუშვით <strong>deploy key</strong> (SSH გასაღები მხოლოდ ამ ერთი repo-სთვის):</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-f<span class="w"> </span>~/.ssh/github_docker_app<span class="w"> </span>-N<span class="w"> </span><span class="s2">""</span><span class="w"> </span>-C<span class="w"> </span><span class="s2">"myubuntuserver-deploy"</span>
+</span></code></pre></div>
+საჯარო ნაწილი დავამატეთ GitHub-ზე: repo → Settings → Deploy keys (✔ Allow write access). <code>~/.ssh/config</code>-ში ალიასი: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Host github-docker-app
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    HostName github.com
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    User git
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    IdentityFile ~/.ssh/github_docker_app
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    IdentitiesOnly yes
+</span></code></pre></div>
+| გადაწყვეტილება | რატომ |
+|----------------|-------|
+| deploy key და არა პირადი ტოკენი | გაჟონვისას მხოლოდ ეს ერთი repo დაზარალდება და არა მთელი GitHub ანგარიში |
+| repo კერძოა | compose-ში კონფიგურაციის სტრუქტურა და სერვისები საჯარო არ უნდა იყოს |
+| fingerprint-ის შემოწმება პირველ <code>ssh</code>-ზე | <code>SHA256:+DiY3wvv...CqU</code> ემთხვევა GitHub-ის ოფიციალურს, ე.ი. ნამდვილ GitHub-თან ვართ |</p>
+<h3 id="_8">რეალური შედეგები<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><strong>ტესტი 1: ცვლილება არ არის</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$ ./deploy.sh
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>[2026-11-15 23:35:21] git pull origin/main (ახლა: 1e4d26a)
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Already up to date.
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>[2026-11-15 23:35:23] ახალი commit არ არის
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>[2026-11-15 23:35:23] კონტეინერების rebuild/განახლება
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a> ✔ Container docker-app-web-1      Running
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>[2026-11-15 23:35:25] OK: http://127.0.0.1:8080/ -&gt; 200 (1e4d26a)
+</span></code></pre></div>
+კონტეინერები არ გადატვირთულა (<code>Running</code>), სკრიპტი უსაფრთხოდ გადის განმეორებით. <br></p>
+<p><strong>ტესტი 2: ცვლილება GitHub-იდან</strong>
+მეორე ასლიდან (<code>~/docker-app-edit</code>) <code>index.html</code>-ში დავამატეთ ხაზი და <code>git push</code>. შემდეგ: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ ~/docker-app/deploy.sh
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>[2026-11-15 23:36:11] git pull origin/main (ახლა: ce2e325)
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Updating ce2e325..e6fdfa1
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Fast-forward
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a> nginx/index.html | 1 +
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>[2026-11-15 23:36:13] განახლდა: ce2e325 -&gt; e6fdfa1
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>[2026-11-15 23:36:13] კონტეინერების rebuild/განახლება
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>[2026-11-15 23:36:14] nginx/ შეიცვალა -&gt; web restart
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a> ✔ Container docker-app-web-1  Started
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>[2026-11-15 23:36:15] OK: http://127.0.0.1:8080/ -&gt; 200 (e6fdfa1)
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>$ curl -s http://127.0.0.1:8080/ | grep "deploy test"
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>&lt;p&gt;deploy test&lt;/p&gt;
+</span></code></pre></div>
+<code>web</code> კონტეინერი ახალი შიგთავსით გადაიტვირთა, <code>curl</code> ახალ ხაზს აბრუნებს. სრული deploy ერთი ბრძანებით და ~4 წამში. <br></p>
+<div class="admonition tip">
+<p class="admonition-title">რატომ არ გვეყო <code>docker compose up -d</code></p>
+<p><code>up -d</code> კონტეინერს მხოლოდ მაშინ ქმნის თავიდან, როცა იცვლება compose ფაილი ან იმიჯი. bind-mount-ით მიბმული ფაილის ცვლილება ამას არ იწვევს, ამიტომ პირველი ცდისას გვერდი ძველად დარჩებოდა. სკრიპტი <code>git diff</code>-ით ამოწმებს, <code>nginx/</code> შეიცვალა თუ არა და მხოლოდ მაშინ აკეთებს <code>restart web</code>.</p>
+</div>
+<h3 id="_9">შემდგომი გაუმჯობესებები<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Rollback:</strong> ჩავარდნისას <code>git reset --hard $OLD</code> და ხელახალი <code>up -d</code>, რომ საიტი ბოლო მუშა ვერსიაზე დაბრუნდეს.</li>
+<li><strong>ავტომატური გაშვება:</strong> Task 9-ის მსგავსი polling (cron/systemd timer) ან GitHub webhook; VM ინტერნეტიდან მიუწვდომელია, ამიტომ polling უფრო რეალისტურია.</li>
+</ul>
 
 
 
