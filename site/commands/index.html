@@ -669,6 +669,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6a. რესურსების მონიტორინგი
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1726,6 +1737,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6a. რესურსების მონიტორინგი
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2172,6 +2194,73 @@
 <td><code>grep "Failed password" /var/log/auth.log</code></td>
 <td>წარუმატებელი მცდელობები</td>
 <td>brute-force-ის ნიშანი</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6a">6a. რესურსების მონიტორინგი<a class="headerlink" href="#6a" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uptime</code></td>
+<td>მუშაობის დრო და load average (1/5/15 წთ)</td>
+<td>სწრაფი შეფასება: CPU ბირთვების რაოდენობასთან შედარებით (<code>nproc</code>)</td>
+</tr>
+<tr>
+<td><code>free -h</code></td>
+<td>მეხსიერება ადამიანის ენაზე</td>
+<td><code>available</code> სვეტი გვიჩვენებს რეალურად თავისუფალს</td>
+</tr>
+<tr>
+<td><code>df -h /</code></td>
+<td>დისკის გამოყენება</td>
+<td>ივსება თუ არა დისკი</td>
+</tr>
+<tr>
+<td><code>ps aux --sort=-%cpu &#124; head</code></td>
+<td>პროცესები CPU-ს მიხედვით</td>
+<td>Top მომხმარებლები (<code>ps</code> თავადაც ჩანს, მისი პროცენტი არტეფაქტია)</td>
+</tr>
+<tr>
+<td><code>ps aux --sort=-%mem &#124; head</code></td>
+<td>პროცესები RAM-ის მიხედვით</td>
+<td>ვინ ჭამს მეხსიერებას</td>
+</tr>
+<tr>
+<td><code>htop</code></td>
+<td>ინტერაქტიული მონიტორი (F6 სორტი, F5 ხე, F4 ფილტრი)</td>
+<td>ცოცხალი ხედი და პროცესის გაჩერება</td>
+</tr>
+<tr>
+<td><code>docker stats --no-stream</code></td>
+<td>კონტეინერების CPU/RAM/ქსელი/დისკი</td>
+<td><code>htop</code> კონტეინერებს ერთ პროცესად აჩვენებს</td>
+</tr>
+<tr>
+<td><code>iostat -x 1 3</code></td>
+<td>დისკის დეტალური სტატისტიკა, 3 ნიმუში</td>
+<td><code>%iowait</code> და <code>%util</code> ამოწმებს დისკის დატვირთვას; პირველი ბლოკი საშუალოა</td>
+</tr>
+<tr>
+<td><code>sudo iotop -oPa -b -n 3 -d 1</code></td>
+<td>დისკის გამოყენება პროცესების მიხედვით</td>
+<td>ვინ წერს/კითხულობს (მხოლოდ აქტიურები)</td>
+</tr>
+<tr>
+<td><code>yes &gt; /dev/null &amp;</code> / <code>kill %1</code></td>
+<td>ერთი ბირთვის ხელოვნური დატვირთვა და გაჩერება</td>
+<td>მონიტორინგის ხელსაწყოს ტესტი</td>
+</tr>
+<tr>
+<td><code>nproc</code></td>
+<td>CPU ბირთვების რაოდენობა</td>
+<td>load average-ის სწორად წასაკითხად</td>
 </tr>
 </tbody>
 </table>
