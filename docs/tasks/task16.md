@@ -382,7 +382,14 @@ sudo systemctl reload nginx
 ```bash
 curl -I -H "Host: app.test" http://localhost/
 ```
-ელოდე `HTTP/1.1 200 OK`-ს (Docker-ის Nginx-ის პასუხი). Adminer proxy-ით: <br>
+რეალური შედეგი: <br>
+```text
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Content-Type: text/html
+Content-Length: 3108
+```
+`200 OK` და `Content-Length: 3108` Docker-ის აპის გვერდია (proxy მუშაობს). Adminer proxy-ით: <br>
 ```bash
 curl -I -H "Host: app.test" http://localhost/adminer/
 ```
@@ -415,6 +422,24 @@ docker compose up -d
 ```
 `127.0.0.1:` პორტს მხოლოდ VM-ის შიგნით ტოვებს. ამის შემდეგ `http://192.168.56.10:8080/` აღარ უნდა პასუხობდეს, `http://app.test/` კი მუშაობს. <br>
 
+რეალური შედეგი VM-ში (`docker compose ps`): <br>
+```text
+docker-app-web-1       nginx:alpine   ...   Up 16 seconds   127.0.0.1:8080->80/tcp
+docker-app-adminer-1   adminer:latest ...   Up 4 minutes    8080/tcp
+docker-app-db-1        postgres:16-alpine   Up 4 minutes (healthy)   5432/tcp
+```
+ჰოსტიდან: <br>
+```text
+$ curl -I http://app.test/
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Content-Length: 3108
+
+$ curl -I --max-time 3 http://192.168.56.10:8080/
+curl: (28) Connection timed out after 3002 milliseconds
+```
+`app.test` პორტის გარეშე მუშაობს, პირდაპირი `:8080` კი დახურულია (timeout). ტესტი გაიარა. <br>
+
 !!! warning "რატომ არ გვყოფნის UFW"
     Docker-ის გამოქვეყნებული პორტი UFW-ს წესებს გვერდს უვლის (Task 15), ამიტომ firewall-ით `8080` ვერ დაიხურება. ერთადერთი სწორი გზა პორტის `127.0.0.1`-ზე მიბმაა.
 
@@ -425,9 +450,6 @@ docker compose up -d
 | `app.test` არ იხსნება browser-ში | `/etc/hosts`-ის ხაზი არ არის ან არასწორია: `ping app.test` |
 | `app.test` გიჩვენებს `mgawm`-ს | `server_name` ან `Host` არ ემთხვევა: `sudo nginx -T \| grep server_name` |
 | `nginx -t` ერორს წერს | სინტაქსი: `;`, `{}` ან `server_name` ხაზი |
-
-!!! info "შენიშვნა"
-    ამ განყოფილების ტესტის შედეგები (`curl`-ის გამოტანები) ჯერ არ არის ჩაწერილი: ისინი ზემოთ აღწერილია როგორც მოსალოდნელი შედეგი და შესრულების შემდეგ ჩავანაცვლებთ რეალური გამოტანებით.
 
 
 ## ბონუსი: წვდომა ტელეფონიდან Tailscale-ით
