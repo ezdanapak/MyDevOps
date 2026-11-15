@@ -79,7 +79,11 @@ flowchart TD
 |----------|-------------|-------|
 | <code>curl -fsSL https://tailscale.com/install.sh &#124; sh</code> | აყენებს Tailscale-ს | VM ხდება tailnet-ის წევრი |
 | `sudo tailscale up` | აკავშირებს ანგარიშთან (ბმულით ავტორიზაცია) | ტელეფონი VM-ს პირდაპირ ხედავს |
+| `sudo tailscale up --ssh` | Tailscale SSH: შესვლა tailnet-ის იდენტობით, key-ების გარეშე (არჩეული არ არის, `keys-only` წესებს უვლის გვერდს) | ალტერნატივა key-ზე დაფუძნებულ შესვლას |
 | `tailscale ip -4` | მოწყობილობის `100.x.y.z` მისამართი | ამ IP-ს ვუთითებთ Nginx-ის `server_name`-ში |
+
+!!! info "ტელეფონიდან წვდომა"
+    სრული ინსტრუქცია Electerm-ის sync-ით და პრობლემებით: [ტელეფონიდან წვდომა](setup/phone-access.md).
 
 ## 5. PostgreSQL, backup და cron
 

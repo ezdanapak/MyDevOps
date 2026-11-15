@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://ezdanapak.github.io/MyDevOps/commands/">
       
       
-        <link rel="prev" href="../setup/setup-recovery-ubuntu/">
+        <link rel="prev" href="../setup/phone-access/">
       
       
         <link rel="next" href="../tasks/task/">
@@ -302,6 +302,8 @@
       
         
       
+        
+      
     
     
     
@@ -469,6 +471,34 @@
     
   
     Ubuntu Recovery ინსტალაცია
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/phone-access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ტელეფონიდან წვდომა (Tailscale)
   
 
     
@@ -2021,12 +2051,21 @@
 <td>ტელეფონი VM-ს პირდაპირ ხედავს</td>
 </tr>
 <tr>
+<td><code>sudo tailscale up --ssh</code></td>
+<td>Tailscale SSH: შესვლა tailnet-ის იდენტობით, key-ების გარეშე (არჩეული არ არის, <code>keys-only</code> წესებს უვლის გვერდს)</td>
+<td>ალტერნატივა key-ზე დაფუძნებულ შესვლას</td>
+</tr>
+<tr>
 <td><code>tailscale ip -4</code></td>
 <td>მოწყობილობის <code>100.x.y.z</code> მისამართი</td>
 <td>ამ IP-ს ვუთითებთ Nginx-ის <code>server_name</code>-ში</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition info">
+<p class="admonition-title">ტელეფონიდან წვდომა</p>
+<p>სრული ინსტრუქცია Electerm-ის sync-ით და პრობლემებით: <a href="../setup/phone-access/">ტელეფონიდან წვდომა</a>.</p>
+</div>
 <h2 id="5_postgresql_backup_cron">5. PostgreSQL, backup და cron<a class="headerlink" href="#5_postgresql_backup_cron" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2344,7 +2383,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../setup/setup-recovery-ubuntu/" class="md-footer__link md-footer__link--prev" aria-label="წინა: Ubuntu Recovery ინსტალაცია">
+          <a href="../setup/phone-access/" class="md-footer__link md-footer__link--prev" aria-label="წინა: ტელეფონიდან წვდომა (Tailscale)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2354,7 +2393,7 @@
                 წინა
               </span>
               <div class="md-ellipsis">
-                Ubuntu Recovery ინსტალაცია
+                ტელეფონიდან წვდომა (Tailscale)
               </div>
             </div>
           </a>

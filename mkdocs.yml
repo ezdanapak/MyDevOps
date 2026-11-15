@@ -98,6 +98,7 @@ nav:
       - Ubuntu ინსტალაცია: setup/setup-ubuntu.md
       - MobaXterm ინსტალაცია: setup/setup-mobaxterm.md
       - Ubuntu Recovery ინსტალაცია: setup/setup-recovery-ubuntu.md
+      - ტელეფონიდან წვდომა (Tailscale): setup/phone-access.md
       
   - ბრძანებების ცნობარი: commands.md
   - ამოცანები:
