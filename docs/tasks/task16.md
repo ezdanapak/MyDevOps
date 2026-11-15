@@ -384,12 +384,14 @@ curl -I -H "Host: app.test" http://localhost/
 ```
 რეალური შედეგი: <br>
 ```text
-HTTP/1.1 200 OK
-Server: nginx/1.28.3 (Ubuntu)
-Content-Type: text/html
-Content-Length: 3108
+$ curl -s -H "Host: app.test" http://localhost/ | head -n 5
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <title>Docker App</title>
 ```
-`200 OK` და `Content-Length: 3108` Docker-ის აპის გვერდია (proxy მუშაობს). Adminer proxy-ით: <br>
+`<title>Docker App</title>` ნიშნავს, რომ პასუხი Docker-ის აპიდან მოდის (proxy მუშაობს). `mgawm`-ის სათაური განსხვავებულია. Adminer Adminer proxy-ით: <br>
 ```bash
 curl -I -H "Host: app.test" http://localhost/adminer/
 ```
@@ -432,8 +434,13 @@ docker-app-db-1        postgres:16-alpine   Up 4 minutes (healthy)   5432/tcp
 ```text
 $ curl -I http://app.test/
 HTTP/1.1 200 OK
-Server: nginx/1.28.3 (Ubuntu)
-Content-Length: 3108
+Content-Length: 599
+
+$ curl -s http://app.test/ | grep -i "<title>"
+  <title>Docker App</title>
+
+$ curl -s http://192.168.56.10/ | grep -i "<title>"
+    <title>მოდი! გეძახი ათას წლის მერე</title>
 
 $ curl -I --max-time 3 http://192.168.56.10:8080/
 curl: (28) Connection timed out after 3002 milliseconds
@@ -449,6 +456,7 @@ curl: (28) Connection timed out after 3002 milliseconds
 | `502 Bad Gateway` | Docker კონტეინერი არ მუშაობს ან პორტი არასწორია: `docker compose ps` (ნაბიჯი 5-ის შემდეგ უნდა ჩანდეს `127.0.0.1:8080->80/tcp`) |
 | `app.test` არ იხსნება browser-ში | `/etc/hosts`-ის ხაზი არ არის ან არასწორია: `ping app.test` |
 | `app.test` გიჩვენებს `mgawm`-ს | `server_name` ან `Host` არ ემთხვევა: `sudo nginx -T \| grep server_name` |
+| `app.test` პასუხობს, მაგრამ `Content-Length` და `<title>` `mgawm`-ისაა | proxy-ს `server` ბლოკი ფაქტობრივად არ არის ჩართულ ფაილში. შეამოწმე `cat -n /etc/nginx/sites-available/mgawm` და `ls -l /etc/nginx/sites-enabled/`; `curl -I` მარტო სტატუსს გვაჩვენებს და ამას ვერ გამოავლენს, ამიტომ შეადარე `<title>` |
 | `nginx -t` ერორს წერს | სინტაქსი: `;`, `{}` ან `server_name` ხაზი |
 
 
@@ -489,3 +497,6 @@ sudo nginx -t && sudo systemctl reload nginx
 | IP-ის დამატება `server_name`-ში | ტელეფონმა `app.test` არ იცის და Nginx-ი Host header-ით არჩევს ბლოკს; IP-ით მოსული მოთხოვნა სხვაგვარად `mgawm`-ზე მოხვდებოდა |
 | Tailscale VM-ზე და არა ჰოსტზე | `192.168.56.0/24` tailnet-ში არ ჩანს; ჰოსტზე subnet router (`--advertise-routes`, IP forwarding, ადმინ-დამტკიცება) უფრო რთულია |
 | ახალი ufw წესი არ არის | 80 უკვე ღიაა (Task 7), ინტერნეტში არაფერი იხსნება |
+
+!!! warning "რეალური შეცდომა ტესტირებისას"
+    პირველი ტესტი `200 OK`-ს აბრუნებდა და გავიფიქრეთ, რომ proxy მუშაობდა. სინამდვილეში `app.test`-ის ბლოკი `mgawm` ფაილში არ იყო და Nginx-ი ყველა Host-ზე `default` საიტს (`mgawm`) აბრუნებდა. განმასხვავებელი იყო `Content-Length` (3108 ნაცვლად 599) და `<title>`. გაკვეთილი: proxy-ს ტესტისას სტატუს კოდი არ კმარა, შეადარე გვერდის შიგთავსი.

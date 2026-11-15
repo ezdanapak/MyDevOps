@@ -251,3 +251,87 @@ Browser ──HTTPS──▶ Nginx Proxy ──HTTP──▶ Docker Containers
                                                (localhost)
 
 ```
+
+---
+
+## განახლებული ვერსია: HTTPS ახალ VM-ზე (`192.168.56.10`)
+
+ზემოთ აღწერილია ძველი გარემო (`devserver`, Docker-ის წინ ერთი proxy). ახალ VM-ზე SSL გვაქვს `mgawm` საიტზე და სერტიფიკატი IP-ზეა გაცემული. <br>
+
+```mermaid
+flowchart TD
+    B["Browser<br>https://192.168.56.10"] -->|"TLS handshake :443"| N["Nginx<br>server 443 ssl"]
+    N -->|"აბრუნებს სერტიფიკატს<br>selfsigned.crt"| B
+    B -->|"ვერ ამოწმებს CA-ს:<br>გაფრთხილება → Proceed"| N
+    N -->|"დაშიფრული სესია<br>TLS 1.3"| S["/var/www/mgawm"]
+    H["http://:80"] --> N2["Nginx server 80"]
+    N2 --> S
+```
+
+### 1. სერტიფიკატი
+```bash
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/ssl/private/selfsigned.key \
+  -out /etc/ssl/certs/selfsigned.crt \
+  -subj "/CN=192.168.56.10" \
+  -addext "subjectAltName=IP:192.168.56.10,DNS:app.test"
+sudo chmod 600 /etc/ssl/private/selfsigned.key
+```
+
+| ნაწილი | რატომ |
+|--------|-------|
+| `-addext subjectAltName=IP:...,DNS:...` | თანამედროვე browser-ები მხოლოდ `CN`-ს აღარ ეყრდნობიან, IP/hostname SAN ველში უნდა იყოს |
+| `-nodes` | გასაღებს პაროლი არ აქვს, რომ Nginx-ი რესტარტზე თავისით ჩაირთოს |
+| `chmod 600` | გასაღები მხოლოდ root-ს უნდა კითხულობდეს |
+| `/etc/ssl/private` და `/etc/ssl/certs` | Ubuntu-ს სტანდარტული ადგილი: გასაღები დახურულ საქაღალდეშია |
+
+### 2. Nginx: ცალკე `server` ბლოკი 443-ზე
+```nginx
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name _;
+
+    ssl_certificate     /etc/ssl/certs/selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/selfsigned.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    root /var/www/mgawm;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+`ssl_protocols` ძველ დაუცველ პროტოკოლებს (SSLv3, TLS 1.0/1.1) გამორთავს. 443 firewall-ში უკვე ღია იყო (Task 7). <br>
+
+### 3. რეალური შედეგები
+```text
+$ sudo ss -tlnp | grep -E ":80|:443"
+LISTEN 0 511   0.0.0.0:80    ... nginx
+LISTEN 0 511   0.0.0.0:443   ... nginx
+LISTEN 0 511   [::]:80       ... nginx
+LISTEN 0 511   [::]:443      ... nginx
+
+$ curl -kI https://localhost/
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Content-Type: text/html
+Content-Length: 3108
+
+$ curl -kI https://192.168.56.10/ | head -n 1     # ჰოსტიდან
+HTTP/1.1 200 OK
+```
+ბრაუზერში `https://192.168.56.10` გაფრთხილებას აჩვენებს (სერტიფიკატი თვითხელმოწერილია), **Advanced → Proceed** და საიტი იხსნება. `-k` curl-ში ნიშნავს „სერტიფიკატის ნდობა არ შეამოწმო“. <br>
+
+### 4. რა შეცდომები დაგვხვდა
+| პრობლემა | მიზეზი და გამოსწორება |
+|----------|----------------------|
+| `curl: (7) Failed to connect to localhost port 443`, `ss` ცარიელი | `ssl_certificate` ხაზები არასწორად ჩაჯდა არსებულ `listen 80` ბლოკში და `listen 443 ssl` საერთოდ არ იყო. `nginx -t` ამას ვერ იჭერს, ამიტომ ყოველთვის შეამოწმე `ss -tlnp \| grep :443` |
+| `unknown directive "sudo"` | `sudo tee ... <<EOF` ბრძანება nano-ში ჩაიწერა ტექსტად. ბრძანება ტერმინალში უნდა გაეშვას, nano-ში მხოლოდ კონფიგის ტექსტი იწერება |
+| `unknown directive "EOFserver"` | ფაილში `EOF` და ძველი ბლოკი დარჩა. `sudo sed -i '44,$d' ფაილი` ზედმეტი ხაზები წაშალა |
+| `ls: cannot open '/etc/ssl/private/selfsigned.key'` | ნორმალურია: საქაღალდე root-ისაა, `sudo ls` გამოიყენე |
+
+!!! tip "რატომ გვჭირდება HTTPS"
+    HTTP-ზე პაროლები და მონაცემები ქსელში ღიად გადადის. TLS ტრაფიკს შიფრავს და სერვერის ვინაობას ამოწმებს. self-signed სერტიფიკატი შიფრავს, მაგრამ ვინაობას არავინ ადასტურებს, ამიტომ browser აფრთხილებს. რეალური საიტისთვის Let's Encrypt გამოიყენება.
