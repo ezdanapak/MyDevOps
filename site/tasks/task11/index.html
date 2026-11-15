@@ -493,6 +493,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ბრძანებების ცნობარი
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -564,10 +591,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -585,8 +612,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1010,6 +1037,17 @@
   
     <nav class="md-nav" aria-label="განახლებული ვერსია: მარტივი სკრიპტი app_db-ისთვის">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backup-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        დიაგრამა: backup-ის გზა ბაზიდან არქივამდე
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#1_pgpass-" class="md-nav__link">
@@ -1605,6 +1643,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#backup-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        დიაგრამა: backup-ის გზა ბაზიდან არქივამდე
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#1_pgpass-" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1872,6 +1921,14 @@
 <hr />
 <h2 id="app_db-">განახლებული ვერსია: მარტივი სკრიპტი <code>app_db</code>-ისთვის<a class="headerlink" href="#app_db-" title="Permanent link">&para;</a></h2>
 <p>Task 10-ის ახალ ბაზას (<code>app_db</code>, <code>appuser</code>) შესაბამისი უფრო მოკლე სკრიპტი. ზემოთ ბევრი ფერი და ლოგი იყო, აქ მხოლოდ საჭირო ნაწილია. <br></p>
+<h3 id="backup-">დიაგრამა: backup-ის გზა ბაზიდან არქივამდე<a class="headerlink" href="#backup-" title="Permanent link">&para;</a></h3>
+<p><pre class="mermaid"><code>flowchart TD
+    K["🔑 ~/.pgpass&lt;br/&gt;პაროლი (chmod 600)"] -.-&gt;|"ავტორიზაცია&lt;br/&gt;პაროლის მოთხოვნის გარეშე"| P
+    P["🗄️ PostgreSQL&lt;br/&gt;app_db"] --&gt;|"pg_dump -w"| Q["📄 app_db_TIMESTAMP.sql&lt;br/&gt;დროებითი ფაილი"]
+    Q --&gt;|"tar -czf"| T["📦 app_db_TIMESTAMP.tar.gz"]
+    Q --&gt;|"rm"| Z["🗑️ .sql იშლება"]
+    T --&gt; B["📁 ~/backups/&lt;br/&gt;chmod 700: მხოლოდ შენ"]</code></pre>
+<strong>როგორ წავიკითხოთ:</strong> <code>pg_dump</code> ბაზას ტექსტურ SQL ფაილად გარდაქმნის, <code>tar</code> კი მას ჩაკუმშავს. <code>.sql</code> ფაილი მხოლოდ შუალედური ნაბიჯია, ამიტომ მას ვშლით და რჩება მხოლოდ <code>.tar.gz</code>. პაროლი სკრიპტში არ წერია: <code>pg_dump</code> მას <code>~/.pgpass</code>-იდან იღებს (წყვეტილი ისარი), ამიტომ სკრიპტი პაროლის თხოვნაზე არ გაჩერდება და cron-იდანაც იმუშავებს. <code>TIMESTAMP</code> ფაილის სახელში ახალ backup-ს ძველის გადაწერისგან იცავს. <br></p>
 <h3 id="1_pgpass-">1. პაროლი <code>~/.pgpass</code>-ში<a class="headerlink" href="#1_pgpass-" title="Permanent link">&para;</a></h3>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>nano<span class="w"> </span>~/.pgpass
 </span></code></pre></div>

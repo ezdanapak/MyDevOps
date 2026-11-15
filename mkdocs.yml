@@ -99,6 +99,7 @@ nav:
       - MobaXterm ინსტალაცია: setup/setup-mobaxterm.md
       - Ubuntu Recovery ინსტალაცია: setup/setup-recovery-ubuntu.md
       
+  - ბრძანებების ცნობარი: commands.md
   - ამოცანები:
       - მდგომარეობა: tasks/task.md
       - Virtual Machine: tasks/task1.md

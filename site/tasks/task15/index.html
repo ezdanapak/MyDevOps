@@ -493,6 +493,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ბრძანებების ცნობარი
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -564,10 +591,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -585,8 +612,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1384,6 +1411,67 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6_adminer-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Adminer-ში შესვლა
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ხშირი პრობლემები და მათი გადაჭრა
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ხშირი პრობლემები და მათი გადაჭრა">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_no_configuration_file_provided_not_found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        პრობლემა 1: no configuration file provided: not found
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_http192168561018080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        პრობლემა 2: ბრაუზერში http://192.168.56.101:8080/... არ იხსნება
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_password_authentication_failed_for_user_appuser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        პრობლემა 3: password authentication failed for user "appuser"
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2065,6 +2153,67 @@
     <span class="md-ellipsis">
       
         5. შედეგის შემოწმება
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_adminer-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Adminer-ში შესვლა
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ხშირი პრობლემები და მათი გადაჭრა
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ხშირი პრობლემები და მათი გადაჭრა">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_no_configuration_file_provided_not_found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        პრობლემა 1: no configuration file provided: not found
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_http192168561018080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        პრობლემა 2: ბრაუზერში http://192.168.56.101:8080/... არ იხსნება
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_password_authentication_failed_for_user_appuser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        პრობლემა 3: password authentication failed for user "appuser"
       
     </span>
   </a>
@@ -2858,6 +3007,94 @@ host-იდან შემოწმებისას: <br>
 <div class="admonition warning">
 <p class="admonition-title">Docker და firewall (UFW)</p>
 <p>Docker-ით გამოქვეყნებული პორტი (<code>8080</code>) UFW-ს წესებს გვერდს უვლის: <code>ufw status</code>-ში 8080 არ ჩანს, მაგრამ მაინც ღიაა. ჩვენი VM Host-Only ქსელშია, ამიტომ აქ ეს პრობლემა არ არის. რეალურ სერვერზე ეს უნდა გახსოვდეს და გამოსაქვეყნებელი პორტები შეგნებულად შეარჩიო (მაგალითად <code>127.0.0.1:8080:80</code>, თუ გარედან არ უნდა ჩანდეს).</p>
+</div>
+<h3 id="6_adminer-">6. Adminer-ში შესვლა<a class="headerlink" href="#6_adminer-" title="Permanent link">&para;</a></h3>
+<p>მისამართი (ფორმის წინასწარ შევსებით): <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>http://192.168.56.10:8080/adminer/?pgsql=db&amp;username=appuser&amp;db=app_db
+</span></code></pre></div>
+<code>pgsql=db</code> ავსებს System/Server ველებს (PostgreSQL და <code>db</code>), <code>username</code> და <code>db</code> — იუზერსა და ბაზას. აგრძელებს მხოლოდ პაროლის შეყვანა (<code>.env</code>-ის <code>DB_PASSWORD</code>). შესვლა წარმატებით შესრულდა, ანუ აპლიკაციას ბაზასთან კავშირი აქვს. <br></p>
+<hr />
+<h2 id="_12">ხშირი პრობლემები და მათი გადაჭრა<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>სამი შეცდომა, რომელიც ამ ამოცანის შესრულებისას მართლა შეგვხვდა. <br></p>
+<h3 id="1_no_configuration_file_provided_not_found">პრობლემა 1: <code>no configuration file provided: not found</code><a class="headerlink" href="#1_no_configuration_file_provided_not_found" title="Permanent link">&para;</a></h3>
+<p><div class="language-console highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="gp">k@myubuntuserver:~$ </span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="go">no configuration file provided: not found</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="gp">k@myubuntuserver:~$ </span>docker<span class="w"> </span>compose<span class="w"> </span>ps
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="go">no configuration file provided: not found</span>
+</span></code></pre></div>
+<strong>მიზეზი:</strong> <code>docker compose</code> <code>docker-compose.yml</code>-ს <strong>მიმდინარე საქაღალდეში</strong> ეძებს. აქ <code>~</code>-ში (<code>/home/k</code>) ვიყავით, ფაილი კი <code>~/docker-app</code>-შია. <br></p>
+<p><strong>გამოსავალი:</strong> გადადი პროექტის საქაღალდეში: <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="nb">cd</span><span class="w"> </span>~/docker-app
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>ps
+</span></code></pre></div>
+ან ფაილი პირდაპირ მიუთითე (ნებისმიერი საქაღალდიდან): <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>~/docker-app/docker-compose.yml<span class="w"> </span>ps
+</span></code></pre></div></p>
+<h3 id="2_http192168561018080">პრობლემა 2: ბრაუზერში <code>http://192.168.56.101:8080/...</code> არ იხსნება<a class="headerlink" href="#2_http192168561018080" title="Permanent link">&para;</a></h3>
+<p><strong>მიზეზი:</strong> <code>192.168.56.101</code> ძველი, <strong>დინამიური (DHCP)</strong> მისამართია. Task 3-ის შემდეგ VM-ს სტატიკური <code>192.168.56.10</code> აქვს და ძველი მისამართი აღარ არსებობს. ბრაუზერის ისტორია ან bookmark ძველ IP-ს ინახავს. <br></p>
+<p><strong>გამოსავალი:</strong> გამოიყენე <code>http://192.168.56.10:8080/</code>. რომ დარწმუნდე, რომელი IP გაქვს: <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>ip<span class="w"> </span>-4<span class="w"> </span>a<span class="w"> </span>show<span class="w"> </span>enp0s8
+</span></code></pre></div>
+host-იდან შემოწმება: <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">"%{http_code}\n"</span><span class="w"> </span>http://192.168.56.10:8080/adminer/
+</span></code></pre></div>
+<code>200</code> ნიშნავს, რომ მისამართი სწორია. <br></p>
+<h3 id="3_password_authentication_failed_for_user_appuser">პრობლემა 3: <code>password authentication failed for user "appuser"</code><a class="headerlink" href="#3_password_authentication_failed_for_user_appuser" title="Permanent link">&para;</a></h3>
+<p>Adminer იხსნება, მაგრამ შესვლისას: <br>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="go">SQLSTATE[08006] [7] connection to server at "db" (172.18.0.3), port 5432 failed: FATAL: password authentication failed for user "appuser"</span>
+</span></code></pre></div>
+შეცდომის წაკითხვა მნიშვნელოვანია: <code>connection to server at "db" (172.18.0.3)</code> ნიშნავს, რომ ქსელი და კავშირი <strong>მუშაობს</strong> (Adminer ბაზამდე მივიდა), პრობლემა მხოლოდ <strong>პაროლშია</strong>. <br></p>
+<p><strong>მიზეზი:</strong> PostgreSQL-ის image <code>POSTGRES_PASSWORD</code>-ს კითხულობს <strong>მხოლოდ პირველი გაშვებისას</strong>, როცა <code>pgdata</code> volume ცარიელია, და პაროლს ბაზის შიგნით ინახავს. თუ მოგვიანებით <code>.env</code>-ში პაროლი შეიცვალა, ბაზა ძველს ინარჩუნებს და ახალი პაროლი აღარ ემთხვევა. სხვა შესაძლო მიზეზებია: Adminer-ში პაროლი სხვანაირად ჩაიწერა, ან <code>.env</code> ხაზში ზედმეტი ინტერვალია. <br></p>
+<p><strong>შემოწმება:</strong> <code>cat -A</code> ფაილს ფარული სიმბოლოებით აჩვენებს (<code>$</code> ხაზის ბოლოა): <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nb">cd</span><span class="w"> </span>~/docker-app
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>cat<span class="w"> </span>-A<span class="w"> </span>.env
+</span></code></pre></div>
+ხაზი უნდა იყოს <code>DB_PASSWORD=პაროლი$</code>, ინტერვალებისა და <code>^M</code>-ის გარეშე. <br></p>
+<p><strong>გამოსავალი A: ბაზაში პაროლის <code>.env</code>-ს გაუთანაბრება (მონაცემები ინარჩუნებს)</strong> <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>db<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'psql -U appuser -d app_db -v pw="$POSTGRES_PASSWORD"'</span><span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="s2">"ALTER USER appuser PASSWORD :'pw';"</span>
+</span></code></pre></div>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="go">ALTER ROLE</span>
+</span></code></pre></div>
+კონტეინერი პაროლს საკუთარი გარემოდან კითხულობს (<code>$POSTGRES_PASSWORD</code>, რომელიც <code>.env</code>-იდან მოდის), ამიტომ პაროლი ბრძანებაში არ ჩანს და ტერმინალის ისტორიაში არ რჩება. <br></p>
+<p><strong>გამოსავალი B: ბაზის თავიდან შექმნა (ახალი, ცარიელი)</strong> <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</span></code></pre></div>
+<code>-v</code> volume-ს შლის და ბაზის <strong>ყველა მონაცემი იკარგება</strong>. <code>up</code> ბაზას <code>.env</code>-ის მიმდინარე პაროლით ხელახლა შექმნის. გამოიყენე მხოლოდ მაშინ, თუ ბაზაში მნიშვნელოვანი არაფერი გაქვს. <br></p>
+<div class="admonition tip">
+<p class="admonition-title">გაკვეთილი</p>
+<p><code>.env</code>-ში პაროლის შეცვლა <strong>არსებულ</strong> ბაზაზე არ მოქმედებს. გადაწყვიტე პაროლი <strong>პირველ <code>docker compose up</code>-მდე</strong>. თუ მაინც შესცვალე, გამოიყენე გამოსავალი A (მონაცემების შენარჩუნებით) ან B (ახლიდან დაწყება).</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">როგორ ვკითხულობთ შეცდომებს</p>
+<table>
+<thead>
+<tr>
+<th>შეცდომა</th>
+<th>რას ნიშნავს</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>no configuration file provided</code></td>
+<td><code>docker compose</code> არასწორ საქაღალდეშია გაშვებული</td>
+</tr>
+<tr>
+<td>ბრაუზერში გვერდი არ იხსნება</td>
+<td>ქსელი/IP/პორტი: შეამოწმე მისამართი და <code>docker compose ps</code></td>
+</tr>
+<tr>
+<td><code>connection to server at "db" ... failed: password authentication</code></td>
+<td>ქსელი მუშაობს, პაროლი არ ემთხვევა</td>
+</tr>
+<tr>
+<td><code>could not translate host name "db"</code></td>
+<td><code>db</code> სერვისი არ მუშაობს ან სხვა ქსელშია</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

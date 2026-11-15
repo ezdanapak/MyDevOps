@@ -493,6 +493,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ბრძანებების ცნობარი
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -564,10 +591,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -585,8 +612,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1160,6 +1187,17 @@
   
     <nav class="md-nav" aria-label="განახლებული ვერსია: ახალი Ubuntu (myubuntuserver)">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        დიაგრამა: სად იწერება და რომელი ბრძანება რას კითხულობს
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#1_login-" class="md-nav__link">
@@ -1804,6 +1842,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        დიაგრამა: სად იწერება და რომელი ბრძანება რას კითხულობს
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#1_login-" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2177,6 +2226,21 @@
 <hr />
 <h2 id="ubuntu_myubuntuserver">განახლებული ვერსია: ახალი Ubuntu (<code>myubuntuserver</code>)<a class="headerlink" href="#ubuntu_myubuntuserver" title="Permanent link">&para;</a></h2>
 <p>ახალ სისტემაში რამდენიმე ბრძანება სხვანაირად მუშაობს. ქვემოთ რეალური შედეგებია და ახსნა, რატომ. <br></p>
+<h3 id="_6">დიაგრამა: სად იწერება და რომელი ბრძანება რას კითხულობს<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p><pre class="mermaid"><code>flowchart TD
+    subgraph SRC["📥 სად იწერება ინფორმაცია"]
+        SSH["🔐 sshd-session&lt;br/&gt;SSH შესვლები და მცდელობები"] --&gt; J["📚 journald"]
+        SUD["⚡ sudo"] --&gt; J
+        SUD --&gt; AL["📄 /var/log/auth.log"]
+        PAM["👤 PAM: წარმატებული შესვლა"] --&gt; W["🗃️ wtmpdb"]
+    end
+    J --&gt;|"journalctl -u ssh&lt;br/&gt;grep fail / invalid / denied"| R1["❌ წარუმატებელი login-ები"]
+    J --&gt;|"journalctl _COMM=sudo&lt;br/&gt;grep COMMAND"| R2["⚡ ბოლო 20 sudo ბრძანება"]
+    W --&gt;|"last -n 10"| R3["✅ შესვლების ისტორია"]
+    R1 --&gt; RP["📋 log_report.txt"]
+    R2 --&gt; RP
+    R3 --&gt; RP</code></pre>
+<strong>როგორ წავიკითხოთ:</strong> ერთი და იგივე ქმედება შეიძლება რამდენიმე ადგილას ჩაიწეროს. sudo ჩაიწერება როგორც journald-ში, ისე <code>/var/log/auth.log</code>-ში, ამიტომ ორივე გზა მუშაობს. წარუმატებელი SSH მცდელობების საპოვნელად კი მხოლოდ <code>journalctl -u ssh</code> გამოდგება: სერვისის სახელით (<code>ssh</code>) ვეძებთ და პროცესის სახელით (<code>_COMM=sshd</code>) არა, რადგან პროცესს ახლა <code>sshd-session</code> ჰქვია და <code>sshd</code> ფილტრი ვერაფერს პოულობს. წარმატებული შესვლების ისტორია სხვა ადგილას, <code>wtmpdb</code>-შია და მას <code>last</code> კითხულობს. სამივე შედეგი ბოლოს ერთ ანგარიშად (<code>log_report.txt</code>) იკრიბება. <br></p>
 <h3 id="1_login-">1. წარუმატებელი login-ები<a class="headerlink" href="#1_login-" title="Permanent link">&para;</a></h3>
 <p><strong>გამოტანა არ აქვს:</strong>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span><span class="nv">_COMM</span><span class="o">=</span>sshd<span class="w"> </span>--no-pager<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">"failed password\|authentication failure\|invalid user"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">50</span>

@@ -493,6 +493,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ბრძანებების ცნობარი
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -564,10 +591,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -585,8 +612,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1060,6 +1087,17 @@
   
     <nav class="md-nav" aria-label="განახლებული ვერსია: backup-db.sh (Task 11-ის ახალი სკრიპტი)">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        დიაგრამა: ვინ რას აკეთებს
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#1" class="md-nav__link">
@@ -1649,6 +1687,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        დიაგრამა: ვინ რას აკეთებს
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#1" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1875,6 +1924,13 @@
 <hr />
 <h2 id="backup-dbsh_task_11-">განახლებული ვერსია: <code>backup-db.sh</code> (Task 11-ის ახალი სკრიპტი)<a class="headerlink" href="#backup-dbsh_task_11-" title="Permanent link">&para;</a></h2>
 <p>Task 11-ში სკრიპტი <code>~/scripts/backup-db.sh</code>-ზე გადავიტანეთ, ამიტომ cron-ის ხაზიც მასზე უნდა მიუთითებდეს. <br></p>
+<h3 id="_5">დიაგრამა: ვინ რას აკეთებს<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><pre class="mermaid"><code>flowchart TD
+    TZ["🕐 დროის სარტყელი&lt;br/&gt;UTC → Asia/Tbilisi"] -.-&gt;|"განსაზღვრავს,&lt;br/&gt;რომელი 03:00"| CR
+    CR["⏰ cron daemon"] --&gt;|"0 3 * * *"| SC["📜 backup-db.sh"]
+    SC --&gt; BK["📦 ~/backups/&lt;br/&gt;app_db_...tar.gz"]
+    SC --&gt;|"&gt;&gt; cron.log 2&gt;&amp;1"| LG["📝 cron.log&lt;br/&gt;გამოტანა და შეცდომები"]</code></pre>
+<strong>როგორ წავიკითხოთ:</strong> cron უბრალოდ „საათია“: ის დროს ადარებს crontab-ის ხაზს და როცა <code>0 3 * * *</code> დაემთხვევა, სკრიპტს უშვებს. მთავარი სამუშაო სკრიპტს აკეთებს (Task 11) და cron მას მხოლოდ დროზე იძახებს. <code>&gt;&gt; cron.log 2&gt;&amp;1</code> სკრიპტის გამოტანასაც და შეცდომებსაც ფაილში წერს, რადგან cron-ში ეკრანი არ არსებობს და სხვაგვარად შეცდომა უჩინარი დარჩებოდა. წყვეტილი ისარი სარტყელს აჩვენებს: ის ცვლის, <strong>რომელი</strong> 03:00 იქნება. UTC-ში ეს თბილისის 07:00-ია, <code>Asia/Tbilisi</code>-ზე კი ნამდვილი 03:00. <br></p>
 <h3 id="1">1. დროის სარტყელი<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
 <p>cron სერვერის დროით მუშაობს. VM-ში ნაგულისხმევი <code>UTC</code>-ია, თბილისში კი +4 საათია, ამიტომ <code>0 3 * * *</code> UTC-ში თბილისის 07:00 იქნებოდა. სარტყლის შეცვლა: <br>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>timedatectl<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"Time zone"</span>
