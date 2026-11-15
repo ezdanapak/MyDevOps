@@ -38,7 +38,7 @@ flowchart TD
 
 ```bash
 git config --global user.name "kapanadze"
-git config --global user.email "kapan.gio777@gmail.com"
+git config --global user.email "36360197+ezdanapak@users.noreply.github.com"
 git config --global init.defaultBranch main
 ```
 
@@ -52,7 +52,7 @@ git config --global init.defaultBranch main
 
 ```console
 k@devserver:~/docker-app$ git config --global user.name "kapanadze"
-k@devserver:~/docker-app$ git config --global user.email "kapan.gio777@gmail.com"
+k@devserver:~/docker-app$ git config --global user.email "36360197+ezdanapak@users.noreply.github.com"
 k@devserver:~/docker-app$ cd ~/docker-app
 k@devserver:~/docker-app$ git init
 hint: Using 'master' as the name for the initial branch. This default branch name
@@ -160,7 +160,7 @@ git log
 
 ```
 commit b7555e19618a377c98b79c7203013bb54095725a (HEAD -> master)
-Author: kapanadze <kapan.gio777@gmail.com>
+Author: kapanadze <36360197+ezdanapak@users.noreply.github.com>
 Date:   Tue Feb 10 19:46:32 2026 +0000
 
     Initial commit: Nginx + PostgreSQL + Adminer docker-compose app
@@ -223,7 +223,7 @@ git log
 ```console
 k@devserver:~/docker-app$ git log
 commit b7555e19618a377c98b79c7203013bb54095725a (HEAD -> master)
-Author: kapanadze <kapan.gio777@gmail.com>
+Author: kapanadze <36360197+ezdanapak@users.noreply.github.com>
 Date:   Tue Feb 10 19:46:32 2026 +0000
 
     Initial commit: Nginx + PostgreSQL + Adminer docker-compose app
@@ -272,3 +272,65 @@ Working Directory არის ის, რასაც ფაილ სისტ
 ### Commit Messages
 
 კარგი commit message მოკლედ და ზუსტად აღწერს რა შეიცვალა. Initial commit-ისთვის პროექტის შემადგენლობის აღწერა სწორი მიდგომაა. მომავალში commit-ები უფრო კონკრეტულ ცვლილებებს უნდა აღწერდეს, მაგალითად: `"Add health check endpoint"`, `"Fix adminer proxy path"`.
+
+---
+
+## განახლებული ვერსია: Git ახალ VM-ზე (`myubuntuserver`)
+
+```mermaid
+flowchart TD
+    A["git config --global<br>name, noreply email, defaultBranch main"] --> B["git init<br>~/docker-app"]
+    B --> C[".gitignore<br>.env, *.log, *.swp"]
+    C --> D[".env.example<br>DB_PASSWORD=CHANGE_ME"]
+    D --> E["git add .<br>git status: .env არ ჩანს"]
+    E --> F["git commit<br>1e4d26a"]
+    F --> G["git branch -m main<br>git check-ignore -v .env"]
+```
+
+### რა გავაკეთეთ და რატომ
+| ნაბიჯი | რატომ |
+|--------|-------|
+| `git config --global user.email` = GitHub noreply მისამართი | commit-ის ელფოსტა ისტორიაში სამუდამოდ რჩება და GitHub-ზე გამოქვეყნებისას ყველას ჩანს. noreply მისამართი ნამდვილ ელფოსტას მალავს |
+| `.gitignore` **`git add`-მდე** | `.env`-ში `DB_PASSWORD` წერია. Git-ში მოხვედრილი პაროლი ისტორიიდან მერეც აღდგება, ფაილის წაშლის შემდეგაც |
+| `.env.example` (`sed 's/=.*/=CHANGE_ME/' .env`) | გვაჩვენებს, რა ცვლადებია საჭირო, ნამდვილი მნიშვნელობების გარეშე. ახალი ადამიანი კოპირებს `.env`-ად და ავსებს |
+| `git status` commit-მდე | ვამოწმებთ staged სიას: `.env` არ ჩანს |
+| `git check-ignore -v .env` | ამოწმებს, რომ `.env` **რეალურად იგნორირდება** წესით `.gitignore:1:.env` და არა შემთხვევით არ დაემატა |
+| `git ls-files` | Git-ის მიერ თვალყურდევნებული ფაილების სია: ხუთი ფაილი, `.env` გარეშე |
+
+### რეალური შედეგები
+```text
+$ git add . && git status
+On branch master
+No commits yet
+Changes to be committed:
+        new file:   .env.example
+        new file:   .gitignore
+        new file:   docker-compose.yml
+        new file:   nginx/index.html
+        new file:   nginx/nginx.conf
+
+$ git commit -m "Initial commit: docker-compose app with nginx proxy"
+[master (root-commit) 1e4d26a] Initial commit: docker-compose app with nginx proxy
+ 5 files changed, 75 insertions(+)
+
+$ git branch -m main
+$ git check-ignore -v .env
+.gitignore:1:.env       .env
+$ git ls-files
+.env.example
+.gitignore
+docker-compose.yml
+nginx/index.html
+nginx/nginx.conf
+$ git status -sb | head -n 1
+## main
+```
+
+### პრობლემები, რომლებიც შეგვხვდა
+| სიმპტომი | მიზეზი | გამოსწორება |
+|----------|--------|-------------|
+| `Author identity unknown` / `unable to auto-detect email address` | Git-ს commit-ისთვის სახელი და ელფოსტა სჭირდება და ახალ VM-ზე კონფიგი ჯერ არ იყო | `git config --global user.name ...` და `user.email ...`, შემდეგ commit ხელახლა |
+| ბრენჩი `master` გამოვიდა `main`-ის ნაცვლად | `git init` გაეშვა `init.defaultBranch main`-ის დაყენებამდე (კონფიგი მხოლოდ ახალ რეპოებზე მოქმედებს) | `git branch -m main`. უმჯობესია `git config`-ი `git init`-მდე გაეშვას |
+
+!!! tip "გაკვეთილი"
+    კონფიგურაციის თანმიმდევრობას მნიშვნელობა აქვს: ჯერ `git config`, მერე `git init`, მერე `.gitignore`, მერე `git add`. პირველი commit-ის შემდეგ ხარვეზის გასწორება (პაროლი, არასწორი ავტორი) გაცილებით ძვირი ჯდება.

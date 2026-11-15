@@ -147,6 +147,15 @@ flowchart TD
 | `git -c user.name=... -c user.email=... commit` | ავტორი მხოლოდ ამ ბრძანებისთვის | გლობალურ კონფიგს არ ვცვლით |
 | `mkdocs serve -a 127.0.0.1:8001` | ლოკალური გადახედვა | გამოქვეყნებამდე ვამოწმებთ დიაგრამებს |
 | `mkdocs gh-deploy --force` | აგებს და `gh-pages`-ზე ტვირთავს | GitHub Actions workflow ამას თავისით აკეთებს push-ზე |
+| `git init` | ქმნის ახალ რეპოს მიმდინარე საქაღალდეში | ვერსიების კონტროლის დაწყება (`.git/`) |
+| `git config --global user.name/user.email` | commit-ის ავტორი ყველა რეპოსთვის | უამისოდ `Author identity unknown`. email-ად GitHub noreply გამოიყენე |
+| `git config --global init.defaultBranch main` | ახალი რეპოს ბრენჩი `main` იქნება | მხოლოდ **შემდეგ** `git init`-ებზე მოქმედებს |
+| `git branch -m main` | ბრენჩის სახელის შეცვლა | როცა `master` გამოვიდა |
+| `git add .` / `git status` | ფაილების staging / მდგომარეობა | commit-მდე ვამოწმებთ, რა მოხვდება (`.env` არ უნდა ჩანდეს) |
+| `git check-ignore -v .env` | აჩვენებს, რომელი წესი იგნორირებს ფაილს | ადასტურებს, რომ საიდუმლო ფაილი რეალურად დაცულია |
+| `git ls-files` | Git-ის მიერ თვალყურდევნებული ფაილები | საბოლოო შემოწმება: პაროლიანი ფაილი არ არის |
+| `git commit -m "..."` / `git log --oneline` | snapshot-ის შენახვა / ისტორია | ცვლილების ჩაწერა და შემოწმება |
+| `git status -sb` | მოკლე სტატუსი ბრენჩით | ერთი ხაზით ჩანს `## main` |
 
 ## ხშირი დიაგნოსტიკა: სიმპტომი → პირველი ბრძანება
 

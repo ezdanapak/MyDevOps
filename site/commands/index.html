@@ -2303,6 +2303,51 @@
 <td>აგებს და <code>gh-pages</code>-ზე ტვირთავს</td>
 <td>GitHub Actions workflow ამას თავისით აკეთებს push-ზე</td>
 </tr>
+<tr>
+<td><code>git init</code></td>
+<td>ქმნის ახალ რეპოს მიმდინარე საქაღალდეში</td>
+<td>ვერსიების კონტროლის დაწყება (<code>.git/</code>)</td>
+</tr>
+<tr>
+<td><code>git config --global user.name/user.email</code></td>
+<td>commit-ის ავტორი ყველა რეპოსთვის</td>
+<td>უამისოდ <code>Author identity unknown</code>. email-ად GitHub noreply გამოიყენე</td>
+</tr>
+<tr>
+<td><code>git config --global init.defaultBranch main</code></td>
+<td>ახალი რეპოს ბრენჩი <code>main</code> იქნება</td>
+<td>მხოლოდ <strong>შემდეგ</strong> <code>git init</code>-ებზე მოქმედებს</td>
+</tr>
+<tr>
+<td><code>git branch -m main</code></td>
+<td>ბრენჩის სახელის შეცვლა</td>
+<td>როცა <code>master</code> გამოვიდა</td>
+</tr>
+<tr>
+<td><code>git add .</code> / <code>git status</code></td>
+<td>ფაილების staging / მდგომარეობა</td>
+<td>commit-მდე ვამოწმებთ, რა მოხვდება (<code>.env</code> არ უნდა ჩანდეს)</td>
+</tr>
+<tr>
+<td><code>git check-ignore -v .env</code></td>
+<td>აჩვენებს, რომელი წესი იგნორირებს ფაილს</td>
+<td>ადასტურებს, რომ საიდუმლო ფაილი რეალურად დაცულია</td>
+</tr>
+<tr>
+<td><code>git ls-files</code></td>
+<td>Git-ის მიერ თვალყურდევნებული ფაილები</td>
+<td>საბოლოო შემოწმება: პაროლიანი ფაილი არ არის</td>
+</tr>
+<tr>
+<td><code>git commit -m "..."</code> / <code>git log --oneline</code></td>
+<td>snapshot-ის შენახვა / ისტორია</td>
+<td>ცვლილების ჩაწერა და შემოწმება</td>
+</tr>
+<tr>
+<td><code>git status -sb</code></td>
+<td>მოკლე სტატუსი ბრენჩით</td>
+<td>ერთი ხაზით ჩანს <code>## main</code></td>
+</tr>
 </tbody>
 </table>
 <h2 id="_2">ხშირი დიაგნოსტიკა: სიმპტომი → პირველი ბრძანება<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
