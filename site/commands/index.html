@@ -1890,7 +1890,7 @@
 <td><code>sites-available</code> არის საწყობი, <code>sites-enabled</code> არის აქტიური</td>
 </tr>
 <tr>
-<td><code>sudo ss -tlnp \| grep :443</code></td>
+<td><code>sudo ss -tlnp &#124; grep :443</code></td>
 <td>ვინ უსმენს პორტს</td>
 <td><code>nginx -t</code> OK-ს გვეუბნება, მაგრამ ეს ამოწმებს, რომ პორტი რეალურად ღიაა</td>
 </tr>
@@ -1905,7 +1905,7 @@
 <td>virtual host-ის ტესტი DNS/hosts-ის გარეშე</td>
 </tr>
 <tr>
-<td><code>curl -s URL \| grep -i "&lt;title&gt;"</code></td>
+<td><code>curl -s URL &#124; grep -i "&lt;title&gt;"</code></td>
 <td>გვერდის სათაურს იღებს</td>
 <td>განასხვავებს ორ საიტს, როცა <code>200 OK</code> ორივეზე ერთია</td>
 </tr>
@@ -1915,7 +1915,7 @@
 <td>self-signed სერტიფიკატთან მუშაობისას</td>
 </tr>
 <tr>
-<td><code>curl -vk https://... 2&gt;&amp;1 \| grep ...</code></td>
+<td><code>curl -vk https://... 2&gt;&amp;1 &#124; grep ...</code></td>
 <td>TLS დეტალები (ვერსია, subject, ვადა)</td>
 <td><code>2&gt;&amp;1</code> აუცილებელია, რადგან <code>-v</code> stderr-ზე წერს</td>
 </tr>
@@ -1936,9 +1936,9 @@
 </thead>
 <tbody>
 <tr>
-<td><code>sed -i 's\|"8080:80"\|"127.0.0.1:8080:80"\|' ფაილი</code></td>
+<td><code>sed -i 's&#124;"8080:80"&#124;"127.0.0.1:8080:80"&#124;' ფაილი</code></td>
 <td>ტექსტის ჩანაცვლება ფაილში</td>
-<td>nano-ში ძებნის გარეშე ერთი ბრძანებით; <code>\|</code> გამყოფია, რომ <code>/</code> არ დაგვჭირდეს</td>
+<td>nano-ში ძებნის გარეშე ერთი ბრძანებით; <code>&#124;</code> გამყოფია, რომ <code>/</code> არ დაგვჭირდეს</td>
 </tr>
 <tr>
 <td><code>sudo sed -i '44,$d' ფაილი</code></td>
@@ -2216,11 +2216,11 @@
 <tbody>
 <tr>
 <td>საიტი არ იხსნება</td>
-<td><code>curl -I localhost</code> VM-ში, შემდეგ <code>sudo ss -tlnp \| grep :80</code></td>
+<td><code>curl -I localhost</code> VM-ში, შემდეგ <code>sudo ss -tlnp &#124; grep :80</code></td>
 </tr>
 <tr>
 <td>443 არ მუშაობს</td>
-<td><code>sudo ss -tlnp \| grep :443</code>, შემდეგ <code>sudo nginx -T \| grep listen</code></td>
+<td><code>sudo ss -tlnp &#124; grep :443</code>, შემდეგ <code>sudo nginx -T &#124; grep listen</code></td>
 </tr>
 <tr>
 <td><code>nginx -t</code> ჩავარდა</td>
@@ -2228,7 +2228,7 @@
 </tr>
 <tr>
 <td>არასწორი საიტი ჩანს</td>
-<td><code>curl -s ... \| grep -i "&lt;title&gt;"</code> და <code>sudo nginx -T \| grep server_name</code></td>
+<td><code>curl -s ... &#124; grep -i "&lt;title&gt;"</code> და <code>sudo nginx -T &#124; grep server_name</code></td>
 </tr>
 <tr>
 <td>SSH პაროლს ითხოვს</td>
