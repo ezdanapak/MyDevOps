@@ -224,3 +224,148 @@ Linux-ში წაშლა შეუქცევადია. `find ... -delet
 ### პროაქტიული vs რეაქტიული მენეჯმენტი
 
 ამ Task-ში ხელით გავწმინდეთ დისკი. პროდაქშენ სერვერზე ეს ავტომატიზებული უნდა იყოს — მაგალითად cron job-ით რომელიც ძველ ლოგებს პერიოდულად წაშლის, ან logrotate-ით რომელიც ლოგ ფაილების ზომას აკონტროლებს. Netdata-ს (Task 20) შეუძლია alert-ის გაგზავნა როცა დისკის მოცულობა კრიტიკულ ზღვარს მიუახლოვდება.
+
+---
+
+## განახლებული ვერსია: დისკის გასუფთავება ახალ VM-ზე
+
+**მიზანი:** ვიპოვოთ ყველაზე დიდი საქაღალდეები და უსაფრთხოდ გავწმინდოთ ძველი ლოგები/ფაილები. წესი: **ჯერ ვხედავთ, მერე ვშლით.**
+
+```mermaid
+flowchart TD
+    A["df -h / df -i<br>ვარგა ადგილი და inode-ები?"] --> B["du --max-depth=1<br>რომელი საქაღალდეა დიდი"]
+    B --> C["find -size +50M<br>რომელი ფაილია დიდი"]
+    C --> D["find -mtime +30 -print<br>მხოლოდ ჩვენება"]
+    D --> E{"ფაილი ჩვენია<br>და არავინ ბრუნავს?"}
+    E -->|"კი"| F["-delete / logrotate / cron"]
+    E -->|"არა: btmp, sysstat,<br>სისტემის ლოგები"| G["ხელს არ ვუხლებთ"]
+    F --> H["df -h /<br>შედეგის შემოწმება"]
+```
+
+### 1. რამდენია დაკავებული
+```text
+$ df -h /
+/dev/mapper/ubuntu--vg-ubuntu--lv   12G  4.3G  6.4G  40% /
+
+$ df -i /
+Inodes  IUsed  IFree IUse%
+753664 123401 630263   17%
+```
+`df -h` ადგილს ითვლის, `df -i` კი inode-ებს (ფაილების რაოდენობის ლიმიტი). დისკი შეიძლება „სავსე“ იყოს ადგილის დარჩენის დროსაც, თუ ძალიან ბევრი პატარა ფაილია. აქ ორივე წესრიგშია.
+
+### 2. ვინ იკავებს ადგილს
+```text
+$ sudo du -xh / --max-depth=1 2>/dev/null | sort -rh | head -n 10
+4.3G    /
+3.0G    /usr
+1.3G    /var
+6.8M    /etc
+500K    /home
+
+$ sudo du -xh /var/lib --max-depth=1 2>/dev/null | sort -rh | head -n 6
+1.1G    /var/lib
+625M    /var/lib/containerd
+157M    /var/lib/apt
+121M    /var/lib/snapd
+63M     /var/lib/postgresql
+47M     /var/lib/docker
+```
+| ბრძანება | რატომ |
+|----------|-------|
+| `du -xh / --max-depth=1` | `-x` სხვა დისკებზე არ გადადის, `--max-depth=1` აჩვენებს მხოლოდ პირველი დონის საქაღალდეებს |
+| `sort -rh` | `-h` ადამიანისთვის წაკითხვად ზომებს (`4.3G`, `47M`) სწორად ალაგებს, `-r` კი დიდიდან პატარისკენ |
+| ჩაღრმავება დიდ საქაღალდეში | `/` → `/var` → `/var/lib` → `containerd`: ორი-სამი ბრძანებით ვპოულობთ მიზეზს |
+
+`/usr` (3.0G) სისტემის პროგრამებია და ხელს არ ვუხლებთ. `/var/lib/containerd` (625M) Docker-ის იმიჯებია. `/var/log` მხოლოდ 46M-ია, ამიტომ ლოგები პრობლემა არ არის.
+
+### 3. ყველაზე დიდი ფაილები
+```bash
+sudo find / -xdev -type f -size +50M -exec ls -lh {} \; 2>/dev/null | awk '{print $5, $9}' | sort -rh | head
+```
+Top: `libLLVM.so` (133-171M), `dockerd` (81M), apt-ის პაკეტების სიები (74M). ეს ყველაფერი სისტემის ნორმალური ფაილებია.
+
+### 4. „30 დღეზე ძველი“: ჯერ ჩვენება
+```text
+$ sudo find /var/log -type f -mtime +30 -print
+/var/log/btmp
+/var/log/bootstrap.log
+/var/log/landscape/sysinfo.log
+/var/log/sysstat/sa26
+```
+**ეს ფაილები არ წავშალეთ**, რადგან „ძველი“ ყოველთვის „არასაჭიროს“ არ ნიშნავს:
+| ფაილი | რატომ არ ვშლით |
+|-------|----------------|
+| `btmp` | წარუმატებელი შესვლების ჟურნალია (Task 13/23-ის აუდიტისთვის). ჩვენთან 0 ბაიტია, ანუ წარუმატებელი შესვლა არ ყოფილა |
+| `bootstrap.log` | ინსტალაციის ჩანაწერი (86K), დიაგნოსტიკისთვის სასარგებლოა |
+| `sysstat/sa26` | `sysstat` ამ ფაილებს თავად ბრუნავს |
+| `landscape/sysinfo.log` | `logrotate` უვლის |
+
+!!! warning "წესი"
+    30 დღეზე ძველი ≠ უსაფრთხოდ წასაშლელი. ვშლით მხოლოდ იმას, რაც ჩვენი სკრიპტების შედეგია და რისი ჭრაც ავტომატურად არავის ევალება.
+
+### 5. უსაფრთხო ტესტი ხელოვნურ ფაილებზე
+```text
+$ mkdir -p ~/disk-test
+$ touch -d "45 days ago" ~/disk-test/old1.log ~/disk-test/old2.log
+$ touch ~/disk-test/new.log
+$ ls -l ~/disk-test
+-rw-rw-r-- 1 k k 0 Nov 15 23:47 new.log
+-rw-rw-r-- 1 k k 0 Oct  1 23:47 old1.log
+-rw-rw-r-- 1 k k 0 Oct  1 23:47 old2.log
+
+$ find ~/disk-test -type f -mtime +30 -print
+/home/k/disk-test/old1.log
+/home/k/disk-test/old2.log
+
+$ find ~/disk-test -type f -mtime +30 -delete
+$ ls -l ~/disk-test
+-rw-rw-r-- 1 k k 0 Nov 15 23:47 new.log
+```
+`touch -d "45 days ago"` ფაილს ხელოვნურად „ძველს“ ხდის. პირველი `find ... -print` აჩვენებს, რა წაიშლება, მეორე იგივე ფილტრით `-delete`-ს გვიკეთებს: მხოლოდ `new.log` დარჩა.
+
+### 6. რეალური გასუფთავება
+| ბრძანება | შედეგი |
+|----------|--------|
+| `sudo journalctl --vacuum-time=30d` | `freed 0B`: journal მხოლოდ 40M-ია და 30 დღეზე ძველი არ არის |
+| `sudo apt clean` | 4.3G → **4.1G** (~200 MB გათავისუფლდა) |
+| `sudo apt autoremove --dry-run` | `Removing: 0`: ზედმეტი პაკეტი არ არის |
+| `docker system df` | `RECLAIMABLE 653.3MB (99%)` მცდარ შთაბეჭდილებას ტოვებს: 4 იმიჯიდან 3 გამოიყენება და ციფრი თითქმის ყველას ითვლის |
+| `docker images` → `docker rmi hello-world` | გამოუყენებელი ერთადერთი იმიჯი წაიშალა (25.9 kB) |
+
+!!! danger "რატომ არ გავუშვით `docker system prune -a`"
+    `prune -a` ყველა გამოუყენებელ იმიჯს შლის, `volume prune` კი volume-ებსაც (ჩვენი DB `pgdata` მათ შორის, თუ კონტეინერი გაჩერებულია). ამიტომ ვშლით მხოლოდ კონკრეტულს (`docker rmi სახელი`).
+
+### 7. ავტომატური გასუფთავება
+**ლოგების ბრუნვა (`logrotate`)** ჩვენი ლოგებისთვის: <br>
+```text
+/home/k/deploy-docker-app.log /home/k/backups/cron.log {
+    su k k
+    weekly
+    rotate 4
+    compress
+    missingok
+    notifempty
+}
+```
+| დირექტივა | რატომ |
+|-----------|-------|
+| `su k k` | ფაილები `k` მომხმარებლისაა, `logrotate` კი root-ით მუშაობს და სხვანაირად უარს იტყოდა |
+| `weekly` + `rotate 4` | ყოველკვირეულად ახალი ფაილი, 4 ძველი არქივი რჩება და ხუთეულიდან ყველაზე ძველი იშლება |
+| `compress` | ძველი ლოგები იკუმშება |
+| `missingok` | `cron.log` ჯერ არ არსებობს, ამიტომ ეს შეცდომას არ იძლევა |
+| `notifempty` | ცარიელ ლოგს არ ბრუნავს |
+
+`sudo logrotate -d /etc/logrotate.d/mydevops` (debug, არაფერს ცვლის) უჩვენებს `considering log /home/k/deploy-docker-app.log` და `cron.log does not exist -- skipping`, შეცდომების გარეშე. <br>
+
+**30 დღეზე ძველი backup-ების წაშლა** (cron, ყოველდღე 03:30, backup-ის (03:00) შემდეგ): <br>
+```text
+30 3 * * * find /home/k/backups -name 'app_db_*.tar.gz' -type f -mtime +30 -delete
+```
+სახელის ნიმუში `'app_db_*.tar.gz'` ზღუდავს წაშლას მხოლოდ ჩვენი backup-ებით. წინასწარი `find ... -print` ახლა ცარიელია (ჩვენი backup-ები 5 დღისაა). ორივე cron ხაზი ჩანს `crontab -l`-ში. <br>
+
+### შედეგი
+| | ადრე | მერე |
+|--|------|------|
+| `df -h /` Used | 4.3G | 4.1G |
+| Avail | 6.4G | 6.6G |
+| Use% | 40% | 39% |

@@ -680,6 +680,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6b. დისკის მართვა
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1748,6 +1759,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6b. დისკის მართვა
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2261,6 +2283,83 @@
 <td><code>nproc</code></td>
 <td>CPU ბირთვების რაოდენობა</td>
 <td>load average-ის სწორად წასაკითხად</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6b">6b. დისკის მართვა<a class="headerlink" href="#6b" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df -h</code> / <code>df -i /</code></td>
+<td>ადგილი / inode-ები</td>
+<td>დისკი შეიძლება ივსებოდეს ფაილების რაოდენობითაც</td>
+</tr>
+<tr>
+<td><code>sudo du -xh / --max-depth=1 &#124; sort -rh &#124; head</code></td>
+<td>პირველი დონის საქაღალდეები ზომით</td>
+<td>პოულობს ყველაზე დიდს; <code>-x</code> სხვა დისკებს არ ეხება, <code>sort -rh</code> ახარისხებს <code>4.3G</code>-ისნაირ ზომებს</td>
+</tr>
+<tr>
+<td><code>sudo find / -xdev -type f -size +50M</code></td>
+<td>50 MB-ზე დიდი ფაილები</td>
+<td>ერთი კონკრეტული დიდი ფაილის მოსაძებნად</td>
+</tr>
+<tr>
+<td><code>find DIR -type f -mtime +30 -print</code></td>
+<td>30 დღეზე ძველი ფაილების <strong>ჩვენება</strong></td>
+<td>წაშლამდე ვამოწმებთ, რა მოხვდება</td>
+</tr>
+<tr>
+<td><code>find DIR -type f -mtime +30 -delete</code></td>
+<td>იგივე ფილტრით წაშლა</td>
+<td><code>-print</code> უკვე ნანახი სიის წასაშლელად; სახელის ნიმუში (<code>-name</code>) ზღუდავს რისკს</td>
+</tr>
+<tr>
+<td><code>touch -d "45 days ago" ფაილი</code></td>
+<td>ფაილის თარიღის ხელოვნური გაძველება</td>
+<td>წაშლის ბრძანების უსაფრთხო ტესტი</td>
+</tr>
+<tr>
+<td><code>journalctl --disk-usage</code> / <code>sudo journalctl --vacuum-time=30d</code></td>
+<td>journal-ის ზომა / 30 დღეზე ძველის წაშლა</td>
+<td>systemd-ის ლოგების გაწმენდა</td>
+</tr>
+<tr>
+<td><code>sudo apt clean</code></td>
+<td>ჩამოტვირთული პაკეტების ქეშის წაშლა</td>
+<td>ჩვენთან ~200 MB</td>
+</tr>
+<tr>
+<td><code>sudo apt autoremove --dry-run</code></td>
+<td>ზედმეტი პაკეტების ჩვენება</td>
+<td><code>--dry-run</code> არაფერს შლის</td>
+</tr>
+<tr>
+<td><code>docker system df</code></td>
+<td>Docker-ის ადგილის გამოყენება</td>
+<td><code>RECLAIMABLE</code> ხშირად მაღალია იმიჯების გაზიარების გამო</td>
+</tr>
+<tr>
+<td><code>docker rmi სახელი</code></td>
+<td>კონკრეტული იმიჯის წაშლა</td>
+<td><code>prune -a</code>-ზე უსაფრთხოა: DB-ს volume-ს არ ეხება</td>
+</tr>
+<tr>
+<td><code>sudo logrotate -d /etc/logrotate.d/FILE</code></td>
+<td>ლოგების ბრუნვის კონფიგის შემოწმება</td>
+<td><code>-d</code> debug, არაფერს ცვლის</td>
+</tr>
+<tr>
+<td><code>sudo logrotate -v ...</code></td>
+<td>ბრუნვის ნამდვილი გაშვება ლოგირებით</td>
+<td>კონფიგის შემოწმების შემდეგ</td>
 </tr>
 </tbody>
 </table>
