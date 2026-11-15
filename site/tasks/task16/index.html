@@ -1378,6 +1378,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        რეალური შედეგი
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1976,6 +1987,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        რეალური შედეგი
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2481,9 +2503,9 @@
 </tbody>
 </table>
 <h2 id="tailscale-">ბონუსი: წვდომა ტელეფონიდან Tailscale-ით<a class="headerlink" href="#tailscale-" title="Permanent link">&para;</a></h2>
-<div class="admonition info">
+<div class="admonition success">
 <p class="admonition-title">სტატუსი</p>
-<p>ეს განყოფილება ჯერ არ არის გატესტილი, რეალური გამოტანები დაემატება შემოწმების შემდეგ.</p>
+<p>გატესტილია: ტელეფონიდან (Tailscale-ით) <code>http://100.120.57.75/</code> ხსნის Docker-ის აპს.</p>
 </div>
 <p><strong>რატომ:</strong> <code>app.test</code> მხოლოდ ჰოსტზე მუშაობს (<code>/etc/hosts</code>), ხოლო <code>192.168.56.10</code> Host-Only ქსელია და ტელეფონისთვის მიუწვდომელია. Tailscale ქმნის კერძო ქსელს (tailnet) მოწყობილობებს შორის, ინტერნეტში პორტის გახსნის გარეშე.</p>
 <pre class="mermaid"><code>flowchart TD
@@ -2498,7 +2520,7 @@
 </span></code></pre></div>
 <code>tailscale up</code> გამოიტანს ბმულს, ავტორიზაცია იმავე ანგარიშით, რაც ტელეფონზეა. <br></p>
 <p>Nginx-ში <code>app.test</code> ბლოკს დაუმატე VM-ის Tailscale IP: <br>
-<div class="language-nginx highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">server_name</span><span class="w"> </span><span class="s">app.test</span><span class="w"> </span><span class="mi">100</span><span class="s">.x.y.z</span><span class="p">;</span>
+<div class="language-nginx highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">server_name</span><span class="w"> </span><span class="s">app.test</span><span class="w"> </span><span class="mi">100</span><span class="s">.120.57.75</span><span class="p">;</span>
 </span></code></pre></div>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>sudo<span class="w"> </span>nginx<span class="w"> </span>-t<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>nginx
 </span></code></pre></div>
@@ -2528,6 +2550,23 @@
 <div class="admonition warning">
 <p class="admonition-title">რეალური შეცდომა ტესტირებისას</p>
 <p>პირველი ტესტი <code>200 OK</code>-ს აბრუნებდა და გავიფიქრეთ, რომ proxy მუშაობდა. სინამდვილეში <code>app.test</code>-ის ბლოკი <code>mgawm</code> ფაილში არ იყო და Nginx-ი ყველა Host-ზე <code>default</code> საიტს (<code>mgawm</code>) აბრუნებდა. განმასხვავებელი იყო <code>Content-Length</code> (3108 ნაცვლად 599) და <code>&lt;title&gt;</code>. გაკვეთილი: proxy-ს ტესტისას სტატუს კოდი არ კმარა, შეადარე გვერდის შიგთავსი.</p>
+</div>
+<h3 id="_9">რეალური შედეგი<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>$ tailscale ip -4
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>100.120.57.75
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>$ grep -n server_name /etc/nginx/sites-available/mgawm
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>4:    server_name _;
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>17:    server_name app.test 100.120.57.75;
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>31:    server_name _;
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>$ sudo nginx -t &amp;&amp; sudo systemctl reload nginx
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>nginx: configuration file /etc/nginx/nginx.conf test is successful
+</span></code></pre></div>
+ტელეფონზე Tailscale-ის ჩართვის შემდეგ <code>http://100.120.57.75/</code> აჩვენებს „Docker App“-ს, ანუ მოთხოვნა tailnet-ით VM-ის Nginx-ში მოდის და <code>app.test</code>-ის ბლოკზე მოხვდება. <br></p>
+<div class="admonition tip">
+<p class="admonition-title">რატომ <code>http</code></p>
+<p>443-ის ბლოკი (Task 17) <code>mgawm</code>-ს აბრუნებს და სერტიფიკატი <code>192.168.56.10</code>-ზეა გაცემული, ამიტომ Tailscale IP-ზე <code>https</code> გაფრთხილებას აჩვენებს და Docker-ის აპს არ გახსნის. ამ ბონუსში გამოიყენე <code>http</code>.</p>
 </div>
 
 

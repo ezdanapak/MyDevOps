@@ -597,6 +597,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4. ფაილების მართვა (სწრაფი ცვლილებები)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tailscale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tailscale (კერძო ქსელი მოწყობილობებს შორის)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1637,6 +1654,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4. ფაილების მართვა (სწრაფი ცვლილებები)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tailscale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tailscale (კერძო ქსელი მოწყობილობებს შორის)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1966,6 +2000,33 @@
 <p class="admonition-title">ხშირი შეცდომა</p>
 <p><code>sudo tee ... &lt;&lt;EOF</code> ტერმინალში უნდა გაეშვას და <strong>არა</strong> nano-ში. nano-ში მხოლოდ ფაილის შიგთავსი იწერება, წინააღმდეგ შემთხვევაში ბრძანება ტექსტად მოხვდება ფაილში (<code>unknown directive "sudo"</code>).</p>
 </div>
+<h3 id="tailscale">Tailscale (კერძო ქსელი მოწყობილობებს შორის)<a class="headerlink" href="#tailscale" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>curl -fsSL https://tailscale.com/install.sh &#124; sh</code></td>
+<td>აყენებს Tailscale-ს</td>
+<td>VM ხდება tailnet-ის წევრი</td>
+</tr>
+<tr>
+<td><code>sudo tailscale up</code></td>
+<td>აკავშირებს ანგარიშთან (ბმულით ავტორიზაცია)</td>
+<td>ტელეფონი VM-ს პირდაპირ ხედავს</td>
+</tr>
+<tr>
+<td><code>tailscale ip -4</code></td>
+<td>მოწყობილობის <code>100.x.y.z</code> მისამართი</td>
+<td>ამ IP-ს ვუთითებთ Nginx-ის <code>server_name</code>-ში</td>
+</tr>
+</tbody>
+</table>
 <h2 id="5_postgresql_backup_cron">5. PostgreSQL, backup და cron<a class="headerlink" href="#5_postgresql_backup_cron" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

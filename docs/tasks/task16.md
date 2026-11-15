@@ -462,8 +462,8 @@ curl: (28) Connection timed out after 3002 milliseconds
 
 ## ბონუსი: წვდომა ტელეფონიდან Tailscale-ით
 
-!!! info "სტატუსი"
-    ეს განყოფილება ჯერ არ არის გატესტილი, რეალური გამოტანები დაემატება შემოწმების შემდეგ.
+!!! success "სტატუსი"
+    გატესტილია: ტელეფონიდან (Tailscale-ით) `http://100.120.57.75/` ხსნის Docker-ის აპს.
 
 **რატომ:** `app.test` მხოლოდ ჰოსტზე მუშაობს (`/etc/hosts`), ხოლო `192.168.56.10` Host-Only ქსელია და ტელეფონისთვის მიუწვდომელია. Tailscale ქმნის კერძო ქსელს (tailnet) მოწყობილობებს შორის, ინტერნეტში პორტის გახსნის გარეშე.
 
@@ -485,7 +485,7 @@ tailscale ip -4
 
 Nginx-ში `app.test` ბლოკს დაუმატე VM-ის Tailscale IP: <br>
 ```nginx
-server_name app.test 100.x.y.z;
+server_name app.test 100.120.57.75;
 ```
 ```bash
 sudo nginx -t && sudo systemctl reload nginx
@@ -500,3 +500,21 @@ sudo nginx -t && sudo systemctl reload nginx
 
 !!! warning "რეალური შეცდომა ტესტირებისას"
     პირველი ტესტი `200 OK`-ს აბრუნებდა და გავიფიქრეთ, რომ proxy მუშაობდა. სინამდვილეში `app.test`-ის ბლოკი `mgawm` ფაილში არ იყო და Nginx-ი ყველა Host-ზე `default` საიტს (`mgawm`) აბრუნებდა. განმასხვავებელი იყო `Content-Length` (3108 ნაცვლად 599) და `<title>`. გაკვეთილი: proxy-ს ტესტისას სტატუს კოდი არ კმარა, შეადარე გვერდის შიგთავსი.
+
+### რეალური შედეგი
+```text
+$ tailscale ip -4
+100.120.57.75
+
+$ grep -n server_name /etc/nginx/sites-available/mgawm
+4:    server_name _;
+17:    server_name app.test 100.120.57.75;
+31:    server_name _;
+
+$ sudo nginx -t && sudo systemctl reload nginx
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+ტელეფონზე Tailscale-ის ჩართვის შემდეგ `http://100.120.57.75/` აჩვენებს „Docker App“-ს, ანუ მოთხოვნა tailnet-ით VM-ის Nginx-ში მოდის და `app.test`-ის ბლოკზე მოხვდება. <br>
+
+!!! tip "რატომ `http`"
+    443-ის ბლოკი (Task 17) `mgawm`-ს აბრუნებს და სერტიფიკატი `192.168.56.10`-ზეა გაცემული, ამიტომ Tailscale IP-ზე `https` გაფრთხილებას აჩვენებს და Docker-ის აპს არ გახსნის. ამ ბონუსში გამოიყენე `http`.
