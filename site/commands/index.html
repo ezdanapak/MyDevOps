@@ -691,6 +691,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6c. ქსელის დიაგნოსტიკა
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1770,6 +1781,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6c. ქსელის დიაგნოსტიკა
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2360,6 +2382,73 @@
 <td><code>sudo logrotate -v ...</code></td>
 <td>ბრუნვის ნამდვილი გაშვება ლოგირებით</td>
 <td>კონფიგის შემოწმების შემდეგ</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6c">6c. ქსელის დიაგნოსტიკა<a class="headerlink" href="#6c" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sudo ss -tulnp</code></td>
+<td>ყველა მოსასმენი TCP/UDP პორტი პროცესით</td>
+<td>ვინ რას უსმენს; <code>0.0.0.0</code> გარედან ჩანს, <code>127.0.0.1</code> მხოლოდ შიგნით</td>
+</tr>
+<tr>
+<td><code>sudo ss -tlnp 'sport = :80'</code></td>
+<td>ერთი კონკრეტული პორტი</td>
+<td>რომელი პროცესი უჭირავს</td>
+</tr>
+<tr>
+<td><code>ss -tn state established</code></td>
+<td>დამყარებული TCP კავშირები</td>
+<td>ვინ არის ახლა დაკავშირებული (SSH სესიები, გარე HTTPS)</td>
+</tr>
+<tr>
+<td><code>ss -s</code></td>
+<td>სოკეტების შეჯამება</td>
+<td>სწრაფი სურათი: რამდენი კავშირია</td>
+</tr>
+<tr>
+<td><code>nc -zv -w 2 HOST PORT...</code></td>
+<td>პორტის ხელმისაწვდომობა სკანირებით</td>
+<td><code>-z</code> მონაცემების გარეშე, <code>-w 2</code> ლოდინი. <strong>refused</strong> = არავინ უსმენს, <strong>timeout</strong> = firewall აგდებს</td>
+</tr>
+<tr>
+<td><code>ip -br a</code></td>
+<td>ინტერფეისები მოკლედ</td>
+<td>რომელ ქსელს რა IP აქვს (NAT, Host-Only, Tailscale, Docker)</td>
+</tr>
+<tr>
+<td><code>ip route</code></td>
+<td>მარშრუტიზაციის ცხრილი</td>
+<td><code>default via ...</code> არის გასასვლელი ინტერნეტისკენ</td>
+</tr>
+<tr>
+<td><code>ping -c 3 1.1.1.1</code></td>
+<td>ინტერნეტი სახელის გარეშე</td>
+<td>მარშრუტი და NAT მუშაობს თუ არა</td>
+</tr>
+<tr>
+<td><code>ping -c 3 ubuntu.com</code></td>
+<td>ინტერნეტი სახელით</td>
+<td>DNS მუშაობს თუ არა</td>
+</tr>
+<tr>
+<td><code>resolvectl status</code></td>
+<td>DNS სერვერები ინტერფეისების მიხედვით</td>
+<td>რომელ DNS-ს მიმართავს სისტემა (<code>10.0.2.3</code> VirtualBox NAT-ში)</td>
+</tr>
+<tr>
+<td><code>sudo ufw status numbered</code></td>
+<td>firewall-ის წესები ნომრებით</td>
+<td>შედარება <code>ss</code>-ის სიასთან: ყველა ღია პორტი ufw-შია დაშვებული</td>
 </tr>
 </tbody>
 </table>
