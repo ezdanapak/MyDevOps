@@ -111,4 +111,5 @@ timedatectl | grep synchronized
 | `ps aux`-ის პირველი ხაზი თავად `ps`-ია (150% CPU) | ახლადგაშვებული პროცესის პროცენტი მცდარია | [Task 20](tasks/task20.md) |
 | `docker system df`: `RECLAIMABLE 99%` | შეცდომაში შემყვანია; წაშალე კონკრეტული იმიჯი, `prune -a` არა | [Task 21](tasks/task21.md) |
 | `fail2ban`: `Journal matches ... _COMM=sshd` | კონფიგის გამოტანა საკმარისი არ არის, `Total failed`-ით ვამოწმებთ რეალურად | [Task 23](tasks/task23.md) |
+| `apt`: `Waiting for cache lock ... held by unattended-upgr` | `unattended-upgrades` ფონზე აყენებს პაკეტებს და `dpkg`-ის საკეტი ეკავა: `apt` თვითონ დაელოდება, არ გააჩერო | [Task 23](tasks/task23.md) |
 | Electerm sync: `404 Not Found`; `handshake timeout` | Gist ID არასწორი; ტელეფონზე `100.x`, არა `192.168.56.10` | [ტელეფონიდან წვდომა](setup/phone-access.md) |

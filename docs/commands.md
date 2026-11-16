@@ -181,6 +181,10 @@ flowchart TD
 | `sudo fail2ban-client set sshd unbanip IP` | IP-ის განბლოკვა | თუ საკუთარი თავი დაიბლოკა |
 | `ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@HOST` | განზრახ წარუმატებელი ცდა | `fail2ban`-ის ტესტი (5-ზე ნაკლები, რომ არ დაიბლოკო) |
 | `systemctl is-enabled unattended-upgrades` | ავტომატური უსაფრთხოების განახლებები | პატჩები დროულად ინსტალირდება |
+| `sudo gpasswd -d USER sudo` | მომხმარებლის ამოღება `sudo` ჯგუფიდან | უმცირესი უფლებების პრინციპი; მომხმარებელი რჩება |
+| `sudo fail2ban-client get sshd ignoreip` | `fail2ban`-ის გამონაკლისი მისამართები | ვამოწმებთ, რომ საკუთარი ქსელები დაცულია ბლოკისგან |
+| <code>sudo tee /etc/ssh/sshd_config.d/10-hardening.conf</code> | SSH-ის გამაგრება ცალკე ფაილით | პაკეტის განახლება არ გადააწერს; ჯერ `sshd -t` |
+| `sudo apt update && sudo apt upgrade -y` | ინდექსის და პაკეტების განახლება | `unattended-upgrades` საკეტს თუ უჭირავს, ელოდება; `needrestart` გვეუბნება, რა სერვისები სჭირდება რესტარტი |
 
 ## 6e. დრო და სინქრონიზაცია
 

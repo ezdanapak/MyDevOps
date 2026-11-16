@@ -2608,6 +2608,26 @@
 <td>ავტომატური უსაფრთხოების განახლებები</td>
 <td>პატჩები დროულად ინსტალირდება</td>
 </tr>
+<tr>
+<td><code>sudo gpasswd -d USER sudo</code></td>
+<td>მომხმარებლის ამოღება <code>sudo</code> ჯგუფიდან</td>
+<td>უმცირესი უფლებების პრინციპი; მომხმარებელი რჩება</td>
+</tr>
+<tr>
+<td><code>sudo fail2ban-client get sshd ignoreip</code></td>
+<td><code>fail2ban</code>-ის გამონაკლისი მისამართები</td>
+<td>ვამოწმებთ, რომ საკუთარი ქსელები დაცულია ბლოკისგან</td>
+</tr>
+<tr>
+<td><code>sudo tee /etc/ssh/sshd_config.d/10-hardening.conf</code></td>
+<td>SSH-ის გამაგრება ცალკე ფაილით</td>
+<td>პაკეტის განახლება არ გადააწერს; ჯერ <code>sshd -t</code></td>
+</tr>
+<tr>
+<td><code>sudo apt update &amp;&amp; sudo apt upgrade -y</code></td>
+<td>ინდექსის და პაკეტების განახლება</td>
+<td><code>unattended-upgrades</code> საკეტს თუ უჭირავს, ელოდება; <code>needrestart</code> გვეუბნება, რა სერვისები სჭირდება რესტარტი</td>
+</tr>
 </tbody>
 </table>
 <h2 id="6e">6e. დრო და სინქრონიზაცია<a class="headerlink" href="#6e" title="Permanent link">&para;</a></h2>

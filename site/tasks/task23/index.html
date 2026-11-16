@@ -1960,40 +1960,79 @@ last -a | head -n 10
 <td>✅</td>
 </tr>
 <tr>
-<td><code>X11Forwarding yes</code></td>
-<td>სერვერზე გრაფიკული გადამისამართება არ გვჭირდება</td>
-<td>⚠️</td>
+<td><code>X11Forwarding</code></td>
+<td>გამოირთო: <code>x11forwarding no</code></td>
+<td>✅</td>
 </tr>
 <tr>
-<td><code>MaxAuthTries 6</code></td>
-<td>3 საკმარისია</td>
-<td>⚠️</td>
+<td><code>MaxAuthTries</code></td>
+<td>შემცირდა 6 → 3</td>
+<td>✅</td>
 </tr>
 <tr>
-<td><code>developer</code> არის <code>sudo</code> ჯგუფში</td>
-<td>მეორე მომხმარებელს სრული root უფლებები აქვს</td>
-<td>⚠️</td>
+<td><code>developer</code> <code>sudo</code> ჯგუფში</td>
+<td>ამოღებულია: <code>sudo:x:27:k</code></td>
+<td>✅</td>
 </tr>
 <tr>
-<td>11 განახლება ელოდება</td>
-<td><code>sudo apt upgrade</code></td>
-<td>⚠️</td>
+<td>განახლებები</td>
+<td>4 პაკეტი განახლდა; <code>snapd</code> ელოდება ეტაპობრივ გავრცელებას (phasing)</td>
+<td>✅</td>
 </tr>
 <tr>
-<td><code>fail2ban</code> არ იცავს ჩვენს IP-ებს</td>
-<td><code>ignoreip</code> არ არის მითითებული</td>
-<td>⚠️</td>
+<td><code>fail2ban</code> <code>ignoreip</code></td>
+<td>127.0.0.0/8, 192.168.56.0/24, 100.64.0.0/10</td>
+<td>✅</td>
 </tr>
 </tbody>
 </table>
-<h3 id="_2">რეკომენდებული გამოსწორებები (ჯერ არ გაგვიშვია)<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<p>SSH-ის გამაგრება: ფაილი <code>/etc/ssh/sshd_config.d/10-hardening.conf</code>, შიგთავსი <code>X11Forwarding no</code> და <code>MaxAuthTries 3</code>. შემდეგ: <br>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>sshd<span class="w"> </span>-t<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>ssh
+<h3 id="_2">გამოსწორებები (გაშვებულია)<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p><strong>1. SSH-ის გამაგრება.</strong> ფაილი <code>/etc/ssh/sshd_config.d/10-hardening.conf</code>, შიგთავსი: <code>X11Forwarding no</code> და <code>MaxAuthTries 3</code>. ცალკე ფაილში ვწერთ და არა <code>sshd_config</code>-ში, რომ პაკეტის განახლება არ გადააწეროს: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$ sudo sshd -t &amp;&amp; sudo systemctl restart ssh &amp;&amp; echo "SSH OK"
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>SSH OK
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>$ sudo sshd -T | grep -iE "^(x11forwarding|maxauthtries)"
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>maxauthtries 3
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>x11forwarding no
 </span></code></pre></div>
-<code>sshd -t</code> ჯერ შეამოწმებს კონფიგს და მხოლოდ სწორი კონფიგის შემთხვევაში გადატვირთავს სერვისს. <code>ignoreip</code> იცავს ჩვენ საკუთარ მისამართებს ბლოკისგან, <code>jail.local</code>-ის <code>[sshd]</code> განყოფილებაში: <br>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ignoreip = 127.0.0.1/8 192.168.56.0/24 100.64.0.0/10
+<code>sshd -t</code> ჯერ ამოწმებს კონფიგს და მხოლოდ სწორის შემთხვევაში გადატვირთავს სერვისს, შეცდომიანი კონფიგით გადატვირთვა გამოგკეტავდა. მიმდინარე SSH სესიები არ წყდება. <br></p>
+<p><strong>2. <code>fail2ban</code>: ჩვენი მისამართების დაცვა.</strong> <code>jail.local</code>-ის <code>[sshd]</code>-ში ჩავამატეთ <code>ignoreip</code>: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>$ sudo fail2ban-client get sshd ignoreip
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>These IP addresses/networks are ignored:
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>|- 127.0.0.0/8
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>|- 192.168.56.0/24
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>`- 100.64.0.0/10
 </span></code></pre></div>
-(127.0.0.1/8 ლოკალურია, 192.168.56.0/24 Host-Only ქსელი, 100.64.0.0/10 Tailscale.) <code>developer</code>-ისთვის <code>sudo</code>-ს წასართმევად: <code>sudo gpasswd -d developer sudo</code>: მომხმარებელი რჩება, მხოლოდ <code>sudo</code> ეკარგება. <br></p>
+127.0.0.0/8 ლოკალურია, 192.168.56.0/24 Host-Only ქსელი (ჰოსტი), 100.64.0.0/10 Tailscale (ტელეფონი). SSH-ზე რამდენიმე შეცდომით ცდის შემდეგ ჩვენივე თავი აღარ დაიბლოკება. <br></p>
+<p><strong>3. <code>developer</code>-ისთვის <code>sudo</code>-ს ჩამორთმევა:</strong> <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>$ sudo gpasswd -d developer sudo
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>Removing user developer from group sudo
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>$ getent group sudo
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>sudo:x:27:k
+</span></code></pre></div>
+მომხმარებელი რჩება, მხოლოდ root უფლებები ეკარგება (უმცირესი უფლებების პრინციპი). დაბრუნება საჭიროების შემთხვევაში: <code>sudo usermod -aG sudo developer</code>. <br></p>
+<p><strong>4. განახლებები.</strong> პირველი ცდა <code>apt</code>-ის ბრძანებით ჩავარდა საათის ჩამორჩენის გამო (იხილე <a href="../../troubleshooting/">პრობლემების ცნობარი</a>). საათის გასწორების შემდეგ: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>$ sudo apt update &amp;&amp; sudo apt upgrade -y
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>5 packages can be upgraded.
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>Waiting for cache lock: Could not get lock /var/lib/dpkg/lock-frontend.
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>                        It is held by process 31978 (unattended-upgr)
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>Upgrading:  distro-info  python3-distro-info  python3-software-properties  software-properties-common
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>Not upgrading yet due to phasing:  snapd
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>Summary: Upgrading: 4, Installing: 0, Removing: 0, Not Upgrading: 1
+</span></code></pre></div>
+| გამოტანა | რას ნიშნავს |
+|----------|-------------|
+| <code>5 packages can be upgraded</code> (და არა 11) | ძველი რიცხვი დაძველებული ინდექსიდან იყო; <code>apt update</code> საათის გასწორების შემდეგ რეალურ სიას იღებს |
+| <code>Waiting for cache lock ... (unattended-upgr)</code> | <code>unattended-upgrades</code> იმავე დროს აყენებდა პაკეტებს და <code>dpkg</code>-ის საკეტი ეკავა. ერთდროულად მხოლოდ ერთი პაკეტების მენეჯერი მუშაობს; <code>apt</code> თვითონ დაელოდა, ჩარევა არ სჭირდება |
+| <code>Not upgrading yet due to phasing: snapd</code> | Ubuntu განახლებას ეტაპობრივად ავრცელებს მომხმარებლების მცირე ჯგუფზე, ამიტომ <code>snapd</code> ჯერ ჩვენი რიგი არ არის. ნორმალურია |</p>
+<p><strong><code>needrestart</code>-ის შეტყობინება.</strong> განახლების შემდეგ: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Running kernel seems to be up-to-date.
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Service restarts being deferred:
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a> dbus.service, docker.service, getty@tty1.service, networkd-dispatcher.service,
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a> systemd-logind.service, unattended-upgrades.service
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>No containers need to be restarted.
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>User sessions running outdated binaries: k @ session #3, #4, #5 (sshd-session)
+</span></code></pre></div>
+ბირთვი ახალია და <code>reboot-required</code> არ არის, მაგრამ ზოგი სერვისი ძველ ბიბლიოთეკებს იყენებს, ანუ <strong>ჯერ ძველი კოდით მუშაობს</strong>. რესტარტი გადადებულია განზრახ: <code>docker.service</code>-ის რესტარტი კონტეინერებს აჩერებს (თუ <code>restart:</code> პოლიტიკა არ არის). უსაფრთხო გზა: VM-ის ერთბაშად გადატვირთვა მოხერხებულ დროს და კონტეინერების შემოწმება (<code>docker ps</code>). <br></p>
 <div class="admonition warning">
 <p class="admonition-title">fail2ban-მა შეიძლება შენი IP დაბლოკოს</p>
 <p>SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) <code>sudo fail2ban-client set sshd unbanip IP</code>.</p>

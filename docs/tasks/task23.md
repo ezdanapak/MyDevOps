@@ -432,22 +432,68 @@ enabled
 | `fail2ban` | დაყენებულია, `sshd` jail ჩართულია, ტესტით დადასტურებულია | ✅ |
 | ავტომატური უსაფრთხოების განახლებები | `unattended-upgrades` enabled | ✅ |
 | წარუმატებელი შესვლები | 1 | ✅ |
-| `X11Forwarding yes` | სერვერზე გრაფიკული გადამისამართება არ გვჭირდება | ⚠️ |
-| `MaxAuthTries 6` | 3 საკმარისია | ⚠️ |
-| `developer` არის `sudo` ჯგუფში | მეორე მომხმარებელს სრული root უფლებები აქვს | ⚠️ |
-| 11 განახლება ელოდება | `sudo apt upgrade` | ⚠️ |
-| `fail2ban` არ იცავს ჩვენს IP-ებს | `ignoreip` არ არის მითითებული | ⚠️ |
+| `X11Forwarding` | გამოირთო: `x11forwarding no` | ✅ |
+| `MaxAuthTries` | შემცირდა 6 → 3 | ✅ |
+| `developer` `sudo` ჯგუფში | ამოღებულია: `sudo:x:27:k` | ✅ |
+| განახლებები | 4 პაკეტი განახლდა; `snapd` ელოდება ეტაპობრივ გავრცელებას (phasing) | ✅ |
+| `fail2ban` `ignoreip` | 127.0.0.0/8, 192.168.56.0/24, 100.64.0.0/10 | ✅ |
 
-### რეკომენდებული გამოსწორებები (ჯერ არ გაგვიშვია)
-SSH-ის გამაგრება: ფაილი `/etc/ssh/sshd_config.d/10-hardening.conf`, შიგთავსი `X11Forwarding no` და `MaxAuthTries 3`. შემდეგ: <br>
-```bash
-sudo sshd -t && sudo systemctl restart ssh
-```
-`sshd -t` ჯერ შეამოწმებს კონფიგს და მხოლოდ სწორი კონფიგის შემთხვევაში გადატვირთავს სერვისს. `ignoreip` იცავს ჩვენ საკუთარ მისამართებს ბლოკისგან, `jail.local`-ის `[sshd]` განყოფილებაში: <br>
+### გამოსწორებები (გაშვებულია)
+**1. SSH-ის გამაგრება.** ფაილი `/etc/ssh/sshd_config.d/10-hardening.conf`, შიგთავსი: `X11Forwarding no` და `MaxAuthTries 3`. ცალკე ფაილში ვწერთ და არა `sshd_config`-ში, რომ პაკეტის განახლება არ გადააწეროს: <br>
 ```text
-ignoreip = 127.0.0.1/8 192.168.56.0/24 100.64.0.0/10
+$ sudo sshd -t && sudo systemctl restart ssh && echo "SSH OK"
+SSH OK
+$ sudo sshd -T | grep -iE "^(x11forwarding|maxauthtries)"
+maxauthtries 3
+x11forwarding no
 ```
-(127.0.0.1/8 ლოკალურია, 192.168.56.0/24 Host-Only ქსელი, 100.64.0.0/10 Tailscale.) `developer`-ისთვის `sudo`-ს წასართმევად: `sudo gpasswd -d developer sudo`: მომხმარებელი რჩება, მხოლოდ `sudo` ეკარგება. <br>
+`sshd -t` ჯერ ამოწმებს კონფიგს და მხოლოდ სწორის შემთხვევაში გადატვირთავს სერვისს, შეცდომიანი კონფიგით გადატვირთვა გამოგკეტავდა. მიმდინარე SSH სესიები არ წყდება. <br>
+
+**2. `fail2ban`: ჩვენი მისამართების დაცვა.** `jail.local`-ის `[sshd]`-ში ჩავამატეთ `ignoreip`: <br>
+```text
+$ sudo fail2ban-client get sshd ignoreip
+These IP addresses/networks are ignored:
+|- 127.0.0.0/8
+|- 192.168.56.0/24
+`- 100.64.0.0/10
+```
+127.0.0.0/8 ლოკალურია, 192.168.56.0/24 Host-Only ქსელი (ჰოსტი), 100.64.0.0/10 Tailscale (ტელეფონი). SSH-ზე რამდენიმე შეცდომით ცდის შემდეგ ჩვენივე თავი აღარ დაიბლოკება. <br>
+
+**3. `developer`-ისთვის `sudo`-ს ჩამორთმევა:** <br>
+```text
+$ sudo gpasswd -d developer sudo
+Removing user developer from group sudo
+$ getent group sudo
+sudo:x:27:k
+```
+მომხმარებელი რჩება, მხოლოდ root უფლებები ეკარგება (უმცირესი უფლებების პრინციპი). დაბრუნება საჭიროების შემთხვევაში: `sudo usermod -aG sudo developer`. <br>
+
+**4. განახლებები.** პირველი ცდა `apt`-ის ბრძანებით ჩავარდა საათის ჩამორჩენის გამო (იხილე [პრობლემების ცნობარი](../troubleshooting.md)). საათის გასწორების შემდეგ: <br>
+```text
+$ sudo apt update && sudo apt upgrade -y
+5 packages can be upgraded.
+Waiting for cache lock: Could not get lock /var/lib/dpkg/lock-frontend.
+                        It is held by process 31978 (unattended-upgr)
+Upgrading:  distro-info  python3-distro-info  python3-software-properties  software-properties-common
+Not upgrading yet due to phasing:  snapd
+Summary: Upgrading: 4, Installing: 0, Removing: 0, Not Upgrading: 1
+```
+| გამოტანა | რას ნიშნავს |
+|----------|-------------|
+| `5 packages can be upgraded` (და არა 11) | ძველი რიცხვი დაძველებული ინდექსიდან იყო; `apt update` საათის გასწორების შემდეგ რეალურ სიას იღებს |
+| `Waiting for cache lock ... (unattended-upgr)` | `unattended-upgrades` იმავე დროს აყენებდა პაკეტებს და `dpkg`-ის საკეტი ეკავა. ერთდროულად მხოლოდ ერთი პაკეტების მენეჯერი მუშაობს; `apt` თვითონ დაელოდა, ჩარევა არ სჭირდება |
+| `Not upgrading yet due to phasing: snapd` | Ubuntu განახლებას ეტაპობრივად ავრცელებს მომხმარებლების მცირე ჯგუფზე, ამიტომ `snapd` ჯერ ჩვენი რიგი არ არის. ნორმალურია |
+
+**`needrestart`-ის შეტყობინება.** განახლების შემდეგ: <br>
+```text
+Running kernel seems to be up-to-date.
+Service restarts being deferred:
+ dbus.service, docker.service, getty@tty1.service, networkd-dispatcher.service,
+ systemd-logind.service, unattended-upgrades.service
+No containers need to be restarted.
+User sessions running outdated binaries: k @ session #3, #4, #5 (sshd-session)
+```
+ბირთვი ახალია და `reboot-required` არ არის, მაგრამ ზოგი სერვისი ძველ ბიბლიოთეკებს იყენებს, ანუ **ჯერ ძველი კოდით მუშაობს**. რესტარტი გადადებულია განზრახ: `docker.service`-ის რესტარტი კონტეინერებს აჩერებს (თუ `restart:` პოლიტიკა არ არის). უსაფრთხო გზა: VM-ის ერთბაშად გადატვირთვა მოხერხებულ დროს და კონტეინერების შემოწმება (`docker ps`). <br>
 
 !!! warning "fail2ban-მა შეიძლება შენი IP დაბლოკოს"
     SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) `sudo fail2ban-client set sshd unbanip IP`.
