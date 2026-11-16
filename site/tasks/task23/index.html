@@ -2033,6 +2033,53 @@ last -a | head -n 10
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>User sessions running outdated binaries: k @ session #3, #4, #5 (sshd-session)
 </span></code></pre></div>
 ბირთვი ახალია და <code>reboot-required</code> არ არის, მაგრამ ზოგი სერვისი ძველ ბიბლიოთეკებს იყენებს, ანუ <strong>ჯერ ძველი კოდით მუშაობს</strong>. რესტარტი გადადებულია განზრახ: <code>docker.service</code>-ის რესტარტი კონტეინერებს აჩერებს (თუ <code>restart:</code> პოლიტიკა არ არის). უსაფრთხო გზა: VM-ის ერთბაშად გადატვირთვა მოხერხებულ დროს და კონტეინერების შემოწმება (<code>docker ps</code>). <br></p>
+<h3 id="5">5. გადატვირთვა: ყველაფერი თავისით ამოდის თუ არა<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p><code>needrestart</code>-მა გვითხრა, რომ ზოგი სერვისი ძველ ბიბლიოთეკებს იყენებს. ყველაფრის ერთბაშად განახლება გადატვირთვით ვცადეთ, მაგრამ <strong>ჯერ</strong> შევამოწმეთ, რომ კონტეინერები თავისით აიწევს: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>$ grep -n "restart" ~/docker-app/docker-compose.yml
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>12:    restart: unless-stopped
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>27:    restart: unless-stopped
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>33:    restart: unless-stopped
+</span></code></pre></div>
+სამივე სერვისს (<code>web</code>, <code>db</code>, <code>adminer</code>) აქვს <code>restart: unless-stopped</code>: Docker-ის გაშვებისას ისინი ავტომატურად ამოდის, თუ ხელით არ გაჩერებულა. თუ ეს არ იყო, გადატვირთვის შემდეგ კონტეინერები ჩამოვარდნილი დარჩებოდა. ახლა: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>$ sudo reboot
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>$ uptime -p
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>up 4 minutes
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>$ timedatectl | grep -E "Local time|synchronized"
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>               Local time: Mon 2026-11-16 12:58:34 +04
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>System clock synchronized: yes
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>$ docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>NAMES                  STATUS                   PORTS
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>docker-app-web-1       Up 3 minutes             127.0.0.1:8080-&gt;80/tcp
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>docker-app-adminer-1   Up 3 minutes             8080/tcp
+</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>docker-app-db-1        Up 3 minutes (healthy)   5432/tcp
+</span><span id="__span-26-13"><a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>
+</span><span id="__span-26-14"><a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>$ curl -s -o /dev/null -w 'docker app: %{http_code}\n' http://127.0.0.1:8080/
+</span><span id="__span-26-15"><a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>docker app: 200
+</span><span id="__span-26-16"><a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>$ curl -s -o /dev/null -w 'mgawm:      %{http_code}\n' http://localhost/
+</span><span id="__span-26-17"><a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>mgawm:      200
+</span><span id="__span-26-18"><a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>$ curl -ksI https://localhost/ | head -n 1
+</span><span id="__span-26-19"><a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a>HTTP/1.1 200 OK
+</span><span id="__span-26-20"><a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a>
+</span><span id="__span-26-21"><a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>$ systemctl is-active nginx postgresql fail2ban tailscaled docker chrony ufw
+</span><span id="__span-26-22"><a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>active  (x7)
+</span><span id="__span-26-23"><a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a>$ sudo fail2ban-client status sshd | head -n 3
+</span><span id="__span-26-24"><a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a>Currently failed: 0
+</span><span id="__span-26-25"><a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a>$ ls /var/run/reboot-required
+</span><span id="__span-26-26"><a id="__codelineno-26-26" name="__codelineno-26-26" href="#__codelineno-26-26"></a>reboot არ არის საჭირო
+</span></code></pre></div>
+| შემოწმება | რატომ |
+|-----------|-------|
+| <code>uptime -p</code> | დავრწმუნდით, რომ VM მართლა გადაიტვირთა |
+| <code>System clock synchronized: yes</code> | საათი სწორია (იხილე <a href="../../troubleshooting/">პრობლემების ცნობარი</a>) |
+| <code>docker ps</code> | კონტეინერები 3 წუთია მუშაობს, ანუ <strong>თავისით</strong> ამოვიდა; <code>db</code> <code>healthy</code>-ა |
+| სამი <code>curl</code> | თვითონ სერვისები პასუხობს და არა მხოლოდ კონტეინერები (Docker-ის აპი, <code>mgawm</code> HTTP და HTTPS) |
+| <code>systemctl is-active</code> (7 სერვისი) | <code>nginx</code>, <code>postgresql</code>, <code>fail2ban</code>, <code>tailscaled</code>, <code>docker</code>, <code>chrony</code>, <code>ufw</code> ავტომატურად ჩაირთო |
+| <code>reboot-required</code> არ არსებობს | განახლებული სერვისები ახალ კოდზე გადავიდა |</p>
+<div class="admonition success">
+<p class="admonition-title">შედეგი</p>
+<p>სისტემა გადატვირთვას უძლებს: ყველა სერვისი და კონტეინერი თავისით ადგება, ვებ-გვერდები პასუხობს, უსაფრთხოების პარამეტრები (<code>fail2ban</code>, <code>ufw</code>) აქტიურია. ეს Task 24-ის (Disaster Recovery) პირველი რეპეტიციაა.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">fail2ban-მა შეიძლება შენი IP დაბლოკოს</p>
 <p>SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) <code>sudo fail2ban-client set sshd unbanip IP</code>.</p>

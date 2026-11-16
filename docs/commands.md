@@ -181,6 +181,10 @@ flowchart TD
 | `sudo fail2ban-client set sshd unbanip IP` | IP-ის განბლოკვა | თუ საკუთარი თავი დაიბლოკა |
 | `ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@HOST` | განზრახ წარუმატებელი ცდა | `fail2ban`-ის ტესტი (5-ზე ნაკლები, რომ არ დაიბლოკო) |
 | `systemctl is-enabled unattended-upgrades` | ავტომატური უსაფრთხოების განახლებები | პატჩები დროულად ინსტალირდება |
+| `grep -n restart docker-compose.yml` | რომელ სერვისებს აქვს `restart:` პოლიტიკა | გადატვირთვის წინ ვამოწმებთ, რომ კონტეინერები თავისით აიწევს (`unless-stopped`) |
+| <code>docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'</code> | კონტეინერები მოკლე ცხრილით | `Up 3 minutes (healthy)` ამოწმებს, რომ სერვისი ახლად ამოვიდა |
+| <code>systemctl is-active nginx postgresql fail2ban docker</code> | რამდენიმე სერვისის სტატუსი ერთად | გადატვირთვის შემდეგ ყველა `active` უნდა იყოს |
+| `sudo reboot` | VM-ის გადატვირთვა | განახლებული ბიბლიოთეკებისა და გადადებული რესტარტების ერთბაშად გამოსაყენებლად |
 | `sudo gpasswd -d USER sudo` | მომხმარებლის ამოღება `sudo` ჯგუფიდან | უმცირესი უფლებების პრინციპი; მომხმარებელი რჩება |
 | `sudo fail2ban-client get sshd ignoreip` | `fail2ban`-ის გამონაკლისი მისამართები | ვამოწმებთ, რომ საკუთარი ქსელები დაცულია ბლოკისგან |
 | <code>sudo tee /etc/ssh/sshd_config.d/10-hardening.conf</code> | SSH-ის გამაგრება ცალკე ფაილით | პაკეტის განახლება არ გადააწერს; ჯერ `sshd -t` |

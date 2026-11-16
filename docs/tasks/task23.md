@@ -495,6 +495,55 @@ User sessions running outdated binaries: k @ session #3, #4, #5 (sshd-session)
 ```
 ბირთვი ახალია და `reboot-required` არ არის, მაგრამ ზოგი სერვისი ძველ ბიბლიოთეკებს იყენებს, ანუ **ჯერ ძველი კოდით მუშაობს**. რესტარტი გადადებულია განზრახ: `docker.service`-ის რესტარტი კონტეინერებს აჩერებს (თუ `restart:` პოლიტიკა არ არის). უსაფრთხო გზა: VM-ის ერთბაშად გადატვირთვა მოხერხებულ დროს და კონტეინერების შემოწმება (`docker ps`). <br>
 
+### 5. გადატვირთვა: ყველაფერი თავისით ამოდის თუ არა
+`needrestart`-მა გვითხრა, რომ ზოგი სერვისი ძველ ბიბლიოთეკებს იყენებს. ყველაფრის ერთბაშად განახლება გადატვირთვით ვცადეთ, მაგრამ **ჯერ** შევამოწმეთ, რომ კონტეინერები თავისით აიწევს: <br>
+```text
+$ grep -n "restart" ~/docker-app/docker-compose.yml
+12:    restart: unless-stopped
+27:    restart: unless-stopped
+33:    restart: unless-stopped
+```
+სამივე სერვისს (`web`, `db`, `adminer`) აქვს `restart: unless-stopped`: Docker-ის გაშვებისას ისინი ავტომატურად ამოდის, თუ ხელით არ გაჩერებულა. თუ ეს არ იყო, გადატვირთვის შემდეგ კონტეინერები ჩამოვარდნილი დარჩებოდა. ახლა: <br>
+```text
+$ sudo reboot
+$ uptime -p
+up 4 minutes
+$ timedatectl | grep -E "Local time|synchronized"
+               Local time: Mon 2026-11-16 12:58:34 +04
+System clock synchronized: yes
+
+$ docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+NAMES                  STATUS                   PORTS
+docker-app-web-1       Up 3 minutes             127.0.0.1:8080->80/tcp
+docker-app-adminer-1   Up 3 minutes             8080/tcp
+docker-app-db-1        Up 3 minutes (healthy)   5432/tcp
+
+$ curl -s -o /dev/null -w 'docker app: %{http_code}\n' http://127.0.0.1:8080/
+docker app: 200
+$ curl -s -o /dev/null -w 'mgawm:      %{http_code}\n' http://localhost/
+mgawm:      200
+$ curl -ksI https://localhost/ | head -n 1
+HTTP/1.1 200 OK
+
+$ systemctl is-active nginx postgresql fail2ban tailscaled docker chrony ufw
+active  (x7)
+$ sudo fail2ban-client status sshd | head -n 3
+Currently failed: 0
+$ ls /var/run/reboot-required
+reboot არ არის საჭირო
+```
+| შემოწმება | რატომ |
+|-----------|-------|
+| `uptime -p` | დავრწმუნდით, რომ VM მართლა გადაიტვირთა |
+| `System clock synchronized: yes` | საათი სწორია (იხილე [პრობლემების ცნობარი](../troubleshooting.md)) |
+| `docker ps` | კონტეინერები 3 წუთია მუშაობს, ანუ **თავისით** ამოვიდა; `db` `healthy`-ა |
+| სამი `curl` | თვითონ სერვისები პასუხობს და არა მხოლოდ კონტეინერები (Docker-ის აპი, `mgawm` HTTP და HTTPS) |
+| `systemctl is-active` (7 სერვისი) | `nginx`, `postgresql`, `fail2ban`, `tailscaled`, `docker`, `chrony`, `ufw` ავტომატურად ჩაირთო |
+| `reboot-required` არ არსებობს | განახლებული სერვისები ახალ კოდზე გადავიდა |
+
+!!! success "შედეგი"
+    სისტემა გადატვირთვას უძლებს: ყველა სერვისი და კონტეინერი თავისით ადგება, ვებ-გვერდები პასუხობს, უსაფრთხოების პარამეტრები (`fail2ban`, `ufw`) აქტიურია. ეს Task 24-ის (Disaster Recovery) პირველი რეპეტიციაა.
+
 !!! warning "fail2ban-მა შეიძლება შენი IP დაბლოკოს"
     SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) `sudo fail2ban-client set sshd unbanip IP`.
 

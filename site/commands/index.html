@@ -2609,6 +2609,26 @@
 <td>პატჩები დროულად ინსტალირდება</td>
 </tr>
 <tr>
+<td><code>grep -n restart docker-compose.yml</code></td>
+<td>რომელ სერვისებს აქვს <code>restart:</code> პოლიტიკა</td>
+<td>გადატვირთვის წინ ვამოწმებთ, რომ კონტეინერები თავისით აიწევს (<code>unless-stopped</code>)</td>
+</tr>
+<tr>
+<td><code>docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'</code></td>
+<td>კონტეინერები მოკლე ცხრილით</td>
+<td><code>Up 3 minutes (healthy)</code> ამოწმებს, რომ სერვისი ახლად ამოვიდა</td>
+</tr>
+<tr>
+<td><code>systemctl is-active nginx postgresql fail2ban docker</code></td>
+<td>რამდენიმე სერვისის სტატუსი ერთად</td>
+<td>გადატვირთვის შემდეგ ყველა <code>active</code> უნდა იყოს</td>
+</tr>
+<tr>
+<td><code>sudo reboot</code></td>
+<td>VM-ის გადატვირთვა</td>
+<td>განახლებული ბიბლიოთეკებისა და გადადებული რესტარტების ერთბაშად გამოსაყენებლად</td>
+</tr>
+<tr>
 <td><code>sudo gpasswd -d USER sudo</code></td>
 <td>მომხმარებლის ამოღება <code>sudo</code> ჯგუფიდან</td>
 <td>უმცირესი უფლებების პრინციპი; მომხმარებელი რჩება</td>
