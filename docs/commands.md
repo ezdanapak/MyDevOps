@@ -182,6 +182,19 @@ flowchart TD
 | `ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@HOST` | განზრახ წარუმატებელი ცდა | `fail2ban`-ის ტესტი (5-ზე ნაკლები, რომ არ დაიბლოკო) |
 | `systemctl is-enabled unattended-upgrades` | ავტომატური უსაფრთხოების განახლებები | პატჩები დროულად ინსტალირდება |
 
+## 6e. დრო და სინქრონიზაცია
+
+| ბრძანება | რას აკეთებს | რატომ |
+|----------|-------------|-------|
+| `timedatectl` | ადგილობრივი და UTC დრო, სარტყელი, `System clock synchronized` | პირველი ბრძანება, თუ `apt`-ი ან TLS უცნაურად ვარდება |
+| `chronyc tracking` | NTP-სთან გადახრა (`System time ... seconds slow`) | ზუსტად აჩვენებს, რამდენით ჩამორჩება VM (ჩვენთან 38032 წმ ≈ 10.5 სთ) |
+| `sudo chronyc makestep` | საათის **ახლავე** გასწორება | `chronyd` დიდ გადახრას ნელა ასწორებს (დღეები); ეს ერთბაშად |
+| <code>echo "makestep 1 -1" &#124; sudo tee /etc/chrony/conf.d/makestep.conf</code> | მუდმივი წესი: 1 წამზე მეტი გადახრა ყოველთვის ახლავე გასწორდეს | VM-ები ჩერდება; ნაგულისხმევი `makestep 1 3` მხოლოდ პირველ 3 განახლებას ითვალისწინებს |
+| `date` | მიმდინარე დრო | სწრაფი შემოწმება |
+
+!!! warning "ეს გამოგადგებათ ხშირად"
+    ლეპტოპის ძილის ან VM-ის პაუზის შემდეგ საათი ჩამორჩება და `apt update` წერს `Release file ... is not valid yet`. დეტალები: [პრობლემების ცნობარი](troubleshooting.md).
+
 ## 7. Docker და Compose
 
 | ბრძანება | რას აკეთებს | რატომ |

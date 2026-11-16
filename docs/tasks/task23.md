@@ -451,3 +451,7 @@ ignoreip = 127.0.0.1/8 192.168.56.0/24 100.64.0.0/10
 
 !!! warning "fail2ban-მა შეიძლება შენი IP დაბლოკოს"
     SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) `sudo fail2ban-client set sshd unbanip IP`.
+
+
+### ⏰ გაკვეთილი: ჩამორჩენილი საათი ბლოკავს `apt`-ს
+განახლებებისას `sudo apt update` ჩავარდა: `Release file ... is not valid yet (invalid for another 6min 42s)`. მიზეზი იყო VM-ის საათი, რომელიც **~10.5 საათით ჩამორჩებოდა** (`chronyc tracking`: `System time: 38032 seconds slow of NTP time`, `System clock synchronized: no`). `sudo chronyc makestep` საათი ახლავე გაასწორა. სრული აღწერა, დიაგრამა და მუდმივი გამოსწორება (`makestep 1 -1`): [პრობლემების ცნობარი](../troubleshooting.md).

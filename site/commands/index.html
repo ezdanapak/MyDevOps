@@ -16,7 +16,7 @@
         <link rel="prev" href="../setup/phone-access/">
       
       
-        <link rel="next" href="../tasks/task/">
+        <link rel="next" href="../troubleshooting/">
       
       
         
@@ -713,6 +713,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6e. დრო და სინქრონიზაცია
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -760,6 +771,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    პრობლემების ცნობარი
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -837,10 +875,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -858,8 +896,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1814,6 +1852,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6e. დრო და სინქრონიზაცია
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2561,6 +2610,47 @@
 </tr>
 </tbody>
 </table>
+<h2 id="6e">6e. დრო და სინქრონიზაცია<a class="headerlink" href="#6e" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timedatectl</code></td>
+<td>ადგილობრივი და UTC დრო, სარტყელი, <code>System clock synchronized</code></td>
+<td>პირველი ბრძანება, თუ <code>apt</code>-ი ან TLS უცნაურად ვარდება</td>
+</tr>
+<tr>
+<td><code>chronyc tracking</code></td>
+<td>NTP-სთან გადახრა (<code>System time ... seconds slow</code>)</td>
+<td>ზუსტად აჩვენებს, რამდენით ჩამორჩება VM (ჩვენთან 38032 წმ ≈ 10.5 სთ)</td>
+</tr>
+<tr>
+<td><code>sudo chronyc makestep</code></td>
+<td>საათის <strong>ახლავე</strong> გასწორება</td>
+<td><code>chronyd</code> დიდ გადახრას ნელა ასწორებს (დღეები); ეს ერთბაშად</td>
+</tr>
+<tr>
+<td><code>echo "makestep 1 -1" &#124; sudo tee /etc/chrony/conf.d/makestep.conf</code></td>
+<td>მუდმივი წესი: 1 წამზე მეტი გადახრა ყოველთვის ახლავე გასწორდეს</td>
+<td>VM-ები ჩერდება; ნაგულისხმევი <code>makestep 1 3</code> მხოლოდ პირველ 3 განახლებას ითვალისწინებს</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>მიმდინარე დრო</td>
+<td>სწრაფი შემოწმება</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">ეს გამოგადგებათ ხშირად</p>
+<p>ლეპტოპის ძილის ან VM-ის პაუზის შემდეგ საათი ჩამორჩება და <code>apt update</code> წერს <code>Release file ... is not valid yet</code>. დეტალები: <a href="../troubleshooting/">პრობლემების ცნობარი</a>.</p>
+</div>
 <h2 id="7_docker_compose">7. Docker და Compose<a class="headerlink" href="#7_docker_compose" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2886,13 +2976,13 @@
         
         
           
-          <a href="../tasks/task/" class="md-footer__link md-footer__link--next" aria-label="შემდეგი: მდგომარეობა">
+          <a href="../troubleshooting/" class="md-footer__link md-footer__link--next" aria-label="შემდეგი: პრობლემების ცნობარი">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 შემდეგი
               </span>
               <div class="md-ellipsis">
-                მდგომარეობა
+                პრობლემების ცნობარი
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -101,6 +101,7 @@ nav:
       - ტელეფონიდან წვდომა (Tailscale): setup/phone-access.md
       
   - ბრძანებების ცნობარი: commands.md
+  - პრობლემების ცნობარი: troubleshooting.md
   - ამოცანები:
       - მდგომარეობა: tasks/task.md
       - Virtual Machine: tasks/task1.md
