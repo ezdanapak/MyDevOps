@@ -295,3 +295,159 @@ reboot   system boot  Tue Feb 10 14:42 - 14:55  (00:13)     6.8.0-100-generic
 reboot   system boot  Tue Feb 10 07:45 - 14:39  (06:53)     6.8.0-100-generic
 k@devserver:~$
 ```
+
+---
+
+## განახლებული ვერსია: უსაფრთხოების აუდიტი ახალ VM-ზე
+
+**მიზანი:** ვიცოდეთ, ვინ არის სისტემაში, ვის აქვს `sudo`, როგორ არის დაცული SSH, ჩართულია თუ არა firewall და `fail2ban`, და ეს დავაფიქსიროთ.
+
+```mermaid
+flowchart TD
+    A["1. მომხმარებლები<br>/etc/passwd, root locked"] --> B["2. sudo<br>getent group sudo, sudoers"]
+    B --> C["3. SSH<br>sshd -T, authorized_keys"]
+    C --> D["4. firewall<br>ufw: deny incoming"]
+    D --> E["5. fail2ban<br>sshd jail"]
+    E --> F["6. განახლებები<br>apt, unattended-upgrades"]
+    F --> G["დასკვნა: ✅ / ⚠️ ცხრილი"]
+```
+
+### 1. მომხმარებლები
+```text
+$ awk -F: '$3 >= 1000 && $3 < 65534 {print $1, "uid="$3, $7}' /etc/passwd
+k uid=1000 /bin/bash
+developer uid=1001 /bin/bash
+deploy uid=1002 /bin/bash
+
+$ grep -vE '/(nologin|false)$' /etc/passwd | cut -d: -f1,3,7
+root:0:/bin/bash
+sync:4:/bin/sync
+k:1000:/bin/bash
+developer:1001:/bin/bash
+deploy:1002:/bin/bash
+postgres:104:/bin/bash
+
+$ sudo passwd -S root
+root L 2026-08-26 0 99999 7 -1
+```
+| ბრძანება | რატომ |
+|----------|-------|
+| `$3 >= 1000 && $3 < 65534` | UID 1000+ ნამდვილი მომხმარებლებია; 0-999 სისტემურია, 65534 `nobody` |
+| `grep -vE '/(nologin\|false)$'` | ვინ **შეიძლება შევიდეს** ტერმინალში: რეალური shell აქვს |
+| `passwd -S root` | `L` = **დაბლოკილია**: root-ით პაროლით შესვლა შეუძლებელია |
+
+`sync` სტანდარტული სისტემური მომხმარებელია. `postgres`-ს აქვს `/bin/bash`, ეს Ubuntu-ს ნაგულისხმევია და რისკი არ არის (SSH key-ის გარეშე შესვლა შეუძლებელია, `authorized_keys` არ აქვს).
+
+### 2. sudo
+```text
+$ getent group sudo
+sudo:x:27:k,developer
+
+$ sudo grep -rvE '^\s*(#|$)' /etc/sudoers /etc/sudoers.d/
+Defaults   env_reset / mail_badpass / secure_path=... / use_pty
+root       ALL=(ALL:ALL) ALL
+%admin     ALL=(ALL) ALL
+%sudo      ALL=(ALL:ALL) ALL
+@includedir /etc/sudoers.d
+```
+`sudo` ჯგუფში არიან `k` და `developer`. `sudoers` სტანდარტულია და **`NOPASSWD` არ არის**: ყოველი `sudo` პაროლს ითხოვს. `%admin` ხაზი Ubuntu-ს ნაგულისხმევია (ჯგუფი არ არსებობს). `deploy` `sudo`-ში არ არის, ეს სწორია: deploy-ის მომხმარებელს root არ სჭირდება. `grep -rvE '^\s*(#|$)'` კომენტარებსა და ცარიელ ხაზებს გამოტოვებს, რომ რეალური წესები ჩანდეს.
+
+### 3. SSH
+```text
+$ sudo sshd -T | grep -iE "^(permitrootlogin|passwordauthentication|...)"
+port 22
+maxauthtries 6
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+x11forwarding yes
+permitemptypasswords no
+
+$ ls -l ~/.ssh/
+-rw------- 1 k k  89 Nov  9 23:00 authorized_keys
+-rw------- 1 k k 411 Nov 15 23:31 github_docker_app
+-rw-r--r-- 1 k k 103 Nov 15 23:31 github_docker_app.pub
+```
+`sshd -T` აჩვენებს **რეალურად ამოქმედებულ** კონფიგს ყველა ფაილიდან (მათ შორის `sshd_config.d/`), ამიტომ ფაილის კითხვას ვარჩევთ. `authorized_keys` 89 ბაიტია, ანუ **ერთი** ed25519 გასაღები. პრივატული გასაღები (`github_docker_app`) `600`-ზეა, ხოლო `.pub` ღიაა (ეს ნორმალურია).
+
+### 4. წარუმატებელი შესვლები და firewall
+`lastb` ამ სისტემაზე არ არის, ამიტომ `auth.log`-ში `Failed password` დავთვალეთ: **1**. ეს ძალიან ცოტაა და ეჭვს არ იწვევს. `ufw status verbose`: `Status: active`, `Default: deny (incoming), allow (outgoing)`. ღიაა მხოლოდ 22, 80, 443 (Task 22).
+
+### 5. fail2ban
+`fail2ban` არ იყო დაყენებული (`inactive`). დავაყენეთ `sudo apt install -y fail2ban` და `/etc/fail2ban/jail.local`-ში ჩავწერეთ: <br>
+```text
+[sshd]
+enabled = true
+maxretry = 5
+findtime = 10m
+bantime = 1h
+```
+| პარამეტრი | რას ნიშნავს |
+|-----------|-------------|
+| `maxretry = 5` + `findtime = 10m` | 5 წარუმატებელი ცდა 10 წუთში |
+| `bantime = 1h` | IP იბლოკება 1 საათით |
+| `/etc/fail2ban/jail.local` | საკუთარი წესები `jail.conf`-ის ნაცვლად: პაკეტის განახლება არ გადააწერს |
+
+```text
+$ sudo fail2ban-client status
+Number of jail:  1   Jail list: sshd
+```
+**ტესტი: ხედავს თუ არა `fail2ban` ახალი Ubuntu-ს `sshd-session`-ს.** `status sshd`-ში `Journal matches: _SYSTEMD_UNIT=ssh.service + _COMM=sshd` წერია, ხოლო ახალ Ubuntu-ზე შესვლის ჩანაწერებს წერს `sshd-session` პროცესი. ეს ეჭვს იწვევდა, რომ `fail2ban` ბრმაა. ორი წარუმატებელი ცდით (ჰოსტიდან ვიყენებდით არარსებულ მომხმარებელს) შევამოწმეთ: <br>
+```text
+$ ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@192.168.56.10   # x2
+$ sudo fail2ban-client status sshd
+|- Filter
+|  |- Currently failed: 1
+|  |- Total failed:     2
+`- Actions
+   |- Currently banned: 0
+$ sudo journalctl -u ssh -n 4 --no-pager
+sshd-session[23825]: Invalid user fakeuser from 192.168.56.1 port 41812
+sshd-session[23825]: Connection closed by invalid user fakeuser 192.168.56.1 ...
+sshd-session[23827]: Invalid user fakeuser from 192.168.56.1 port 41822
+```
+`Total failed: 2` ნიშნავს, რომ `fail2ban` ორივე შეცდომას ხედავს (ჟურნალში `Invalid user ...` ჩანს, პროცესი `sshd-session`). ფილტრი ახალ პროცესსაც აღიარებს, ამიტომ ბლოკი 5-ზე იმუშავებს. ტესტი განზრახ 5-ზე ნაკლები იყო, რომ ჩვენი ჰოსტი არ დაგვებლოკა.
+
+!!! tip "გაკვეთილი"
+    `Journal matches: ... _COMM=sshd` სტრიქონმა შეცდომაში შეგვიყვანა. კონფიგურაციის გამოტანით დასკვნას არ ვიღებთ: **რეალური ტესტით** ვამოწმებთ (`Total failed` გაიზარდა თუ არა).
+
+### 6. განახლებები
+```text
+$ apt list --upgradable 2>/dev/null | tail -n +2 | wc -l
+11
+$ ls /var/run/reboot-required      → არ არსებობს (გადატვირთვა არ არის საჭირო)
+$ systemctl is-enabled unattended-upgrades
+enabled
+```
+`unattended-upgrades` ჩართულია, ანუ უსაფრთხოების პატჩები ავტომატურად ინსტალირდება. 11 განახლება ელოდება და გადატვირთვა საჭირო არ არის.
+
+### უსაფრთხოების სტატუსი
+| შემოწმება | შედეგი | სტატუსი |
+|-----------|--------|---------|
+| root-ით შესვლა | `L` + `permitrootlogin no` | ✅ |
+| პაროლით SSH | `passwordauthentication no`, ცარიელი პაროლი აკრძალულია | ✅ |
+| SSH გასაღებები | ერთი გასაღები `authorized_keys`-ში | ✅ |
+| `sudo` პაროლის გარეშე | `NOPASSWD` არ არის | ✅ |
+| firewall | `ufw` active, `deny (incoming)`, ღია: 22/80/443 | ✅ |
+| `fail2ban` | დაყენებულია, `sshd` jail ჩართულია, ტესტით დადასტურებულია | ✅ |
+| ავტომატური უსაფრთხოების განახლებები | `unattended-upgrades` enabled | ✅ |
+| წარუმატებელი შესვლები | 1 | ✅ |
+| `X11Forwarding yes` | სერვერზე გრაფიკული გადამისამართება არ გვჭირდება | ⚠️ |
+| `MaxAuthTries 6` | 3 საკმარისია | ⚠️ |
+| `developer` არის `sudo` ჯგუფში | მეორე მომხმარებელს სრული root უფლებები აქვს | ⚠️ |
+| 11 განახლება ელოდება | `sudo apt upgrade` | ⚠️ |
+| `fail2ban` არ იცავს ჩვენს IP-ებს | `ignoreip` არ არის მითითებული | ⚠️ |
+
+### რეკომენდებული გამოსწორებები (ჯერ არ გაგვიშვია)
+SSH-ის გამაგრება: ფაილი `/etc/ssh/sshd_config.d/10-hardening.conf`, შიგთავსი `X11Forwarding no` და `MaxAuthTries 3`. შემდეგ: <br>
+```bash
+sudo sshd -t && sudo systemctl restart ssh
+```
+`sshd -t` ჯერ შეამოწმებს კონფიგს და მხოლოდ სწორი კონფიგის შემთხვევაში გადატვირთავს სერვისს. `ignoreip` იცავს ჩვენ საკუთარ მისამართებს ბლოკისგან, `jail.local`-ის `[sshd]` განყოფილებაში: <br>
+```text
+ignoreip = 127.0.0.1/8 192.168.56.0/24 100.64.0.0/10
+```
+(127.0.0.1/8 ლოკალურია, 192.168.56.0/24 Host-Only ქსელი, 100.64.0.0/10 Tailscale.) `developer`-ისთვის `sudo`-ს წასართმევად: `sudo gpasswd -d developer sudo`: მომხმარებელი რჩება, მხოლოდ `sudo` ეკარგება. <br>
+
+!!! warning "fail2ban-მა შეიძლება შენი IP დაბლოკოს"
+    SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) `sudo fail2ban-client set sshd unbanip IP`.

@@ -1777,6 +1777,200 @@ last -a | head -n 10
 </span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="go">reboot   system boot  Tue Feb 10 07:45 - 14:39  (06:53)     6.8.0-100-generic</span>
 </span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="gp">k@devserver:~$</span>
 </span></code></pre></div>
+<hr />
+<h2 id="vm-">განახლებული ვერსია: უსაფრთხოების აუდიტი ახალ VM-ზე<a class="headerlink" href="#vm-" title="Permanent link">&para;</a></h2>
+<p><strong>მიზანი:</strong> ვიცოდეთ, ვინ არის სისტემაში, ვის აქვს <code>sudo</code>, როგორ არის დაცული SSH, ჩართულია თუ არა firewall და <code>fail2ban</code>, და ეს დავაფიქსიროთ.</p>
+<pre class="mermaid"><code>flowchart TD
+    A["1. მომხმარებლები&lt;br&gt;/etc/passwd, root locked"] --&gt; B["2. sudo&lt;br&gt;getent group sudo, sudoers"]
+    B --&gt; C["3. SSH&lt;br&gt;sshd -T, authorized_keys"]
+    C --&gt; D["4. firewall&lt;br&gt;ufw: deny incoming"]
+    D --&gt; E["5. fail2ban&lt;br&gt;sshd jail"]
+    E --&gt; F["6. განახლებები&lt;br&gt;apt, unattended-upgrades"]
+    F --&gt; G["დასკვნა: ✅ / ⚠️ ცხრილი"]</code></pre>
+<h3 id="1">1. მომხმარებლები<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$ awk -F: '$3 &gt;= 1000 &amp;&amp; $3 &lt; 65534 {print $1, "uid="$3, $7}' /etc/passwd
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>k uid=1000 /bin/bash
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>developer uid=1001 /bin/bash
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>deploy uid=1002 /bin/bash
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>$ grep -vE '/(nologin|false)$' /etc/passwd | cut -d: -f1,3,7
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>root:0:/bin/bash
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>sync:4:/bin/sync
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>k:1000:/bin/bash
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>developer:1001:/bin/bash
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>deploy:1002:/bin/bash
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>postgres:104:/bin/bash
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>$ sudo passwd -S root
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>root L 2026-08-26 0 99999 7 -1
+</span></code></pre></div>
+| ბრძანება | რატომ |
+|----------|-------|
+| <code>$3 &gt;= 1000 &amp;&amp; $3 &lt; 65534</code> | UID 1000+ ნამდვილი მომხმარებლებია; 0-999 სისტემურია, 65534 <code>nobody</code> |
+| <code>grep -vE '/(nologin\|false)$'</code> | ვინ <strong>შეიძლება შევიდეს</strong> ტერმინალში: რეალური shell აქვს |
+| <code>passwd -S root</code> | <code>L</code> = <strong>დაბლოკილია</strong>: root-ით პაროლით შესვლა შეუძლებელია |</p>
+<p><code>sync</code> სტანდარტული სისტემური მომხმარებელია. <code>postgres</code>-ს აქვს <code>/bin/bash</code>, ეს Ubuntu-ს ნაგულისხმევია და რისკი არ არის (SSH key-ის გარეშე შესვლა შეუძლებელია, <code>authorized_keys</code> არ აქვს).</p>
+<h3 id="2_sudo">2. sudo<a class="headerlink" href="#2_sudo" title="Permanent link">&para;</a></h3>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ getent group sudo
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>sudo:x:27:k,developer
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>$ sudo grep -rvE '^\s*(#|$)' /etc/sudoers /etc/sudoers.d/
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>Defaults   env_reset / mail_badpass / secure_path=... / use_pty
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>root       ALL=(ALL:ALL) ALL
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>%admin     ALL=(ALL) ALL
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>%sudo      ALL=(ALL:ALL) ALL
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>@includedir /etc/sudoers.d
+</span></code></pre></div>
+<code>sudo</code> ჯგუფში არიან <code>k</code> და <code>developer</code>. <code>sudoers</code> სტანდარტულია და <strong><code>NOPASSWD</code> არ არის</strong>: ყოველი <code>sudo</code> პაროლს ითხოვს. <code>%admin</code> ხაზი Ubuntu-ს ნაგულისხმევია (ჯგუფი არ არსებობს). <code>deploy</code> <code>sudo</code>-ში არ არის, ეს სწორია: deploy-ის მომხმარებელს root არ სჭირდება. <code>grep -rvE '^\s*(#|$)'</code> კომენტარებსა და ცარიელ ხაზებს გამოტოვებს, რომ რეალური წესები ჩანდეს.</p>
+<h3 id="3_ssh">3. SSH<a class="headerlink" href="#3_ssh" title="Permanent link">&para;</a></h3>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$ sudo sshd -T | grep -iE "^(permitrootlogin|passwordauthentication|...)"
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>port 22
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>maxauthtries 6
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>permitrootlogin no
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>pubkeyauthentication yes
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>passwordauthentication no
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>x11forwarding yes
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>permitemptypasswords no
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>$ ls -l ~/.ssh/
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>-rw------- 1 k k  89 Nov  9 23:00 authorized_keys
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>-rw------- 1 k k 411 Nov 15 23:31 github_docker_app
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>-rw-r--r-- 1 k k 103 Nov 15 23:31 github_docker_app.pub
+</span></code></pre></div>
+<code>sshd -T</code> აჩვენებს <strong>რეალურად ამოქმედებულ</strong> კონფიგს ყველა ფაილიდან (მათ შორის <code>sshd_config.d/</code>), ამიტომ ფაილის კითხვას ვარჩევთ. <code>authorized_keys</code> 89 ბაიტია, ანუ <strong>ერთი</strong> ed25519 გასაღები. პრივატული გასაღები (<code>github_docker_app</code>) <code>600</code>-ზეა, ხოლო <code>.pub</code> ღიაა (ეს ნორმალურია).</p>
+<h3 id="4_firewall">4. წარუმატებელი შესვლები და firewall<a class="headerlink" href="#4_firewall" title="Permanent link">&para;</a></h3>
+<p><code>lastb</code> ამ სისტემაზე არ არის, ამიტომ <code>auth.log</code>-ში <code>Failed password</code> დავთვალეთ: <strong>1</strong>. ეს ძალიან ცოტაა და ეჭვს არ იწვევს. <code>ufw status verbose</code>: <code>Status: active</code>, <code>Default: deny (incoming), allow (outgoing)</code>. ღიაა მხოლოდ 22, 80, 443 (Task 22).</p>
+<h3 id="5_fail2ban">5. fail2ban<a class="headerlink" href="#5_fail2ban" title="Permanent link">&para;</a></h3>
+<p><code>fail2ban</code> არ იყო დაყენებული (<code>inactive</code>). დავაყენეთ <code>sudo apt install -y fail2ban</code> და <code>/etc/fail2ban/jail.local</code>-ში ჩავწერეთ: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>[sshd]
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>enabled = true
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>maxretry = 5
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>findtime = 10m
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>bantime = 1h
+</span></code></pre></div>
+| პარამეტრი | რას ნიშნავს |
+|-----------|-------------|
+| <code>maxretry = 5</code> + <code>findtime = 10m</code> | 5 წარუმატებელი ცდა 10 წუთში |
+| <code>bantime = 1h</code> | IP იბლოკება 1 საათით |
+| <code>/etc/fail2ban/jail.local</code> | საკუთარი წესები <code>jail.conf</code>-ის ნაცვლად: პაკეტის განახლება არ გადააწერს |</p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>$ sudo fail2ban-client status
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Number of jail:  1   Jail list: sshd
+</span></code></pre></div>
+<strong>ტესტი: ხედავს თუ არა <code>fail2ban</code> ახალი Ubuntu-ს <code>sshd-session</code>-ს.</strong> <code>status sshd</code>-ში <code>Journal matches: _SYSTEMD_UNIT=ssh.service + _COMM=sshd</code> წერია, ხოლო ახალ Ubuntu-ზე შესვლის ჩანაწერებს წერს <code>sshd-session</code> პროცესი. ეს ეჭვს იწვევდა, რომ <code>fail2ban</code> ბრმაა. ორი წარუმატებელი ცდით (ჰოსტიდან ვიყენებდით არარსებულ მომხმარებელს) შევამოწმეთ: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>$ ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@192.168.56.10   # x2
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>$ sudo fail2ban-client status sshd
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>|- Filter
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>|  |- Currently failed: 1
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>|  |- Total failed:     2
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>`- Actions
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>   |- Currently banned: 0
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>$ sudo journalctl -u ssh -n 4 --no-pager
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>sshd-session[23825]: Invalid user fakeuser from 192.168.56.1 port 41812
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>sshd-session[23825]: Connection closed by invalid user fakeuser 192.168.56.1 ...
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>sshd-session[23827]: Invalid user fakeuser from 192.168.56.1 port 41822
+</span></code></pre></div>
+<code>Total failed: 2</code> ნიშნავს, რომ <code>fail2ban</code> ორივე შეცდომას ხედავს (ჟურნალში <code>Invalid user ...</code> ჩანს, პროცესი <code>sshd-session</code>). ფილტრი ახალ პროცესსაც აღიარებს, ამიტომ ბლოკი 5-ზე იმუშავებს. ტესტი განზრახ 5-ზე ნაკლები იყო, რომ ჩვენი ჰოსტი არ დაგვებლოკა.</p>
+<div class="admonition tip">
+<p class="admonition-title">გაკვეთილი</p>
+<p><code>Journal matches: ... _COMM=sshd</code> სტრიქონმა შეცდომაში შეგვიყვანა. კონფიგურაციის გამოტანით დასკვნას არ ვიღებთ: <strong>რეალური ტესტით</strong> ვამოწმებთ (<code>Total failed</code> გაიზარდა თუ არა).</p>
+</div>
+<h3 id="6">6. განახლებები<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>$ apt list --upgradable 2&gt;/dev/null | tail -n +2 | wc -l
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>11
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>$ ls /var/run/reboot-required      → არ არსებობს (გადატვირთვა არ არის საჭირო)
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>$ systemctl is-enabled unattended-upgrades
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>enabled
+</span></code></pre></div>
+<code>unattended-upgrades</code> ჩართულია, ანუ უსაფრთხოების პატჩები ავტომატურად ინსტალირდება. 11 განახლება ელოდება და გადატვირთვა საჭირო არ არის.</p>
+<h3 id="_1">უსაფრთხოების სტატუსი<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>შემოწმება</th>
+<th>შედეგი</th>
+<th>სტატუსი</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>root-ით შესვლა</td>
+<td><code>L</code> + <code>permitrootlogin no</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>პაროლით SSH</td>
+<td><code>passwordauthentication no</code>, ცარიელი პაროლი აკრძალულია</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>SSH გასაღებები</td>
+<td>ერთი გასაღები <code>authorized_keys</code>-ში</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>sudo</code> პაროლის გარეშე</td>
+<td><code>NOPASSWD</code> არ არის</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>firewall</td>
+<td><code>ufw</code> active, <code>deny (incoming)</code>, ღია: 22/80/443</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>fail2ban</code></td>
+<td>დაყენებულია, <code>sshd</code> jail ჩართულია, ტესტით დადასტურებულია</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>ავტომატური უსაფრთხოების განახლებები</td>
+<td><code>unattended-upgrades</code> enabled</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>წარუმატებელი შესვლები</td>
+<td>1</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>X11Forwarding yes</code></td>
+<td>სერვერზე გრაფიკული გადამისამართება არ გვჭირდება</td>
+<td>⚠️</td>
+</tr>
+<tr>
+<td><code>MaxAuthTries 6</code></td>
+<td>3 საკმარისია</td>
+<td>⚠️</td>
+</tr>
+<tr>
+<td><code>developer</code> არის <code>sudo</code> ჯგუფში</td>
+<td>მეორე მომხმარებელს სრული root უფლებები აქვს</td>
+<td>⚠️</td>
+</tr>
+<tr>
+<td>11 განახლება ელოდება</td>
+<td><code>sudo apt upgrade</code></td>
+<td>⚠️</td>
+</tr>
+<tr>
+<td><code>fail2ban</code> არ იცავს ჩვენს IP-ებს</td>
+<td><code>ignoreip</code> არ არის მითითებული</td>
+<td>⚠️</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_2">რეკომენდებული გამოსწორებები (ჯერ არ გაგვიშვია)<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>SSH-ის გამაგრება: ფაილი <code>/etc/ssh/sshd_config.d/10-hardening.conf</code>, შიგთავსი <code>X11Forwarding no</code> და <code>MaxAuthTries 3</code>. შემდეგ: <br>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>sshd<span class="w"> </span>-t<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>ssh
+</span></code></pre></div>
+<code>sshd -t</code> ჯერ შეამოწმებს კონფიგს და მხოლოდ სწორი კონფიგის შემთხვევაში გადატვირთავს სერვისს. <code>ignoreip</code> იცავს ჩვენ საკუთარ მისამართებს ბლოკისგან, <code>jail.local</code>-ის <code>[sshd]</code> განყოფილებაში: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ignoreip = 127.0.0.1/8 192.168.56.0/24 100.64.0.0/10
+</span></code></pre></div>
+(127.0.0.1/8 ლოკალურია, 192.168.56.0/24 Host-Only ქსელი, 100.64.0.0/10 Tailscale.) <code>developer</code>-ისთვის <code>sudo</code>-ს წასართმევად: <code>sudo gpasswd -d developer sudo</code>: მომხმარებელი რჩება, მხოლოდ <code>sudo</code> ეკარგება. <br></p>
+<div class="admonition warning">
+<p class="admonition-title">fail2ban-მა შეიძლება შენი IP დაბლოკოს</p>
+<p>SSH-ზე 5 წარუმატებელი ცდა (მაგ. არასწორი გასაღები Electerm-ში) ბლოკავს ჰოსტსაც. გამოსავალი: VirtualBox-ის კონსოლიდან ან ტელეფონიდან (Tailscale-ით, სხვა IP-ია) <code>sudo fail2ban-client set sshd unbanip IP</code>.</p>
+</div>
 
 
 

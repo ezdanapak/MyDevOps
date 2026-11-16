@@ -162,6 +162,26 @@ flowchart TD
 | `resolvectl status` | DNS სერვერები ინტერფეისების მიხედვით | რომელ DNS-ს მიმართავს სისტემა (`10.0.2.3` VirtualBox NAT-ში) |
 | `sudo ufw status numbered` | firewall-ის წესები ნომრებით | შედარება `ss`-ის სიასთან: ყველა ღია პორტი ufw-შია დაშვებული |
 
+## 6d. უსაფრთხოების აუდიტი
+
+| ბრძანება | რას აკეთებს | რატომ |
+|----------|-------------|-------|
+| `awk -F: '$3 >= 1000 && $3 < 65534 {print $1}' /etc/passwd` | ნამდვილი (არასისტემური) მომხმარებლები | UID 1000+ ადამიანებია |
+| <code>grep -vE '/(nologin&#124;false)$' /etc/passwd</code> | ვისაც რეალური shell აქვს | ვინ შეიძლება შევიდეს ტერმინალში |
+| `sudo passwd -S root` | root-ის პაროლის სტატუსი | `L` = დაბლოკილია |
+| `getent group sudo` | `sudo` ჯგუფის წევრები | ვის აქვს root უფლებები |
+| <code>sudo grep -rvE '^\s*(#&#124;$)' /etc/sudoers /etc/sudoers.d/</code> | `sudoers` კომენტარების გარეშე | `NOPASSWD` ხაზის მოსაძებნად |
+| `sudo -l` | რა უფლებები მაქვს მე | საკუთარი უფლებების შემოწმება |
+| `sudo sshd -T` | ამოქმედებული SSH კონფიგი ყველა ფაილიდან | ფაილზე უკეთესია: `sshd_config.d/`-ის გადაფარვასაც ითვალისწინებს |
+| <code>sudo sshd -t &amp;&amp; sudo systemctl restart ssh</code> | კონფიგის შემოწმება და გადატვირთვა | შეცდომიანი კონფიგით გადატვირთვა გამოგკეტავდა |
+| `sudo lastb -n 5` | წარუმატებელი შესვლები | ახალ Ubuntu-ზე შეიძლება არ იყოს; ალტერნატივა: `grep -c "Failed password" /var/log/auth.log` |
+| `sudo ufw status verbose` | firewall-ის სტატუსი და ნაგულისხმევი პოლიტიკა | `deny (incoming)` უნდა იყოს |
+| `systemctl is-active fail2ban` | ჩართულია თუ არა სერვისი | სწრაფი შემოწმება |
+| `sudo fail2ban-client status` / `status sshd` | jail-ების სია / კონკრეტული jail | `Total failed` ამოწმებს, რომ `fail2ban` რეალურად ხედავს შეცდომებს |
+| `sudo fail2ban-client set sshd unbanip IP` | IP-ის განბლოკვა | თუ საკუთარი თავი დაიბლოკა |
+| `ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@HOST` | განზრახ წარუმატებელი ცდა | `fail2ban`-ის ტესტი (5-ზე ნაკლები, რომ არ დაიბლოკო) |
+| `systemctl is-enabled unattended-upgrades` | ავტომატური უსაფრთხოების განახლებები | პატჩები დროულად ინსტალირდება |
+
 ## 7. Docker და Compose
 
 | ბრძანება | რას აკეთებს | რატომ |

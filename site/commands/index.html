@@ -702,6 +702,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6d. უსაფრთხოების აუდიტი
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1792,6 +1803,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6d. უსაფრთხოების აუდიტი
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2449,6 +2471,93 @@
 <td><code>sudo ufw status numbered</code></td>
 <td>firewall-ის წესები ნომრებით</td>
 <td>შედარება <code>ss</code>-ის სიასთან: ყველა ღია პორტი ufw-შია დაშვებული</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6d">6d. უსაფრთხოების აუდიტი<a class="headerlink" href="#6d" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>awk -F: '$3 &gt;= 1000 &amp;&amp; $3 &lt; 65534 {print $1}' /etc/passwd</code></td>
+<td>ნამდვილი (არასისტემური) მომხმარებლები</td>
+<td>UID 1000+ ადამიანებია</td>
+</tr>
+<tr>
+<td><code>grep -vE '/(nologin&#124;false)$' /etc/passwd</code></td>
+<td>ვისაც რეალური shell აქვს</td>
+<td>ვინ შეიძლება შევიდეს ტერმინალში</td>
+</tr>
+<tr>
+<td><code>sudo passwd -S root</code></td>
+<td>root-ის პაროლის სტატუსი</td>
+<td><code>L</code> = დაბლოკილია</td>
+</tr>
+<tr>
+<td><code>getent group sudo</code></td>
+<td><code>sudo</code> ჯგუფის წევრები</td>
+<td>ვის აქვს root უფლებები</td>
+</tr>
+<tr>
+<td><code>sudo grep -rvE '^\s*(#&#124;$)' /etc/sudoers /etc/sudoers.d/</code></td>
+<td><code>sudoers</code> კომენტარების გარეშე</td>
+<td><code>NOPASSWD</code> ხაზის მოსაძებნად</td>
+</tr>
+<tr>
+<td><code>sudo -l</code></td>
+<td>რა უფლებები მაქვს მე</td>
+<td>საკუთარი უფლებების შემოწმება</td>
+</tr>
+<tr>
+<td><code>sudo sshd -T</code></td>
+<td>ამოქმედებული SSH კონფიგი ყველა ფაილიდან</td>
+<td>ფაილზე უკეთესია: <code>sshd_config.d/</code>-ის გადაფარვასაც ითვალისწინებს</td>
+</tr>
+<tr>
+<td><code>sudo sshd -t &amp;&amp; sudo systemctl restart ssh</code></td>
+<td>კონფიგის შემოწმება და გადატვირთვა</td>
+<td>შეცდომიანი კონფიგით გადატვირთვა გამოგკეტავდა</td>
+</tr>
+<tr>
+<td><code>sudo lastb -n 5</code></td>
+<td>წარუმატებელი შესვლები</td>
+<td>ახალ Ubuntu-ზე შეიძლება არ იყოს; ალტერნატივა: <code>grep -c "Failed password" /var/log/auth.log</code></td>
+</tr>
+<tr>
+<td><code>sudo ufw status verbose</code></td>
+<td>firewall-ის სტატუსი და ნაგულისხმევი პოლიტიკა</td>
+<td><code>deny (incoming)</code> უნდა იყოს</td>
+</tr>
+<tr>
+<td><code>systemctl is-active fail2ban</code></td>
+<td>ჩართულია თუ არა სერვისი</td>
+<td>სწრაფი შემოწმება</td>
+</tr>
+<tr>
+<td><code>sudo fail2ban-client status</code> / <code>status sshd</code></td>
+<td>jail-ების სია / კონკრეტული jail</td>
+<td><code>Total failed</code> ამოწმებს, რომ <code>fail2ban</code> რეალურად ხედავს შეცდომებს</td>
+</tr>
+<tr>
+<td><code>sudo fail2ban-client set sshd unbanip IP</code></td>
+<td>IP-ის განბლოკვა</td>
+<td>თუ საკუთარი თავი დაიბლოკა</td>
+</tr>
+<tr>
+<td><code>ssh -o PubkeyAuthentication=no -o BatchMode=yes fakeuser@HOST</code></td>
+<td>განზრახ წარუმატებელი ცდა</td>
+<td><code>fail2ban</code>-ის ტესტი (5-ზე ნაკლები, რომ არ დაიბლოკო)</td>
+</tr>
+<tr>
+<td><code>systemctl is-enabled unattended-upgrades</code></td>
+<td>ავტომატური უსაფრთხოების განახლებები</td>
+<td>პატჩები დროულად ინსტალირდება</td>
 </tr>
 </tbody>
 </table>
