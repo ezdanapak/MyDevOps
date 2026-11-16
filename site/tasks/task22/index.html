@@ -2016,31 +2016,63 @@
 </span></code></pre></div>
 სამი ღია პორტი (22, 80, 443) IPv4-ზეც და IPv6-ზეც, დანარჩენი დახურულია. ეს ემთხვევა <code>ss</code>-ის სიას: ყველა <code>0.0.0.0</code> პორტი ufw-შია დაშვებული.</p>
 <h3 id="5_nc-">5. პორტების შემოწმება <code>nc</code>-ით<a class="headerlink" href="#5_nc-" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ nc -zv -w 2 192.168.56.10 22 80 443 8080 5432
+<p>ორი ადგილიდან: <strong>ჰოსტიდან</strong> (გარედან, რეალური სურათი) და <strong>VM-იდან</strong> (საკუთარი თავიდან). <br></p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>k@k-M4700:~$ nc -zv -w 2 192.168.56.10 22 80 443 8080 5432
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Connection to 192.168.56.10 22 port [tcp/ssh] succeeded!
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Connection to 192.168.56.10 80 port [tcp/http] succeeded!
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Connection to 192.168.56.10 443 port [tcp/https] succeeded!
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>nc: connect to 192.168.56.10 port 8080 (tcp) failed: Connection refused
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>nc: connect to 192.168.56.10 port 5432 (tcp) failed: Connection refused
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>nc: connect to 192.168.56.10 port 8080 (tcp) timed out: Operation now in progress
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>nc: connect to 192.168.56.10 port 5432 (tcp) timed out: Operation now in progress
 </span></code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">ეს ტესტი VM-იდან გავუშვით</p>
-<p>ბრძანება VM-ში გაეშვა (<code>k@myubuntuserver</code>) და არა ჰოსტზე, ამიტომ ეს „საკუთარი თავის“ შემოწმებაა. <code>Connection refused</code> ნიშნავს, რომ იმ მისამართზე არაფერი უსმენს (8080 და 5432 მხოლოდ <code>127.0.0.1</code>-ზეა). <strong>გარედან</strong> (ჰოსტიდან) იგივე 8080 <code>timed out</code>-ს აბრუნებდა (Task 16), ანუ ufw-ის წესი პაკეტს „ჩუმად“ აგდებს. განსხვავება: refused = პორტზე არავინ უსმენს, timeout = firewall ჩუმად აგდებს პაკეტს.</p>
+ჰოსტიდან ღიაა მხოლოდ 22, 80, 443. 8080 და 5432 <strong>timed out</strong>: <code>ufw</code> პაკეტს ჩუმად აგდებს, ამიტომ პასუხი საერთოდ არ მოდის და შეტევის მცდელობას პორტის არსებობაც არ ეცოდინება. <br></p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>k@myubuntuserver:~$ nc -zv -w 2 192.168.56.10 22 80 443 8080 5432
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Connection to 192.168.56.10 22 port [tcp/ssh] succeeded!
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Connection to 192.168.56.10 80 port [tcp/http] succeeded!
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>Connection to 192.168.56.10 443 port [tcp/https] succeeded!
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>nc: connect to 192.168.56.10 port 8080 (tcp) failed: Connection refused
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>nc: connect to 192.168.56.10 port 5432 (tcp) failed: Connection refused
+</span></code></pre></div>
+VM-იდან იგივე ორი პორტი <strong>refused</strong>-ს აბრუნებს: VM თავის თავზე <code>ufw</code>-ის გარეშე ახორციელებს კავშირს და პასუხობს ბირთვი, რომ ამ მისამართზე არავინ უსმენს (8080 და 5432 მხოლოდ <code>127.0.0.1</code>-ზეა). <br></p>
+<table>
+<thead>
+<tr>
+<th>შედეგი</th>
+<th>რას ნიშნავს</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>succeeded</code></td>
+<td>პორტი ღიაა და სერვისი პასუხობს</td>
+</tr>
+<tr>
+<td><code>Connection refused</code></td>
+<td>მისამართზე <strong>არავინ უსმენს</strong>, პასუხი მაშინვე მოდის (ლოკალური შემოწმება)</td>
+</tr>
+<tr>
+<td><code>timed out</code></td>
+<td><strong>firewall აგდებს</strong> პაკეტს ან მისამართი მიუწვდომელია: გარედან 8080/5432 ასეთია</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">რატომ არის ორი ადგილიდან შემოწმება მნიშვნელოვანი</p>
+<p>ერთი და იგივე პორტი VM-იდან და გარედან სხვადასხვა პასუხს იძლევა. გარე დამკვირვებლისთვის ტრაფიკი ჯერ firewall-ს გადის, ამიტომ მხოლოდ გარედან გაშვებული ტესტი აჩვენებს რეალურ უსაფრთხოებას. აქედან დასკვნა: <strong>გარედან ღიაა მხოლოდ 22, 80, 443</strong>, როგორც <code>ufw</code>-ში გვინდოდა.</p>
 </div>
 <h3 id="6_dns">6. ინტერფეისები, მარშრუტი, DNS<a class="headerlink" href="#6_dns" title="Permanent link">&para;</a></h3>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$ ip -br a
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>lo          UNKNOWN  127.0.0.1/8
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>enp0s3      UP       10.0.2.15/24        (NAT: ინტერნეტი)
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>enp0s8      UP       192.168.56.10/24    (Host-Only: ჰოსტთან კავშირი)
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>tailscale0  UNKNOWN  100.120.57.75/32    (Tailscale)
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>br-15eb0478a22f UP   172.18.0.1/16       (Docker Compose ქსელი)
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>docker0     DOWN     172.17.0.1/16       (ნაგულისხმევი Docker ხიდი, არ გამოიყენება)
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>veth...     UP       (კონტეინერების ქსელის კაბელები, სამი)
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>$ ip route
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>192.168.56.0/24 dev enp0s8 proto kernel scope link src 192.168.56.10
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>172.18.0.0/16 dev br-15eb0478a22f ...
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ ip -br a
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>lo          UNKNOWN  127.0.0.1/8
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>enp0s3      UP       10.0.2.15/24        (NAT: ინტერნეტი)
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>enp0s8      UP       192.168.56.10/24    (Host-Only: ჰოსტთან კავშირი)
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>tailscale0  UNKNOWN  100.120.57.75/32    (Tailscale)
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>br-15eb0478a22f UP   172.18.0.1/16       (Docker Compose ქსელი)
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>docker0     DOWN     172.17.0.1/16       (ნაგულისხმევი Docker ხიდი, არ გამოიყენება)
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>veth...     UP       (კონტეინერების ქსელის კაბელები, სამი)
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>$ ip route
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>192.168.56.0/24 dev enp0s8 proto kernel scope link src 192.168.56.10
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>172.18.0.0/16 dev br-15eb0478a22f ...
 </span></code></pre></div>
 | ხაზი | რას ნიშნავს |
 |------|-------------|
@@ -2048,16 +2080,16 @@
 | <code>192.168.56.0/24 dev enp0s8</code> | ჰოსტთან პირდაპირი ქსელი (SSH, ბრაუზერი) |
 | <code>br-... 172.18.0.1/16</code> | <code>docker compose</code>-ის შიგა ქსელი: web, db და adminer აქ ხედავენ ერთმანეთს სახელით |
 | სამი <code>veth</code> | თითო კონტეინერი = ერთი ვირტუალური კაბელი |</p>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ ping -c 3 1.1.1.1
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>3 packets transmitted, 3 received, 0% packet loss, rtt avg 3.2 ms
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>$ ping -c 3 ubuntu.com
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>PING ubuntu.com (185.125.190.20) ...
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>3 packets transmitted, 3 received, 0% packet loss, rtt avg 80.9 ms
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>$ resolvectl status | head
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>Link 2 (enp0s3)  Current DNS Server: 10.0.2.3   DNS Servers: 10.0.2.3 fd17:625c:f037:2::3
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>Link 3 (enp0s8)  Current Scopes: none   Default Route: no
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>$ ping -c 3 1.1.1.1
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>3 packets transmitted, 3 received, 0% packet loss, rtt avg 3.2 ms
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>$ ping -c 3 ubuntu.com
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>PING ubuntu.com (185.125.190.20) ...
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>3 packets transmitted, 3 received, 0% packet loss, rtt avg 80.9 ms
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>$ resolvectl status | head
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>Link 2 (enp0s3)  Current DNS Server: 10.0.2.3   DNS Servers: 10.0.2.3 fd17:625c:f037:2::3
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>Link 3 (enp0s8)  Current Scopes: none   Default Route: no
 </span></code></pre></div>
 | ტესტი | რას ამოწმებს |
 |-------|--------------|
