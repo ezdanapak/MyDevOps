@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://ezdanapak.github.io/MyDevOps/commands/">
       
       
-        <link rel="prev" href="../setup/phone-access/">
+        <link rel="prev" href="../linux/filesystem-hierarchy/">
       
       
         <link rel="next" href="../troubleshooting/">
@@ -523,6 +523,92 @@
       
   
   
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux საფუძვლები
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux საფუძვლები
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux/filesystem-hierarchy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ფაილური სისტემის იერარქია (FHS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -724,6 +810,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6f. ფაილური სისტემის კვლევა
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -875,10 +972,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -896,8 +993,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1863,6 +1960,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#6f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6f. ფაილური სისტემის კვლევა
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#7_docker_compose" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2691,6 +2799,89 @@
 <p class="admonition-title">ეს გამოგადგებათ ხშირად</p>
 <p>ლეპტოპის ძილის ან VM-ის პაუზის შემდეგ საათი ჩამორჩება და <code>apt update</code> წერს <code>Release file ... is not valid yet</code>. დეტალები: <a href="../troubleshooting/">პრობლემების ცნობარი</a>.</p>
 </div>
+<h2 id="6f">6f. ფაილური სისტემის კვლევა<a class="headerlink" href="#6f" title="Permanent link">&para;</a></h2>
+<p>დეტალური ახსნა: <a href="../linux/filesystem-hierarchy/">Linux-ის ფაილური სისტემის იერარქია</a>.</p>
+<table>
+<thead>
+<tr>
+<th>ბრძანება</th>
+<th>რას აკეთებს</th>
+<th>რატომ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ls -la /</code></td>
+<td>ძირის შიგთავსი უფლებებით და სიმბოლური ბმულებით</td>
+<td>პირველი სიმბოლო ტიპია (<code>d</code>, <code>l</code>, <code>-</code>), <code>bin -&gt; usr/bin</code> ავლენს usr-merge-ს</td>
+</tr>
+<tr>
+<td><code>tree -L 2 /</code></td>
+<td>ხე 2 დონემდე</td>
+<td>სტრუქტურის სწრაფი გადახედვა (<code>sudo apt install tree</code>)</td>
+</tr>
+<tr>
+<td><code>findmnt</code></td>
+<td>mount-ების ხე</td>
+<td>რა, სად და რომელი ფაილური სისტემით არის მიერთებული</td>
+</tr>
+<tr>
+<td><code>findmnt -t proc,sysfs,devtmpfs</code></td>
+<td>მხოლოდ ვირტუალური ფაილური სისტემები</td>
+<td><code>-t</code> ფილტრავს ტიპით</td>
+</tr>
+<tr>
+<td><code>findmnt --verify</code></td>
+<td><code>/etc/fstab</code>-ის შემოწმება</td>
+<td>შეცდომიანი <code>fstab</code> ჩატვირთვას აჩერებს</td>
+</tr>
+<tr>
+<td><code>stat /</code></td>
+<td>მფლობელი, უფლებები, ზომა, დროები, inode</td>
+<td>ფაილის სრული მეტამონაცემები</td>
+</tr>
+<tr>
+<td><code>stat -c '%F %n' ფაილი...</code></td>
+<td>ფაილის ტიპი სიტყვიერად</td>
+<td><code>regular file</code>, <code>directory</code>, <code>symbolic link</code>, <code>socket</code>...</td>
+</tr>
+<tr>
+<td><code>file -L /bin/ls</code></td>
+<td>ფაილის შიგთავსის ტიპი, ბმულს მიჰყვება</td>
+<td>გვაჩვენებს, რომ პროგრამა ELF ბინარია და რომელ ჩამტვირთველს იყენებს</td>
+</tr>
+<tr>
+<td><code>readlink -f /bin</code></td>
+<td>სიმბოლური ბმულის საბოლოო სამიზნე</td>
+<td><code>/bin</code> -&gt; <code>/usr/bin</code></td>
+</tr>
+<tr>
+<td><code>namei -l /var/run</code></td>
+<td>გზის ყველა კომპონენტი უფლებებით</td>
+<td>აჩვენებს ბმულებს და სად წყდება წვდომა</td>
+</tr>
+<tr>
+<td><code>mount</code></td>
+<td>მიერთებული ფაილური სისტემები</td>
+<td><code>findmnt</code> უფრო წასაკითხია</td>
+</tr>
+<tr>
+<td><code>lsblk</code></td>
+<td>დისკები და partition-ები ხის სახით</td>
+<td>ფიზიკური მოწყობილობები და სად მიუერთდა</td>
+</tr>
+<tr>
+<td><code>find /run -maxdepth 2 -type s</code></td>
+<td>სოკეტების ძებნა</td>
+<td><code>-type</code>: <code>f</code>, <code>d</code>, <code>l</code>, <code>s</code>, <code>b</code>, <code>c</code>, <code>p</code></td>
+</tr>
+<tr>
+<td><code>man hier</code> / <code>man file-hierarchy</code></td>
+<td>იერარქიის ოფიციალური აღწერა</td>
+<td>ადგილობრივი, ამ სისტემისთვის ზუსტი</td>
+</tr>
+</tbody>
+</table>
 <h2 id="7_docker_compose">7. Docker და Compose<a class="headerlink" href="#7_docker_compose" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2999,7 +3190,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../setup/phone-access/" class="md-footer__link md-footer__link--prev" aria-label="წინა: ტელეფონიდან წვდომა (Tailscale)">
+          <a href="../linux/filesystem-hierarchy/" class="md-footer__link md-footer__link--prev" aria-label="წინა: ფაილური სისტემის იერარქია (FHS)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3009,7 +3200,7 @@
                 წინა
               </span>
               <div class="md-ellipsis">
-                ტელეფონიდან წვდომა (Tailscale)
+                ფაილური სისტემის იერარქია (FHS)
               </div>
             </div>
           </a>
