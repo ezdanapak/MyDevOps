@@ -672,7 +672,7 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        მუდმივი გამოსწორება (რეკომენდებული)
+        მუდმივი გამოსწორება (გაშვებულია)
       
     </span>
   </a>
@@ -1707,7 +1707,7 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        მუდმივი გამოსწორება (რეკომენდებული)
+        მუდმივი გამოსწორება (გაშვებულია)
       
     </span>
   </a>
@@ -1838,7 +1838,7 @@
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Mon Nov 16 11:52:46 AM +04 2026
 </span></code></pre></div>
 <code>makestep</code> ბრძანებას <code>chronyd</code>-ს ეუბნება: <strong>ახლავე</strong> გაასწორე საათი. ამის შემდეგ <code>sudo apt update</code> მუშაობს.</p>
-<h3 id="_6">მუდმივი გამოსწორება (რეკომენდებული)<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<h3 id="_6">მუდმივი გამოსწორება (გაშვებულია)<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"makestep 1 -1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/chrony/conf.d/makestep.conf
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>chrony
 </span></code></pre></div>
@@ -1846,6 +1846,11 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>chronyc<span class="w"> </span>tracking<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">"System time|Leap"</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>timedatectl<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>synchronized
 </span></code></pre></div></p>
+<p>რეალური შედეგი: <br>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ cat /etc/chrony/conf.d/makestep.conf
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>makestep 1 -1
+</span></code></pre></div>
+VM-ის გადატვირთვის შემდეგ: <code>System clock synchronized: yes</code>. ფაილი <code>conf.d/</code>-შია და არა <code>chrony.conf</code>-ში, ამიტომ <code>chrony</code>-ის პაკეტის განახლება მას არ გადააწერს.</p>
 <h3 id="_7">რას აზიანებს ჩამორჩენილი საათი<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

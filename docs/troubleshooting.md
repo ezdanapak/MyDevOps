@@ -68,7 +68,7 @@ Mon Nov 16 11:52:46 AM +04 2026
 ```
 `makestep` ბრძანებას `chronyd`-ს ეუბნება: **ახლავე** გაასწორე საათი. ამის შემდეგ `sudo apt update` მუშაობს.
 
-### მუდმივი გამოსწორება (რეკომენდებული)
+### მუდმივი გამოსწორება (გაშვებულია)
 ```bash
 echo "makestep 1 -1" | sudo tee /etc/chrony/conf.d/makestep.conf
 sudo systemctl restart chrony
@@ -78,6 +78,13 @@ sudo systemctl restart chrony
 chronyc tracking | grep -E "System time|Leap"
 timedatectl | grep synchronized
 ```
+
+რეალური შედეგი: <br>
+```text
+$ cat /etc/chrony/conf.d/makestep.conf
+makestep 1 -1
+```
+VM-ის გადატვირთვის შემდეგ: `System clock synchronized: yes`. ფაილი `conf.d/`-შია და არა `chrony.conf`-ში, ამიტომ `chrony`-ის პაკეტის განახლება მას არ გადააწერს.
 
 ### რას აზიანებს ჩამორჩენილი საათი
 | რა | შედეგი |
