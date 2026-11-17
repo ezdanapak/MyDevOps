@@ -90,6 +90,21 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
 
+extra_css:
+  - quiz/quiz.css
+
+extra_javascript:
+  - quiz/data/linux.js
+  - quiz/data/network.js
+  - quiz/data/bash.js
+  - quiz/data/git.js
+  - quiz/data/nginx.js
+  - quiz/data/docker.js
+  - quiz/data/cicd.js
+  - quiz/data/k8s.js
+  - quiz/data/backup.js
+  - quiz/quiz.js
+
 nav:
   - მთავარი: index.md
   - აწყობა:
@@ -102,6 +117,7 @@ nav:
       
   - Linux საფუძვლები:
       - ფაილური სისტემის იერარქია (FHS): linux/filesystem-hierarchy.md
+  - ქვიზები: quiz.md
   - ბრძანებების ცნობარი: commands.md
   - პრობლემების ცნობარი: troubleshooting.md
   - ამოცანები:
