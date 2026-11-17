@@ -120,6 +120,7 @@ nav:
       - ფაილური სისტემის იერარქია (FHS): linux/filesystem-hierarchy.md
       - Linux Cheat Sheet: linux/cheatsheet.md
   - ქვიზები: quiz.md
+  - სასწავლო რესურსები და სერტიფიკაციები: resources.md
   - ბრძანებების ცნობარი: commands.md
   - პრობლემების ცნობარი: troubleshooting.md
   - ამოცანები:
