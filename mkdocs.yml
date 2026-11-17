@@ -103,6 +103,7 @@ extra_javascript:
   - quiz/data/cicd.js
   - quiz/data/k8s.js
   - quiz/data/backup.js
+  - quiz/data/cheatsheet.js
   - quiz/quiz.js
 
 nav:
@@ -117,6 +118,7 @@ nav:
       
   - Linux საფუძვლები:
       - ფაილური სისტემის იერარქია (FHS): linux/filesystem-hierarchy.md
+      - Linux Cheat Sheet: linux/cheatsheet.md
   - ქვიზები: quiz.md
   - ბრძანებების ცნობარი: commands.md
   - პრობლემების ცნობარი: troubleshooting.md
