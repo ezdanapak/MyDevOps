@@ -9,6 +9,8 @@ copyright: "Copyright © 2026 Giorgi Kapanadze"
 theme:
   name: material
   language: ka
+  font: false
+  custom_dir: overrides
   features:
     - navigation.footer
     - navigation.instant
@@ -27,14 +29,16 @@ theme:
   favicon: assets/favicon.png
   palette:
       # Dark Mode
-      - scheme: slate
+      - media: "(prefers-color-scheme: dark)"
+        scheme: slate
         toggle:
           icon: material/weather-sunny
           name: Light mode
         primary: green
         accent: orange
       # Light Mode
-      - scheme: default
+      - media: "(prefers-color-scheme: light)"
+        scheme: default
         toggle:
           icon: material/weather-night
           name: Dark mode
@@ -92,8 +96,10 @@ markdown_extensions:
 
 extra_css:
   - quiz/quiz.css
+  - assets/css/academy.css
 
 extra_javascript:
+  - assets/js/vendor/mermaid/mermaid.min.js
   - quiz/data/linux.js
   - quiz/data/network.js
   - quiz/data/bash.js
@@ -105,6 +111,10 @@ extra_javascript:
   - quiz/data/backup.js
   - quiz/data/cheatsheet.js
   - quiz/quiz.js
+  - assets/js/progress.js
+  - assets/js/app.js
+  - assets/js/theme.js
+  - assets/js/pwa-register.js
 
 nav:
   - მთავარი: index.md
@@ -119,6 +129,29 @@ nav:
   - Linux საფუძვლები:
       - ფაილური სისტემის იერარქია (FHS): linux/filesystem-hierarchy.md
       - Linux Cheat Sheet: linux/cheatsheet.md
+  - Academy:
+      - მთავარი: academy/index.md
+      - Linux:
+          - მოდულის მთავარი: academy/linux/index.md
+          - Linux საფუძვლები: academy/linux/fundamentals.md
+          - ფაილური სისტემა: academy/linux/filesystem.md
+          - უფლებები: academy/linux/permissions.md
+          - მომხმარებლები და ჯგუფები: academy/linux/users-groups.md
+          - პროცესები: academy/linux/processes.md
+          - პაკეტების მართვა: academy/linux/package-management.md
+  - Production:
+      - მთავარი: production/index.md
+      - არქიტექტურა: production/architecture.md
+      - Linux სერვერი: production/linux-server.md
+      - ქსელი: production/networking.md
+      - უსაფრთხოება: production/security.md
+      - Docker ინფრასტრუქტურა: production/docker-infrastructure.md
+      - Nginx: production/nginx.md
+      - CI/CD: production/cicd.md
+      - მონიტორინგი: production/monitoring.md
+      - ლოგირება: production/logging.md
+      - Backup და აღდგენა: production/backup-recovery.md
+      - Disaster Recovery: production/disaster-recovery.md
   - ქვიზები: quiz.md
   - სასწავლო რესურსები და სერტიფიკაციები: resources.md
   - ბრძანებების ცნობარი: commands.md
