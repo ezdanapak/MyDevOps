@@ -1,0 +1,37 @@
+/* Self-hosted fonts (latin only; Georgian falls back to the system font). */
+@font-face{font-family:"Roboto";font-style:normal;font-weight:300;font-display:swap;src:url("../fonts/roboto/roboto-latin-300-normal.woff2") format("woff2")}
+@font-face{font-family:"Roboto";font-style:italic;font-weight:300;font-display:swap;src:url("../fonts/roboto/roboto-latin-300-italic.woff2") format("woff2")}
+@font-face{font-family:"Roboto";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/roboto/roboto-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Roboto";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/roboto/roboto-latin-400-italic.woff2") format("woff2")}
+@font-face{font-family:"Roboto";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/roboto/roboto-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Roboto";font-style:italic;font-weight:700;font-display:swap;src:url("../fonts/roboto/roboto-latin-700-italic.woff2") format("woff2")}
+@font-face{font-family:"Roboto Mono";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/roboto-mono/roboto-mono-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Roboto Mono";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/roboto-mono/roboto-mono-latin-400-italic.woff2") format("woff2")}
+@font-face{font-family:"Roboto Mono";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/roboto-mono/roboto-mono-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Roboto Mono";font-style:italic;font-weight:700;font-display:swap;src:url("../fonts/roboto-mono/roboto-mono-latin-700-italic.woff2") format("woff2")}
+
+:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono";--dq-accent:#2f6fdb;--dq-soft:rgba(47,111,219,.08);--dq-border:rgba(128,128,128,.3)}
+[data-md-color-scheme="slate"]{--dq-accent:#6ea0ff;--dq-soft:rgba(110,160,255,.10)}
+
+/* Lesson controls (injected by app.js on /academy/ lesson pages) */
+.lesson-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.4rem 0 1.2rem;padding:.6rem .8rem;border:1px solid var(--dq-border);border-left:4px solid var(--dq-accent);border-radius:6px;background:var(--dq-soft)}
+.lesson-meta button{font:inherit;font-size:.8rem;padding:.35rem .8rem;border:1px solid var(--dq-accent);border-radius:999px;background:transparent;color:var(--dq-accent);cursor:pointer}
+.lesson-meta button:hover,.lesson-meta button:focus-visible{background:var(--dq-accent);color:#fff;outline:2px solid transparent}
+.lesson-meta button[aria-pressed="true"]{background:var(--dq-accent);color:#fff}
+.lesson-meta .lesson-status{font-size:.8rem;opacity:.8}
+
+/* Academy progress */
+.academy-progress{margin:1rem 0;padding:.8rem 1rem;border:1px solid var(--dq-border);border-radius:8px;background:var(--dq-soft)}
+.academy-progress .bar{height:8px;border-radius:4px;background:var(--dq-border);overflow:hidden;margin-top:.5rem}
+.academy-progress .bar>i{display:block;height:100%;background:var(--dq-accent);transition:width .3s}
+
+/* Status badges (production section) and generic cards */
+.badge{display:inline-block;padding:.05rem .5rem;border-radius:999px;font-size:.75rem;border:1px solid var(--dq-border)}
+.badge-lab{border-color:#2e7d32;color:#2e7d32}.badge-doc{border-color:var(--dq-accent);color:var(--dq-accent)}.badge-plan{border-color:#8a6d00;color:#8a6d00}
+[data-md-color-scheme="slate"] .badge-lab{color:#7bd88f;border-color:#7bd88f}
+[data-md-color-scheme="slate"] .badge-plan{color:#e6c35c;border-color:#e6c35c}
+
+/* PWA update prompt */
+.pwa-update{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:10;max-width:calc(100vw - 2rem);display:flex;gap:.6rem;align-items:center;padding:.6rem 1rem;border-radius:8px;background:var(--md-default-bg-color);color:var(--md-default-fg-color);border:1px solid var(--dq-accent);box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.pwa-update button{font:inherit;padding:.3rem .8rem;border:0;border-radius:6px;background:var(--dq-accent);color:#fff;cursor:pointer}
+@media (max-width:480px){.lesson-meta{flex-direction:column;align-items:stretch}.pwa-update{flex-direction:column;text-align:center}}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Offline | MyDevOps</title>
+<style>
+:root{color-scheme:light dark}
+body{font-family:Roboto,system-ui,sans-serif;max-width:34rem;margin:12vh auto;padding:0 1.2rem;line-height:1.6}
+h1{font-size:1.6rem}
+a{color:#2f6fdb}
+.note{opacity:.75;font-size:.9rem}
+</style>
+</head>
+<body>
+<h1>ინტერნეტი არ არის</h1>
+<p>ამ გვერდის ჩატვირთვა ახლა შეუძლებელია, რადგან ის ჯერ არ გახსნილა და offline-ისთვის არ შენახულა.</p>
+<p>გახსენით გვერდი, რომელიც ადრე უკვე გაგიხსნიათ, ან დაელოდეთ კავშირს.</p>
+<p><a id="home" href="#">მთავარ გვერდზე დაბრუნება</a></p>
+<p class="note">გვერდები, რომლებიც ერთხელ ინტერნეტით გახსენით, შემდეგ offline-ც იხსნება.</p>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistration().then(function (r) { if (r) document.getElementById('home').href = r.scope; });
+}
+</script>
+</body>
+</html>
